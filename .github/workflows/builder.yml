@@ -113,5 +113,6 @@ jobs:
         with:
           artifacts: "python_lib.zip"
           tag: "0.0"
+          repo: KivySwiftLink
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
