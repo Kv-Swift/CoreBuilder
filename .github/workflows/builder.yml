@@ -46,7 +46,7 @@ jobs:
       - name: toolchain build python3 kivy pillow
         run: |
           cd kivy_build 
-          toolchain build python3 pillow
+          toolchain build python3 kivy pillow
 
       # pulling out necessary libraries and zipping them into "output" folder
       - name: repack build environment
