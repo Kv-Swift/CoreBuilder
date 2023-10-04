@@ -78,7 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: Kivy-iOS-Package
+          repository: pythonswiftlink/Kivy-iOS-Package
       - uses: actions/download-artifact@v2
         with:
           name: kivy-output
