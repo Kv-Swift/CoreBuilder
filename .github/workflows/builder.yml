@@ -108,7 +108,7 @@ jobs:
           user-email: pythonswiftlink@gmail.com
           target-branch: master
 
-      - uses: actions/checkout@v4
+      #- uses: actions/checkout@v4
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "python_lib.zip"
