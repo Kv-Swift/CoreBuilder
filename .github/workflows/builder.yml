@@ -77,7 +77,7 @@ jobs:
       # - uses: actions/upload-artifact@v2
       #   with:
       #     name: pylib-output
-      #     path: ./pylib
+      #     path: ./pylib/python_lib.zip
 
   create_package:
     name: Create Package
@@ -95,7 +95,7 @@ jobs:
             chmod 755 create_package.sh
             ./create_package.sh
             #zip -r package.zip Kivy-iOS-Package/*
-            zip -r python_lib.zip python_lib/*
+            #zip -r python_lib.zip python_lib/*
       
       - name: Push to master
         uses: cpina/github-action-push-to-another-repository@main
