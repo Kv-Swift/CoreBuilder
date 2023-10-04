@@ -60,11 +60,11 @@ jobs:
 
       - name: copy build
         run: |
-            cd ..
-            ls
-            cd ..
-            ls
-            #cp -r ..kivy_build ./
+            # cd ..
+            # cd ..
+            # cd ..
+            # ls
+            cp -r ../../../kivy_build ./
 
       
       - name: repack build environment
