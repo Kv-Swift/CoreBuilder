@@ -95,7 +95,7 @@ jobs:
         with:
           source-directory: 'Kivy-iOS-Package'
           destination-github-username: 'pythonswiftlink'
-          destination-repository-name: 'Kivy-iOS-Package'
+          destination-repository-name: 'KivySwiftLink'
           user-email: pythonswiftlink@gmail.com
           target-branch: master
 
