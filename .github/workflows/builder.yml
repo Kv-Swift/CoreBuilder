@@ -11,6 +11,11 @@ on:
   #   tags: '*'
   
   workflow_dispatch:
+    inputs:
+      tags:
+        description: 'test tag'
+        required: false
+        type: string
 
 
 
@@ -59,12 +64,7 @@ jobs:
       #     toolchain build pillow
 
       - name: copy build
-        run: |
-            # cd ..
-            # cd ..
-            # cd ..
-            # ls
-            cp -rf ../../../kivy_build ./
+        run: cp -rf ../../../kivy_build ./
 
       
       - name: repack build environment
@@ -95,7 +95,7 @@ jobs:
             chmod 755 create_package.sh
             ./create_package.sh
             #zip -r package.zip Kivy-iOS-Package/*
-            #zip -r python_lib.zip python_lib/*
+            zip -r python_lib.zip python_lib/*
       
       - name: Push to master
         uses: cpina/github-action-push-to-another-repository@main
@@ -108,10 +108,10 @@ jobs:
           user-email: pythonswiftlink@gmail.com
           target-branch: master
 
-    #   - uses: actions/checkout@v4
-    #   - uses: ncipollo/release-action@v1
-    #     with:
-    #       artifacts: "python_lib.zip"
-    #       tag: "0.0"
-    #       token: ${{ secrets.Homebrew }}
-    #       #allowUpdates: true
+      - uses: actions/checkout@v4
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "python_lib.zip"
+          tag: "0.0"
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
