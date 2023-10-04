@@ -18,7 +18,8 @@ on:
 jobs:
   toolchainBuild:
     #needs: mainjob1
-    runs-on: macOS-13
+    #runs-on: macOS-13
+    runs-on: self-hosted
     permissions:
         contents: write
     steps:
