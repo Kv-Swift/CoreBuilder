@@ -74,10 +74,10 @@ jobs:
         with:
           name: kivy-output
           path: ./output
-      - uses: actions/upload-artifact@v2
-        with:
-          name: pylib-output
-          path: ./pylib
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: pylib-output
+      #     path: ./pylib
 
   create_package:
     name: Create Package
@@ -102,7 +102,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
         with:
-          source-directory: 'Kivy-iOS-Package'
+          source-directory: 'KivySwiftLink'
           destination-github-username: 'pythonswiftlink'
           destination-repository-name: 'kivyswiftlink'
           user-email: pythonswiftlink@gmail.com
