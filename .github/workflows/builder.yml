@@ -58,9 +58,11 @@ jobs:
           cp -rf kivy_build/dist/root/python3/include/python3.10 output/xcframework/libpython3.10.xcframework/ios-x86_64-simulator/
           cp -f PythonXc_Info.plist output/xcframework/libpython3.10.xcframework/Info.plist
           cp -f create_package.sh output/
-
-          zip -r python_lib.zip kivy_build/dist/root/python3/lib/*
-          zip -r dist_lib.zip kivy_build/dist/lib/*
+          
+          mv kivy_build/dist/root/python3/lib python_lib
+          zip -r python_lib.zip python_lib
+          mv kivy_build/dist/lib dist_lib
+          zip -r dist_lib.zip dist_lib
           mv -f python_lib.zip output/
           mv -f dist_lib.zip output/
           
