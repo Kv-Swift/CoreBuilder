@@ -111,7 +111,7 @@ jobs:
       #- uses: actions/checkout@v4
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "python_lib.zip"
+          artifacts: "python_lib.zip, dist_lib.zip"
           tag: "0.0"
           repo: KivySwiftLink
           token: ${{ secrets.Homebrew }}
