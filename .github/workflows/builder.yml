@@ -12,9 +12,9 @@ on:
   
   workflow_dispatch:
     inputs:
-      tags:
-        description: 'test tag'
-        required: false
+      tag:
+        description: 'input new release tag'
+        required: true
         type: string
 
 
@@ -112,7 +112,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "python_lib.zip, dist_lib.zip"
-          tag: "0.0"
+          tag: ${{ github.event.inputs.tag }}
           repo: KivySwiftLink
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
