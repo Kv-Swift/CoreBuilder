@@ -4,7 +4,7 @@ mkdir pylib
 mkdir pylib/python_lib
 mkdir output/dist_lib
 cp -rf kivy_build/dist/xcframework output/
-cp -rf kivy_build/dist/lib/* output/dist_lib
+cp -rf kivy_build/dist/lib/* pylib/dist_lib
 cp -rf kivy_build/dist/root/python3/lib/* pylib/python_lib
 
 
