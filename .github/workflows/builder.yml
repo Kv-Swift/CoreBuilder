@@ -49,14 +49,19 @@ jobs:
           #brew link libtool
           
           chmod 755 restructure.sh
-          mkdir kivy_build
+          #mkdir kivy_build
 
-      - name: toolchain build python3 kivy pillow
+      # - name: toolchain build python3 kivy pillow
+      #   run: |
+      #     cd kivy_build 
+      #     toolchain build python3
+      #     toolchain build kivy
+      #     toolchain build pillow
+
+      - name: copy build
         run: |
-          cd kivy_build 
-          toolchain build python3
-          toolchain build kivy
-          toolchain build pillow
+            cp -r ../../kivy_build ./
+            
       
       - name: repack build environment
         run: ./restructure.sh
