@@ -86,8 +86,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          repository: pythonswiftlink/KivySwiftLink
+        # with:
+        #   repository: pythonswiftlink/KivySwiftLink
       - uses: actions/download-artifact@v3
         with:
           name: kivy-output
