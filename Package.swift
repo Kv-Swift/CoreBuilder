@@ -24,13 +24,13 @@ pythonLibDeps.append("libssl")
 
 
 let package = Package(
-    name: "KivyPackage",
+    name: "KivyCore",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
 //        .library(
 //            name: "KPythonSwiftLink",
 //            targets: ["KPythonSwiftLink", "PythonLib"]),
-		.library(name: "KivyPackage", targets: ["KivyPackage"]),
+		.library(name: "KivyCore", targets: ["KivyCore"]),
 		// .library(
 		// 	name: "PythonSwiftCore",
 		// 	targets: ["PythonSwiftCore", "PythonLib"]
@@ -80,7 +80,7 @@ let package = Package(
         
 		
 		.target(
-			name: "KivyPackage",
+			name: "KivyCore",
 			dependencies: pythonLibDeps,
 			
 			linkerSettings: [
