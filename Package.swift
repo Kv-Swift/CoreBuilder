@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -18,67 +18,17 @@ var pythonLibDeps: [Target.Dependency] = [
 	"libSDL2_mixer",
 	"libSDL2_ttf",
 	"libSDL2",
+	"libssl"
 ]
-
-pythonLibDeps.append("libssl")
 
 
 let package = Package(
     name: "KivyCore",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
-//        .library(
-//            name: "KPythonSwiftLink",
-//            targets: ["KPythonSwiftLink", "PythonLib"]),
 		.library(name: "KivyCore", targets: ["KivyCore"]),
-		// .library(
-		// 	name: "PythonSwiftCore",
-		// 	targets: ["PythonSwiftCore", "PythonLib"]
-		// ),
-		// .library(
-		// 	name: "PySwiftObject",
-		// 	targets: ["PySwiftObject"]
-		// ),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-		// .target(
-		// 	name: "KivyLauncher",
-		// 	dependencies: [
-		// 		"PythonSwiftCore",
-		// 		"PythonLib",
-		// 		"PySwiftObject"
-		// 	],
-		// 	resources: [.copy("lib")]
-		// ),
-		
-		// .target(
-		// 	name: "PythonSwiftCore",
-		// 	dependencies: [
-		// 		"PythonLib",
-		// 		"PythonTypeAlias"
-		// 	],
-		// 	resources: [
-				
-		// 	],
-		// 	swiftSettings: [ .define("BEEWARE", nil)]
-		// ),
-		
-		// .target(
-		// 	name: "PySwiftObject",
-		// 	dependencies: [
-		// 		"PythonLib",
-		// 		"PythonSwiftCore",
-		// 		"PythonTypeAlias"
-		// 	],
-		// 	resources: [
-				
-		// 	],
-		// 	swiftSettings: [ .define("BEEWARE", nil)]
-		// ),
-        
-		
 		.target(
 			name: "KivyCore",
 			dependencies: pythonLibDeps,
@@ -118,13 +68,6 @@ let package = Package(
 			]
 				
 		),
-		
-			// .target(
-			// 	name: "PythonTypeAlias",
-			// 	dependencies: [
-			// 		"PythonLib",
-			// 	]
-			// ),
 		
 		.binaryTarget(name: "libcrypto", path: "Sources/KivyPackage/xcframework/libcrypto.zip"),
 		.binaryTarget(name: "libpython3.10", path: "Sources/KivyPackage/xcframework/libpython3.10.zip"),
