@@ -112,7 +112,7 @@ jobs:
           cp -rf xcframework KivyPackage/Sources/KivyPackage/
 
           # cp -f Package.swift KivySwiftLink
-          cp -f Package.swift KivySwiftLink
+          cp -f Package.swift KivySwiftLink/Package.swift
           # cp -rf KivyLauncher KivySwiftLink/Sources/KivyLauncher
       
       # commit new package to kivyswiftlink/master
@@ -132,6 +132,6 @@ jobs:
         with:
           artifacts: "python_lib.zip, dist_lib.zip"
           tag: ${{ github.event.inputs.tag }}
-          repo: KivySwiftLink
+          repo: KivyPackage
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
