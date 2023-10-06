@@ -21,12 +21,14 @@ func putenv(_ s: String) {
 
 fileprivate class PythonRunTime {
 	
-	let PYTHON_VERSION: String = "3.10"
+	var PYTHON_VERSION: String { "3.10" }
 	
-	let IOS_IS_WINDOWED: Bool = false
-	let KIVY_NO_CONSOLELOG: Int = 1
+	var IOS_IS_WINDOWED: Bool = false
+	var KIVY_NO_CONSOLELOG: Int = 1
 	var prog: String
-	let other_paths: [String]
+	var other_paths: [String]
+
+	var 
 	
 	
 	init(other_paths: [String] = []) throws {
@@ -71,9 +73,9 @@ fileprivate class PythonRunTime {
 		// IOS_IS_WINDOWED=True disables fullscreen and then statusbar is shown
 		putenv("IOS_IS_WINDOWED=\(IOS_IS_WINDOWED ? "True" : "False")")
 		
-#if DEBUG
+//#if DEBUG
 		putenv("KIVY_NO_CONSOLELOG=\(KIVY_NO_CONSOLELOG)")
-#endif
+//#endif
 	}
 	
 	private func pythonHome() {
