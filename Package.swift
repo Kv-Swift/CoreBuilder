@@ -26,7 +26,7 @@ let package = Package(
     name: "KivyCore",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
-		.library(name: "KivyCore", targets: ["KivyCore"]),
+		.library(name: "PythonLib", targets: ["KivyCore"]),
     ],
     targets: [
 		.target(
