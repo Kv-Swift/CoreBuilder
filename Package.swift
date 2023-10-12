@@ -84,6 +84,11 @@ let package = Package(
 		.binaryTarget(name: "libSDL2_ttf", path: "Sources/PythonCore/xcframework/libSDL2_ttf.zip"),
 		.binaryTarget(name: "libSDL2", path: "Sources/PythonCore/xcframework/libSDL2.zip"),
 		.binaryTarget(name: "libssl", path: "Sources/PythonCore/xcframework/libssl.zip"),
+
+		// numoy
+		.binaryTarget(name: "libnumpy", path: "Sources/PythonCore/xcframework/libnumpy.zip"),
+		.binaryTarget(name: "libnpymath", path: "Sources/PythonCore/xcframework/libnpymath.zip"),
+		.binaryTarget(name: "libnpyrandom", path: "Sources/PythonCore/xcframework/libnpyrandom.zip"),
 //		.binaryTarget(name: "libcrypto", path: "xcframework/libcrypto.xcframework"),
 //		.binaryTarget(name: "libcrypto", path: "xcframework/libcrypto.xcframework"),
 //		
