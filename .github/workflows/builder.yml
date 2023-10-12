@@ -37,31 +37,30 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
-          #brew install autoconf automake libtool pkg-config
-          #brew link libtool
-          
-          chmod 755 restructure.sh
-          mkdir kivy_build
-      # cd into kivy_build folder and running toolchain build python3, kivy, pillow 
-      - name: toolchain build python3 kivy pillow
-        run: |
-          cd kivy_build 
-          toolchain build python3 kivy pillow numpy
+
+      - name: build python3
+        run: toolchain build python3
+      - name: build kivy
+        run: toolchain build kivy
+      - name: build pillow
+        run: toolchain build pillow
+      - name: build numpy
+        run: toolchain build python3
 
       # pulling out necessary libraries and zipping them into "output" folder
       - name: repack build environment
         #run: ./restructure.sh
         run: |
           mkdir output
-          cp -rf kivy_build/dist/xcframework output/
+          cp -rf dist/xcframework output/
           
-          PY_HEADERS=kivy_build/dist/root/python3/include/python3.10
+          PY_HEADERS=dist/root/python3/include/python3.10
           PY_XC=output/xcframework/libpython3.10.xcframework
           cp -rf $PY_HEADERS $PY_XC/ios-arm64/
           cp -rf $PY_HEADERS $PY_XC/ios-x86_64-simulator/
           cp -f PythonXc_Info.plist $PY_XC/Info.plist
 
-          NUMPY_HEADERS=kivy_build/dist/include/common/numpy/numpy
+          NUMPY_HEADERS=dist/include/common/numpy/numpy
           NUMPY_XC=output/xcframework/libnumpy.xcframework
           cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-arm64/
           cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-x86_64-simulator/
@@ -69,9 +68,9 @@ jobs:
 
           cp -f create_package.sh output/
           
-          mv kivy_build/dist/root/python3/lib python_lib
+          mv dist/root/python3/lib python_lib
           zip -r python_lib.zip python_lib
-          mv kivy_build/dist/lib dist_lib
+          mv dist/lib dist_lib
           zip -r dist_lib.zip dist_lib
           mv -f python_lib.zip output/
           mv -f dist_lib.zip output/
@@ -108,22 +107,13 @@ jobs:
           name: kivy-output
       - run: |
           
-          #mkdir KivySwiftLink
-          #git clone https://github.com/PythonSwiftLink/PythonSwiftLink
-
           git clone https://github.com/PythonSwiftLink/PythonCore
           mkdir KivyCore
           mkdir KivyCore/Sources
 
-          # cp -rf PythonSwiftLink/Sources KivySwiftLink/
           cp -rf PythonCore/Sources/PythonCore KivyCore/Sources/
-
-          #cp -rf xcframework KivySwiftLink/Sources/PythonLib/
           cp -rf xcframework KivyCore/Sources/PythonCore/
-
-          # cp -f Package.swift KivySwiftLink
           cp -f Package.swift KivyCore/
-          # cp -rf KivyLauncher KivySwiftLink/Sources/KivyLauncher
       
       # commit new package to kivyswiftlink/master
       - name: Push to master
