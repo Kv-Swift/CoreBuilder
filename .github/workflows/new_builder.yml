@@ -121,9 +121,9 @@ jobs:
           mv -f xcframework/libnpyrandom.zip numpy/xcframework/
           mv -f xcframework/libnpymath.zip numpy/xcframework/
           echo "ls output:"
-          ls output
+          ls
           echo "ls output/numpy:"
-          ls output/numpy
+          ls numpy
           
           
       # uploading "output" folder for the next task to use. (ubuntu machine)
