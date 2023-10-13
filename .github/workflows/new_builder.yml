@@ -1,0 +1,178 @@
+# This workflow will build a KivySwiftLink release
+
+name: release builder
+
+
+on:
+
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'input new release tag'
+        required: true
+        type: string
+
+
+
+
+jobs:
+  toolchainBuild:
+    runs-on: macOS-13
+    # runs-on: self-hosted
+    permissions:
+        contents: write
+    steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
+        
+      - uses: actions/checkout@v4
+      
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # install the python version needed
+
+      - name: install kivy-ios
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
+          toolchain build hostpython3
+      - name: build hostpython3
+        run: toolchain build hostpython3
+      - name: build python3
+        run: toolchain build python3
+      - name: build numpy
+        run: toolchain build numpy
+
+      - name: move numpy build
+        run: |
+          mkdir output
+          mkdor output/numpy
+          PY_SITE=dist/root/python3/lib/python3.10/site-packages
+          mv -rf $PY_SITE/numpy output/numpy/site
+          rm -rf $PY_SITE/*
+
+      - name: build kivy
+        run: toolchain build kivy
+      - name: build pillow
+        run: toolchain build pillow
+      
+
+      # pulling out necessary libraries and zipping them into "output" folder
+      - name: repack python3.10 / numpy xcframework
+        #run: ./restructure.sh
+        run: |
+          #mkdir output
+          cp -rf dist/xcframework output/
+          
+          PY_HEADERS=dist/root/python3/include/python3.10
+          PY_XC=output/xcframework/libpython3.10.xcframework
+          cp -rf $PY_HEADERS $PY_XC/ios-arm64/
+          cp -rf $PY_HEADERS $PY_XC/ios-x86_64-simulator/
+          cp -f PythonXc_Info.plist $PY_XC/Info.plist
+
+          NUMPY_HEADERS=dist/include/common/numpy/numpy
+          NUMPY_XC=output/xcframework/libnumpy.xcframework
+          cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-arm64/
+          cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-x86_64-simulator/
+          cp -f numpy_info.plist $NUMPY_XC/Info.plist
+
+          #cp -f create_package.sh output/
+      
+      - name: repack & zip python site-packages
+        #mv dist/root/python3/lib python_lib
+        #zip -r python_lib.zip python_lib
+        run: |
+          PY_LIB=dist/root/python3/lib
+
+          mv $PY_LIB/python3.10/site-packages site-packages
+          zip -r site-packages.zip site-packages
+          mv -f site-packages.zip output/
+          
+          mv $PY_LIB python_lib
+          zip -r python_lib.zip python_lib
+          mv -f python_lib.zip output/
+
+      - name: repack & zip dist_lib
+        run: |
+          mv dist/lib dist_lib
+          zip -r dist_lib.zip dist_lib
+          
+          mv -f dist_lib.zip output/
+
+      - name: move and zip xcframeworks
+        run: |
+          cd output/xcframework
+          for FILE in *; 
+              do 
+                  filename="$FILE"
+                  echo $filename
+                  zip -r "${filename%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+            
+      - name: pack numpy
+        run: |
+          cd output
+          mkdir numpy/xcframework
+
+          mv -f xcframework/libnumpy.zip numpy/xcframework/
+          mv -f xcframework/libnpyrandom.zip numpy/xcframework/
+          mv -f xcframework/libnpymath.zip numpy/xcframework/
+          echo "ls output:"
+          ls output
+          echo "ls output/numpy:"
+          ls output/numpy
+          
+          
+      # uploading "output" folder for the next task to use. (ubuntu machine)
+      - uses: actions/upload-artifact@v3
+        with:
+          name: kivy-output
+          path: ./output
+  
+  # moving next part to an ubuntu machine
+  create_package:
+    name: Create Package
+    runs-on: ubuntu-latest
+    needs: [toolchainBuild]
+
+
+    steps:
+      - uses: actions/checkout@v4
+        # with:
+        #   repository: pythonswiftlink/KivySwiftLink
+      - uses: actions/download-artifact@v3
+        with:
+          name: kivy-output
+      - run: |
+          
+          git clone https://github.com/PythonSwiftLink/PythonCore
+          mkdir KivyCore
+          mkdir KivyCore/Sources
+
+          cp -rf PythonCore/Sources/PythonCore KivyCore/Sources/
+          cp -rf xcframework KivyCore/Sources/PythonCore/
+          cp -f Package.swift KivyCore/
+      
+      # commit new package to kivyswiftlink/master
+      - name: Push to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyCore'
+          destination-github-username: 'pythonswiftlink'
+          destination-repository-name: 'KivyCore'
+          user-email: pythonswiftlink@gmail.com
+          target-branch: master
+      
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "python_lib.zip, dist_lib.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyCore
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
