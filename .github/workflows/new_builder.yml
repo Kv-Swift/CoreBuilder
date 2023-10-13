@@ -133,46 +133,46 @@ jobs:
           path: ./output
   
   # moving next part to an ubuntu machine
-  create_package:
-    name: Create Package
-    runs-on: ubuntu-latest
-    needs: [toolchainBuild]
+  # create_package:
+  #   name: Create Package
+  #   runs-on: ubuntu-latest
+  #   needs: [toolchainBuild]
 
 
-    steps:
-      - uses: actions/checkout@v4
-        # with:
-        #   repository: pythonswiftlink/KivySwiftLink
-      - uses: actions/download-artifact@v3
-        with:
-          name: kivy-output
-      - run: |
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       # with:
+  #       #   repository: pythonswiftlink/KivySwiftLink
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: kivy-output
+  #     - run: |
           
-          git clone https://github.com/PythonSwiftLink/PythonCore
-          mkdir KivyCore
-          mkdir KivyCore/Sources
+  #         git clone https://github.com/PythonSwiftLink/PythonCore
+  #         mkdir KivyCore
+  #         mkdir KivyCore/Sources
 
-          cp -rf PythonCore/Sources/PythonCore KivyCore/Sources/
-          cp -rf xcframework KivyCore/Sources/PythonCore/
-          cp -f Package.swift KivyCore/
+  #         cp -rf PythonCore/Sources/PythonCore KivyCore/Sources/
+  #         cp -rf xcframework KivyCore/Sources/PythonCore/
+  #         cp -f Package.swift KivyCore/
       
-      # commit new package to kivyswiftlink/master
-      - name: Push to master
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
-        with:
-          source-directory: 'KivyCore'
-          destination-github-username: 'pythonswiftlink'
-          destination-repository-name: 'KivyCore'
-          user-email: pythonswiftlink@gmail.com
-          target-branch: master
+  #     # commit new package to kivyswiftlink/master
+  #     - name: Push to master
+  #       uses: cpina/github-action-push-to-another-repository@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+  #       with:
+  #         source-directory: 'KivyCore'
+  #         destination-github-username: 'pythonswiftlink'
+  #         destination-repository-name: 'KivyCore'
+  #         user-email: pythonswiftlink@gmail.com
+  #         target-branch: master
       
-      # create a new release from master and python_lib.zip / dist_lib.zip to the release
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "python_lib.zip, dist_lib.zip"
-          tag: ${{ github.event.inputs.tag }}
-          repo: KivyCore
-          token: ${{ secrets.Homebrew }}
-          allowUpdates: true
+  #     # create a new release from master and python_lib.zip / dist_lib.zip to the release
+  #     - uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: "python_lib.zip, dist_lib.zip"
+  #         tag: ${{ github.event.inputs.tag }}
+  #         repo: KivyCore
+  #         token: ${{ secrets.Homebrew }}
+  #         allowUpdates: true
