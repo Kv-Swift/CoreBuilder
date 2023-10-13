@@ -53,6 +53,11 @@ jobs:
         run: |
           mkdir output
           cp -rf dist/xcframework output/
+
+          echo "output/"
+          ls output/
+          echo "output/xcframework"
+          ls output/xcframework
           
           PY_HEADERS=dist/root/python3/include/python3.10
           PY_XC=output/xcframework/libpython3.10.xcframework
