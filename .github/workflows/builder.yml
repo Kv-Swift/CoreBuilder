@@ -45,7 +45,7 @@ jobs:
       - name: build pillow
         run: toolchain build pillow
       - name: build numpy
-        run: toolchain build python3
+        run: toolchain build numpy
 
       # pulling out necessary libraries and zipping them into "output" folder
       - name: repack build environment
