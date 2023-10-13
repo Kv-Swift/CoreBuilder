@@ -50,7 +50,7 @@ jobs:
           mkdir output
           mkdir output/numpy
           PY_SITE=dist/root/python3/lib/python3.10/site-packages
-          mv -rf $PY_SITE/numpy output/numpy/site
+          mv -f $PY_SITE/numpy output/numpy/site
           rm -rf $PY_SITE/*
 
       - name: build kivy
