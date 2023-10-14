@@ -147,11 +147,11 @@ jobs:
           cd kivy
           zip -r dist_lib.zip dist_lib
           rm -rf dist_lib
-          cd..
+          cd ..
           cd python
           zip -r dist_lib.zip dist_lib
           rm -rf dist_lib
-          cd..
+          cd ..
           cd numpy
           zip -r dist_lib.zip dist_lib
           rm -rf dist_lib
