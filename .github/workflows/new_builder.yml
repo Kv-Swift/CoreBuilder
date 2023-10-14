@@ -136,8 +136,8 @@ jobs:
           mv -f $SIM_LIBS/libpython3.10.a python/$SIM_LIBS/
           echo transfered python/$SIM_LIBS
 
-          mkdir -p kivy/$IOS_LiBS
-          mv -f $IOS_LiBS kivy/$IOS_LiBS
+          mkdir -p kivy/$IOS_LIBS
+          mv -f $IOS_LIBS kivy/$IOS_LIBS
           echo transfered kivy/$IOS_LIBS
 
           mkdir -p kivy/$SIM_LIBS
