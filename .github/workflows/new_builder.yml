@@ -52,6 +52,9 @@ jobs:
           PY_SITE=dist/root/python3/lib/python3.10/site-packages
           mv -f $PY_SITE/numpy output/numpy/site
           rm -rf $PY_SITE/*
+          cd output/numpy
+          zip -r site.zip site
+          rm -rf site
 
       - name: build kivy
         run: toolchain build kivy
@@ -85,21 +88,64 @@ jobs:
         #zip -r python_lib.zip python_lib
         run: |
           PY_LIB=dist/root/python3/lib
+          mkdir output/python
+          mkdir output/kivy
 
           mv $PY_LIB/python3.10/site-packages site-packages
           zip -r site-packages.zip site-packages
-          mv -f site-packages.zip output/
+          mv -f site-packages.zip output/kivy/
           
           mv $PY_LIB python_lib
           zip -r python_lib.zip python_lib
-          mv -f python_lib.zip output/
+          mv -f python_lib.zip output/python/
 
-      - name: repack & zip dist_lib
+      - name: repack & zip dist_libs
         run: |
-          mv dist/lib dist_lib
-          zip -r dist_lib.zip dist_lib
+          mv dist/lib output/dist_lib
+          cd output
+          IOS_LIBS=dist_lib/iphoneos
+          SIM_LIBS=dist_lib/iphonesimulator
+
+          mkpath numpy/$IOS_LIBS
+          mv -f $IOS_LIBS/libnpymath.a numpy/$IOS_LIBS/
+          mv -f $IOS_LIBS/libnpyrandom.a numpy/$IOS_LIBS/
+          mv -f $IOS_LIBS/libnumpy.a numpy/$IOS_LIBS/
+
+          mkpath numpy/$SIM_LIBS
+          mv -f $SIM_LIBS/libnpymath.a numpy/$SIM_LIBS/
+          mv -f $SIM_LIBS/libnpyrandom.a numpy/$SIM_LIBS/
+          mv -f $SIM_LIBS/libnumpy.a numpy/$SIM_LIBS/
+
+          mkpath python/$IOS_LIBS
+          mv -f $IOS_LIBS/libcrypto.a python/$IOS_LIBS/
+          mv -f $IOS_LIBS/libssl.a python/$IOS_LIBS/
+          mv -f $IOS_LIBS/libffi.a python/$IOS_LIBS/
+          mv -f $IOS_LIBS/libpython3.10.a python/$IOS_LIBS/
           
-          mv -f dist_lib.zip output/
+          mkpath python/$SIM_LIBS
+          mv -f $SIM_LIBS/libcrypto.a python/$SIM_LIBS/
+          mv -f $SIM_LIBS/libssl.a python/$SIM_LIBS/
+          mv -f $SIM_LIBS/libffi.a python/$SIM_LIBS/
+          mv -f $SIM_LIBS/libpython3.10.a python/$SIM_LIBS/
+          
+          mkpath kivy/$IOS_LiBS
+          mv -f $IOS_LiBS kivy/$IOS_LiBS
+          mkpath kivy/$SIM_LIBS
+          mv -f $SIM_LIBS kivy/$SIM_LIBS
+          
+          cd kivy
+          zip -r dist_lib.zip dist_lib
+          rm -rf dist_lib
+          cd..
+          cd python
+          zip -r dist_lib.zip dist_lib
+          rm -rf dist_lib
+          cd..
+          cd numpy
+          zip -r dist_lib.zip dist_lib
+          rm -rf dist_lib
+          cd..
+          
 
       - name: move and zip xcframeworks
         run: |
@@ -112,7 +158,21 @@ jobs:
                   rm -rf $FILE
               done
             
-      - name: pack numpy
+      - name: pack python xcframeworks
+        run: |
+          cd output
+          mkdir python/xcframework
+
+          mv -f xcframework/libcrypto.zip python/xcframework/
+          mv -f xcframework/libffi.zip python/xcframework/
+          mv -f xcframework/libssl.zip python/xcframework/
+          mv -f xcframework/libpython3.10.zip python/xcframework/
+          echo "ls output:"
+          ls
+          echo "ls output/python:"
+          ls python
+      
+      - name: pack numpy xcframeworks
         run: |
           cd output
           mkdir numpy/xcframework
@@ -124,7 +184,16 @@ jobs:
           ls
           echo "ls output/numpy:"
           ls numpy
-          
+
+      - name: pack kivy xcframeworks
+        run: |
+          cd output
+          mv -f xcframework kivy/
+          echo "ls output:"
+          ls
+          echo "ls output/kivy:"
+          ls kivy
+      
           
       # uploading "output" folder for the next task to use. (ubuntu machine)
       - uses: actions/upload-artifact@v3
