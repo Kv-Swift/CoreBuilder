@@ -22,8 +22,29 @@ jobs:
     permissions:
         contents: write
     outputs:
-      sha: ${{ steps.shasum.outputs.var }}
-      version: ${{ steps.version.outputs.var }}
+      # python xcframeworks
+      libcrypto_sha: ${{ steps.xcframeworks.outputs.libcrypto }}
+      libffi_sha: ${{ steps.xcframeworks.outputs.libffi }}
+      libpython_sha: ${{ steps.xcframeworks.outputs.libpython310 }}
+      libssl_sha: ${{ steps.xcframeworks.outputs.libssl }}
+      # numpy xcframeworks
+      libnpymath_sha: ${{ steps.xcframeworks.outputs.libnpymath }}
+      libnpyrandom_sha: ${{ steps.xcframeworks.outputs.libnpyrandom }}
+      libnumpy_sha: ${{ steps.xcframeworks.outputs.libnumpy }}
+      # numpy xcframeworks
+      libfreetype_sha: ${{ steps.xcframeworks.outputs.libfreetype }}
+      libios_sha: ${{ steps.xcframeworks.outputs.libios }}
+      libjpeg_sha: ${{ steps.xcframeworks.outputs.libjpeg }}
+      libkivy_sha: ${{ steps.xcframeworks.outputs.libkivy }}
+      libpillow_sha: ${{ steps.xcframeworks.outputs.libpillow }}
+      libpng16_sha: ${{ steps.xcframeworks.outputs.libpng16 }}
+      libpyobjus_sha: ${{ steps.xcframeworks.outputs.libpyobjus }}
+      libSDL2_image_sha: ${{ steps.xcframeworks.outputs.libSDL2_image }}
+      libSDL2_mixer_sha: ${{ steps.xcframeworks.outputs.libSDL2_mixer }}
+      libSDL2_ttf_sha: ${{ steps.xcframeworks.outputs.libSDL2_ttf }}
+      libSDL2_sha: ${{ steps.xcframeworks.outputs.libSDL2 }}
+
+      #version: ${{ steps.repack_dist.outputs.var }}
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -40,6 +61,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
+          chmod 755 PSProject
         
       - name: build hostpython3
         run: toolchain build hostpython3
@@ -162,21 +184,31 @@ jobs:
           
 
       - name: move and zip xcframeworks
+        id: xcframeworks
         run: |
           cd output/xcframework
+          mv -f libpython3.10.xcframework libpython310.xcframework
           for FILE in *; 
               do 
                   filename="$FILE"
                   echo $filename
-                  zip -r "${filename%.*}".zip $FILE
+                  FNAME="${filename%.*}"
+                  zip -r $FNAME.zip $FILE
                   rm -rf $FILE
+                  echo "$FNAME=$(shasum -a 256 ./$FNAME.zip | awk '{printf $1}')" >> $GITHUB_OUTPUT
               done
+            
+
+      - name: get sha values
+        run: |
+          
             
       - name: pack python xcframeworks
         run: |
           cd output
           mkdir python/xcframework
 
+          
           mv -f xcframework/libcrypto.zip python/xcframework/
           mv -f xcframework/libffi.zip python/xcframework/
           mv -f xcframework/libssl.zip python/xcframework/
@@ -185,6 +217,22 @@ jobs:
           ls
           echo "ls output/python:"
           ls python
+
+      - name: update Python package.swift
+        run: |
+          cp -f package_templates/KivyCore/Package.swift output/kivy/
+          ./PSProject kivy package read output/kivy/Package.swift PythonSwiftLink KivyCore ${{ github.event.inputs.tag }} \
+            libfreetype ${{ steps.xcframeworks.outputs.libfreetype }} \
+            libios ${{ steps.xcframeworks.outputs.libios }} \
+            libjpeg ${{ steps.xcframeworks.outputs.libjpeg }} \
+            libkivy ${{ steps.xcframeworks.outputs.libkivy }} \
+            libpillow ${{ steps.xcframeworks.outputs.libpillow }} \
+            libpng16 ${{ steps.xcframeworks.outputs.libpng16 }} \
+            libpyobjus ${{ steps.xcframeworks.outputs.libpyobjus }} \
+            libSDL2_image ${{ steps.xcframeworks.outputs.libSDL2_image }} \
+            libSDL2_mixer ${{ steps.xcframeworks.outputs.libSDL2_mixer }} \
+            libSDL2_ttf ${{ steps.xcframeworks.outputs.libSDL2_ttf }} \
+            libSDL2 ${{ steps.xcframeworks.outputs.libSDL2 }}
       
       - name: pack numpy xcframeworks
         run: |
@@ -207,6 +255,14 @@ jobs:
           ls
           echo "ls output/kivy:"
           ls kivy
+      - name: update numpy package.swift
+        run: |
+          cp -f package_templates/KivyPythonCore/Package.swift output/python/
+          ./PSProject kivy package read output/python/Package.swift PythonSwiftLink KivyPythonCore ${{ github.event.inputs.tag }} \
+            libcrypto ${{ steps.xcframeworks.outputs.libcrypto }} \
+            libffi ${{ steps.xcframeworks.outputs.libffi }} \
+            libssl ${{ steps.xcframeworks.outputs.libssl }} \
+            libpython310 ${{ steps.xcframeworks.outputs.libpython310 }}
       
           
       # uploading "output" folder for the next task to use. (ubuntu machine)
