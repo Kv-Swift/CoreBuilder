@@ -235,8 +235,8 @@ jobs:
       - name: update Kivy package.swift
         run: |
           tools/SwiftPackageGen \
-            package_templates/KivyCore/Package.swift \
-            package_templates/KivyCore.yml \
+            ./package_templates/KivyCore/Package.swift \
+            ./package_templates/KivyCore.yml \
             --output output/kivy/Package.swift
         # run: |
         #   cp -f package_templates/KivyCore/Package.swift output/kivy/
@@ -279,8 +279,8 @@ jobs:
       - name: update python package.swift
         run: |
            tools/SwiftPackageGen \
-            package_templates/KivyPythonCore/Package.swift \
-            package_templates/KivyPythonCore.yml \
+            ./package_templates/KivyPythonCore/Package.swift \
+            ./package_templates/KivyPythonCore.yml \
             --output output/python/Package.swift
         # run: |
         #   cp -f package_templates/KivyPythonCore/Package.swift output/python/
