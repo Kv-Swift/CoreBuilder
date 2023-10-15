@@ -212,7 +212,7 @@ jobs:
           mv -f xcframework/libcrypto.zip python/xcframework/
           mv -f xcframework/libffi.zip python/xcframework/
           mv -f xcframework/libssl.zip python/xcframework/
-          mv -f xcframework/libpython3.10.zip python/xcframework/
+          mv -f xcframework/libpython310.zip python/xcframework/
           echo "ls output:"
           ls
           echo "ls output/python:"
