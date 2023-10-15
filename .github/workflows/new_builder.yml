@@ -17,8 +17,8 @@ on:
 
 jobs:
   toolchainBuild:
-    runs-on: macOS-13
-    # runs-on: self-hosted
+    #runs-on: macOS-13
+    runs-on: self-hosted
     permissions:
         contents: write
     # outputs:
@@ -46,21 +46,21 @@ jobs:
 
       #version: ${{ steps.repack_dist.outputs.var }}
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '15.0'
+      # - uses: maxim-lobanov/setup-xcode@v1
+      #   with:
+      #     xcode-version: '15.0'
         
       - uses: actions/checkout@v4
       
-      - name: setup python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10' # install the python version needed
+      # - name: setup python
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.10' # install the python version needed
 
       - name: install kivy-ios
         run: |
-          python3 -m pip install --upgrade pip
-          pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
+          #python3 -m pip install --upgrade pip
+          #pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
           chmod 755 PSProject
         
       - name: build hostpython3
@@ -210,7 +210,9 @@ jobs:
           for FILE in *; 
           do 
               FILENAME="${FILE%.*}"
-              echo "$FILENAME=$(shasum -a 256 ./$FILE | awk '{printf $1}')" >> $GITHUB_OUTPUT
+              SHA="$FILENAME=$(shasum -a 256 ./$FILE | awk '{printf $1}')"
+              echo $SHA
+              echo $SHA >> $GITHUB_OUTPUT
           done
       
       - name: pack python xcframeworks
