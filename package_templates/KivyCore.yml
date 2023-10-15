@@ -9,5 +9,5 @@ targets:
 - target:
   name: KivyCore
   dependencies:
-  - output/kivy/xcframework
+  - ./output/kivy/xcframework
 
