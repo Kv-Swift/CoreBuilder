@@ -21,28 +21,28 @@ jobs:
     # runs-on: self-hosted
     permissions:
         contents: write
-    outputs:
+    # outputs:
       # python xcframeworks
-      libcrypto_sha: ${{ steps.xcframeworks.outputs.libcrypto }}
-      libffi_sha: ${{ steps.xcframeworks.outputs.libffi }}
-      libpython_sha: ${{ steps.xcframeworks.outputs.libpython310 }}
-      libssl_sha: ${{ steps.xcframeworks.outputs.libssl }}
-      # numpy xcframeworks
-      libnpymath_sha: ${{ steps.xcframeworks.outputs.libnpymath }}
-      libnpyrandom_sha: ${{ steps.xcframeworks.outputs.libnpyrandom }}
-      libnumpy_sha: ${{ steps.xcframeworks.outputs.libnumpy }}
-      # numpy xcframeworks
-      libfreetype_sha: ${{ steps.xcframeworks.outputs.libfreetype }}
-      libios_sha: ${{ steps.xcframeworks.outputs.libios }}
-      libjpeg_sha: ${{ steps.xcframeworks.outputs.libjpeg }}
-      libkivy_sha: ${{ steps.xcframeworks.outputs.libkivy }}
-      libpillow_sha: ${{ steps.xcframeworks.outputs.libpillow }}
-      libpng16_sha: ${{ steps.xcframeworks.outputs.libpng16 }}
-      libpyobjus_sha: ${{ steps.xcframeworks.outputs.libpyobjus }}
-      libSDL2_image_sha: ${{ steps.xcframeworks.outputs.libSDL2_image }}
-      libSDL2_mixer_sha: ${{ steps.xcframeworks.outputs.libSDL2_mixer }}
-      libSDL2_ttf_sha: ${{ steps.xcframeworks.outputs.libSDL2_ttf }}
-      libSDL2_sha: ${{ steps.xcframeworks.outputs.libSDL2 }}
+      # libcrypto_sha: ${{ steps.xcframeworks.outputs.libcrypto }}
+      # libffi_sha: ${{ steps.xcframeworks.outputs.libffi }}
+      # libpython_sha: ${{ steps.xcframeworks.outputs.libpython310 }}
+      # libssl_sha: ${{ steps.xcframeworks.outputs.libssl }}
+      # # numpy xcframeworks
+      # libnpymath_sha: ${{ steps.xcframeworks.outputs.libnpymath }}
+      # libnpyrandom_sha: ${{ steps.xcframeworks.outputs.libnpyrandom }}
+      # libnumpy_sha: ${{ steps.xcframeworks.outputs.libnumpy }}
+      # # numpy xcframeworks
+      # libfreetype_sha: ${{ steps.xcframeworks.outputs.libfreetype }}
+      # libios_sha: ${{ steps.xcframeworks.outputs.libios }}
+      # libjpeg_sha: ${{ steps.xcframeworks.outputs.libjpeg }}
+      # libkivy_sha: ${{ steps.xcframeworks.outputs.libkivy }}
+      # libpillow_sha: ${{ steps.xcframeworks.outputs.libpillow }}
+      # libpng16_sha: ${{ steps.xcframeworks.outputs.libpng16 }}
+      # libpyobjus_sha: ${{ steps.xcframeworks.outputs.libpyobjus }}
+      # libSDL2_image_sha: ${{ steps.xcframeworks.outputs.libSDL2_image }}
+      # libSDL2_mixer_sha: ${{ steps.xcframeworks.outputs.libSDL2_mixer }}
+      # libSDL2_ttf_sha: ${{ steps.xcframeworks.outputs.libSDL2_ttf }}
+      # libSDL2_sha: ${{ steps.xcframeworks.outputs.libSDL2 }}
 
       #version: ${{ steps.repack_dist.outputs.var }}
     steps:
@@ -190,25 +190,26 @@ jobs:
           mv -f libpython3.10.xcframework libpython310.xcframework
           for FILE in *; 
               do 
-                  filename="$FILE"
-                  echo $filename
-                  FNAME="${filename%.*}"
-                  zip -r $FNAME.zip $FILE
+                  #filename="$FILE"
+                  #echo $filename
+                  zip -r "${FILE%.*}".zip $FILE
                   rm -rf $FILE
-                  echo "$FNAME=$(shasum -a 256 ./$FNAME.zip | awk '{printf $1}')" >> $GITHUB_OUTPUT
               done
             
 
       - name: get sha values
         run: |
-          
-            
+          cd output/xcframework
+          for FILE in *; 
+          do 
+              echo "${FILE%.*}=$(shasum -a 256 ./$FILE | awk '{printf $1}')" >> $GITHUB_OUTPUT
+          done
+      
       - name: pack python xcframeworks
         run: |
           cd output
           mkdir python/xcframework
 
-          
           mv -f xcframework/libcrypto.zip python/xcframework/
           mv -f xcframework/libffi.zip python/xcframework/
           mv -f xcframework/libssl.zip python/xcframework/
@@ -221,7 +222,8 @@ jobs:
       - name: update Python package.swift
         run: |
           cp -f package_templates/KivyCore/Package.swift output/kivy/
-          ./PSProject kivy package read output/kivy/Package.swift PythonSwiftLink KivyCore ${{ github.event.inputs.tag }} \
+          ./PSProject kivy package read \
+            output/kivy/Package.swift PythonSwiftLink KivyCore ${{ github.event.inputs.tag }} \
             libfreetype ${{ steps.xcframeworks.outputs.libfreetype }} \
             libios ${{ steps.xcframeworks.outputs.libios }} \
             libjpeg ${{ steps.xcframeworks.outputs.libjpeg }} \
@@ -255,10 +257,12 @@ jobs:
           ls
           echo "ls output/kivy:"
           ls kivy
-      - name: update numpy package.swift
+
+      - name: update python package.swift
         run: |
           cp -f package_templates/KivyPythonCore/Package.swift output/python/
-          ./PSProject kivy package read output/python/Package.swift PythonSwiftLink KivyPythonCore ${{ github.event.inputs.tag }} \
+          ./PSProject kivy package read \
+            output/python/Package.swift PythonSwiftLink KivyPythonCore ${{ github.event.inputs.tag }} \
             libcrypto ${{ steps.xcframeworks.outputs.libcrypto }} \
             libffi ${{ steps.xcframeworks.outputs.libffi }} \
             libssl ${{ steps.xcframeworks.outputs.libssl }} \
@@ -289,7 +293,8 @@ jobs:
       - name: create KivyPythonCore
         run: |
           cp -rf package_templates/KivyPythonCore KivyPythonCore
-          mv -f python/xcframework KivyPythonCore/Resources/
+          #mv -f python/xcframework KivyPythonCore/Resources/
+          cp -f python/Package.swift KivyPythonCore/
           mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
 
       # commit new package to kivypythoncore/master
@@ -308,7 +313,7 @@ jobs:
       - name: release KivyPythonCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "python/python_dist.zip"
+          artifacts: "python/python_dist.zip, python/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyPythonCore
           token: ${{ secrets.Homebrew }}
@@ -317,7 +322,8 @@ jobs:
       - name: create KivyCore
         run: |
           cp -rf package_templates/KivyCore KivyCore
-          mv -f kivy/xcframework KivyCore/Resources/
+          #mv -f kivy/xcframework KivyCore/Resources/
+          cp -f kivy/Package.swift KivyCore/
 
       # commit new package to kivyswiftlink/master
       - name: commit KivyCore to master
@@ -335,7 +341,7 @@ jobs:
       - name: release KivyCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip"
+          artifacts: "kivy/kivy_dist.zip, kivy/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyCore
           token: ${{ secrets.Homebrew }}
