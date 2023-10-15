@@ -56,7 +56,11 @@ jobs:
       #   uses: actions/setup-python@v4
       #   with:
       #     python-version: '3.10' # install the python version needed
-
+      - name: chmod tools
+        run: |
+          chmod 755 tools/SwiftPackageGen
+          chmod 755 tools/PSProject
+      
       - name: install kivy-ios
         run: |
           #python3 -m pip install --upgrade pip
@@ -105,15 +109,14 @@ jobs:
           PY_XC=output/xcframework/libpython3.10.xcframework
           cp -rf $PY_HEADERS $PY_XC/ios-arm64/
           cp -rf $PY_HEADERS $PY_XC/ios-x86_64-simulator/
-          cp -f PythonXc_Info.plist $PY_XC/Info.plist
+          cp -f plists/python.plist $PY_XC/Info.plist
 
           NUMPY_HEADERS=dist/include/common/numpy/numpy
           NUMPY_XC=output/xcframework/libnumpy.xcframework
           cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-arm64/
           cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-x86_64-simulator/
-          cp -f numpy_info.plist $NUMPY_XC/Info.plist
+          cp -f plists/numpy.plist $NUMPY_XC/Info.plist
 
-          #cp -f create_package.sh output/
       
       - name: repack & zip python site-packages
         #mv dist/root/python3/lib python_lib
@@ -230,22 +233,27 @@ jobs:
           echo "ls output/python:"
           ls python
 
-      - name: update Python package.swift
+      - name: update Kivy package.swift
         run: |
-          cp -f package_templates/KivyCore/Package.swift output/kivy/
-          ./PSProject kivy package read \
-            output/kivy/Package.swift PythonSwiftLink KivyCore ${{ github.event.inputs.tag }} \
-            libfreetype ${{ steps.xcframeworks.outputs.libfreetype }} \
-            libios ${{ steps.xcframeworks.outputs.libios }} \
-            libjpeg ${{ steps.xcframeworks.outputs.libjpeg }} \
-            libkivy ${{ steps.xcframeworks.outputs.libkivy }} \
-            libpillow ${{ steps.xcframeworks.outputs.libpillow }} \
-            libpng16 ${{ steps.xcframeworks.outputs.libpng16 }} \
-            libpyobjus ${{ steps.xcframeworks.outputs.libpyobjus }} \
-            libSDL2_image ${{ steps.xcframeworks.outputs.libSDL2_image }} \
-            libSDL2_mixer ${{ steps.xcframeworks.outputs.libSDL2_mixer }} \
-            libSDL2_ttf ${{ steps.xcframeworks.outputs.libSDL2_ttf }} \
-            libSDL2 ${{ steps.xcframeworks.outputs.libSDL2 }}
+          tools/SwiftPackageGen \
+            package_templates/KivyCore/Package.swift \
+            package_templates/KivyCore.yml \
+            --output output/kivy/Package.swift
+        # run: |
+        #   cp -f package_templates/KivyCore/Package.swift output/kivy/
+        #   ./PSProject kivy package read \
+        #     output/kivy/Package.swift PythonSwiftLink KivyCore ${{ github.event.inputs.tag }} \
+        #     libfreetype ${{ steps.xcframeworks.outputs.libfreetype }} \
+        #     libios ${{ steps.xcframeworks.outputs.libios }} \
+        #     libjpeg ${{ steps.xcframeworks.outputs.libjpeg }} \
+        #     libkivy ${{ steps.xcframeworks.outputs.libkivy }} \
+        #     libpillow ${{ steps.xcframeworks.outputs.libpillow }} \
+        #     libpng16 ${{ steps.xcframeworks.outputs.libpng16 }} \
+        #     libpyobjus ${{ steps.xcframeworks.outputs.libpyobjus }} \
+        #     libSDL2_image ${{ steps.xcframeworks.outputs.libSDL2_image }} \
+        #     libSDL2_mixer ${{ steps.xcframeworks.outputs.libSDL2_mixer }} \
+        #     libSDL2_ttf ${{ steps.xcframeworks.outputs.libSDL2_ttf }} \
+        #     libSDL2 ${{ steps.xcframeworks.outputs.libSDL2 }}
       
       - name: pack numpy xcframeworks
         run: |
@@ -271,13 +279,18 @@ jobs:
 
       - name: update python package.swift
         run: |
-          cp -f package_templates/KivyPythonCore/Package.swift output/python/
-          ./PSProject kivy package read \
-            output/python/Package.swift PythonSwiftLink KivyPythonCore ${{ github.event.inputs.tag }} \
-            libcrypto ${{ steps.xcframeworks.outputs.libcrypto }} \
-            libffi ${{ steps.xcframeworks.outputs.libffi }} \
-            libssl ${{ steps.xcframeworks.outputs.libssl }} \
-            libpython310 ${{ steps.xcframeworks.outputs.libpython310 }}
+           tools/SwiftPackageGen \
+            package_templates/KivyPythonCore/Package.swift \
+            package_templates/KivyPythonCore.yml \
+            --output output/python/Package.swift
+        # run: |
+        #   cp -f package_templates/KivyPythonCore/Package.swift output/python/
+        #   ./PSProject kivy package read \
+        #     output/python/Package.swift PythonSwiftLink KivyPythonCore ${{ github.event.inputs.tag }} \
+        #     libcrypto ${{ steps.xcframeworks.outputs.libcrypto }} \
+        #     libffi ${{ steps.xcframeworks.outputs.libffi }} \
+        #     libssl ${{ steps.xcframeworks.outputs.libssl }} \
+        #     libpython310 ${{ steps.xcframeworks.outputs.libpython310 }}
       
           
       # uploading "output" folder for the next task to use. (ubuntu machine)
@@ -304,7 +317,6 @@ jobs:
       - name: create KivyPythonCore
         run: |
           cp -rf package_templates/KivyPythonCore KivyPythonCore
-          #mv -f python/xcframework KivyPythonCore/Resources/
           cp -f python/Package.swift KivyPythonCore/
           mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
 
@@ -352,7 +364,7 @@ jobs:
       - name: release KivyCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "kivy/kivy_dist.zip, kivy/xcframework/*.zip"
+          artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyCore
           token: ${{ secrets.Homebrew }}

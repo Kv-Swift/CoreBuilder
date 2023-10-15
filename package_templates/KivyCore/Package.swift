@@ -20,7 +20,7 @@ let package = Package(
         .target(
             name: "KivyCore",
             dependencies: [
-                "PythonCore",
+                .product(name: "PythonCore", package: "KivyPythonCore"),
                 "libfreetype",
                 "libios",
                 "libjpeg",

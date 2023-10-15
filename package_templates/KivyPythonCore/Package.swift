@@ -14,6 +14,7 @@ let package = Package(
 				"libpython310", "libssl", "libcrypto", "libffi",
 			]
 		),
+		.library(name: "PythonLibrary", targets: ["PythonLibrary"])
     ],
     targets: [
 		.target(

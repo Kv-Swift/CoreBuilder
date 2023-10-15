@@ -1,0 +1,13 @@
+owner: PythonSwiftLink
+repository: KivyPythonCore
+swift_version: 5.8
+dependencies:
+# - package:
+#   url: https://github.com/PythonSwiftLink/KivyPythonCore
+#   upToNextMajor: 310.0.0
+targets:
+- target:
+  name: PythonCore
+  dependencies:
+  - output/python/xcframework
+
