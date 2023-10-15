@@ -9,5 +9,7 @@ targets:
 - target:
   name: PythonCore
   dependencies:
-  - ./output/python/xcframework
+    - ./output/python/xcframework
+  linkedSettings:
+    - bz2
 
