@@ -211,8 +211,9 @@ jobs:
           do 
               FILENAME="${FILE%.*}"
               SHA="$(shasum -a 256 $FILE | awk '{printf $1}')"
-              echo $SHA
-              echo "$FILENAME=$SHA" >> $GITHUB_OUTPUT
+              out="$FILENAME=$SHA"
+              echo $out
+              echo $out >> $GITHUB_OUTPUT
           done
       
       - name: pack python xcframeworks
