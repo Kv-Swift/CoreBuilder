@@ -72,8 +72,15 @@ jobs:
 
       - name: move numpy build
         run: |
-          mkdir output
-          mkdir output/numpy
+          mkdir -p output/numpy/headers
+          BUILD_HEADERS=build/numpy/iphoneos-arm64/numpy-1.24.4/build/src.macosx-13.6-x86_64-3.10/numpy/core/include/numpy/
+          cp -f $BUILD_HEADERS/__multiarray_api.h output/numpy/headers/
+          cp -f $BUILD_HEADERS/__ufunc_api.h output/numpy/headers/
+          cp -f $BUILD_HEADERS/_numpyconfig.h output/numpy/headers/
+          cp -f $BUILD_HEADERS/_umath_doc_generated.h output/numpy/headers/
+          DIST_HEADERS=dist/include/common/numpy/numpy
+          mv -f $DIST_HEADERS/* output/numpy/headers/
+
           PY_SITE=dist/root/python3/lib/python3.10/site-packages
           mv -f $PY_SITE/numpy output/numpy/numpy-site
           rm -rf $PY_SITE/*
@@ -202,7 +209,8 @@ jobs:
           cd output/xcframework
           for FILE in *; 
           do 
-              echo "${FILE%.*}=$(shasum -a 256 ./$FILE | awk '{printf $1}')" >> $GITHUB_OUTPUT
+              FILENAME="${FILE%.*}"
+              echo "$FILENAME=$(shasum -a 256 ./$FILE | awk '{printf $1}')" >> $GITHUB_OUTPUT
           done
       
       - name: pack python xcframeworks
