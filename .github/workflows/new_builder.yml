@@ -210,9 +210,9 @@ jobs:
           for FILE in *; 
           do 
               FILENAME="${FILE%.*}"
-              SHA="$FILENAME=$(shasum -a 256 ./$FILE | awk '{printf $1}')"
+              SHA=$(shasum -a 256 $FILE | awk '{printf $1}')"
               echo $SHA
-              echo $SHA >> $GITHUB_OUTPUT
+              echo "$FILENAME=$SHA" >> $GITHUB_OUTPUT
           done
       
       - name: pack python xcframeworks
