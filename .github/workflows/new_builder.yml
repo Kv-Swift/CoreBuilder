@@ -38,8 +38,8 @@ jobs:
       
       - name: install kivy-ios
         run: |
-          #python3 -m pip install --upgrade pip
-          #pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
+          python3 -m pip install --upgrade pip
+          pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
         
       - name: build hostpython3
         run: toolchain build hostpython3
