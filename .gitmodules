@@ -1,0 +1,3 @@
+[submodule "package_templates/PythonCore"]
+	path = package_templates/PythonCore
+	url = https://github.com/PythonSwiftLink/PythonCore
