@@ -191,7 +191,6 @@ jobs:
           
 
       - name: move and zip xcframeworks
-        id: xcframeworks
         run: |
           cd output/xcframework
           mv -f libpython3.10.xcframework libpython310.xcframework
@@ -204,13 +203,14 @@ jobs:
               done
             
 
-      - name: get sha values
+      - name: xcframework get sha values
+        id: xcframeworks
         run: |
           cd output/xcframework
           for FILE in *; 
           do 
               FILENAME="${FILE%.*}"
-              SHA=$(shasum -a 256 $FILE | awk '{printf $1}')"
+              SHA="$(shasum -a 256 $FILE | awk '{printf $1}')"
               echo $SHA
               echo "$FILENAME=$SHA" >> $GITHUB_OUTPUT
           done
