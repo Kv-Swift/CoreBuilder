@@ -1,0 +1,31 @@
+owner: PythonSwiftLink
+
+repository: KivyNumpy
+
+swift_version: 5.8
+
+products:
+  - library:
+    name: KivyNumpy
+    targets:
+      - KivyNumpy
+
+dependencies:
+  - package:
+      url: https://github.com/PythonSwiftLink/KivyPythonCore
+      version:
+        upToNextMajor: 310.0.0
+
+targets:
+- target:
+  name: KivyNumpy
+  dependencies:
+  - product:
+      name: PythonCore
+      package: KivyPythonCore
+  - binary: output/numpy/xcframework
+
+  linkerSettings:
+    - framework: Accelerate
+
+      

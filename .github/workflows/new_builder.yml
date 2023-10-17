@@ -294,12 +294,35 @@ jobs:
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
       
-      # - name: create KivyNumpy
-      #   run: |
-      #     cp -rf package_templates/KivyNumpy KivyNumpy
-      #     mv -f numpy/xcframework KivyNumpy/Resources/
+      - name: create KivyNumpy
+        run: |
+          cp -rf package_templates/KivyNumpy KivyNumpy
+          mv -f numpy/xcframework KivyNumpy/Resources/
+          mkdir -p KivyNumpy/Sources
+          touch KivyNumpy/Sources/KivyNumpy.swift
+          cp -f numpy/Package.swift KivyCore/
 
+      # commit new package to kivyswiftlink/master
+      - name: commit KivyNumpy to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyNumpy'
+          destination-github-username: 'pythonswiftlink'
+          destination-repository-name: 'KivyNumpy'
+          user-email: pythonswiftlink@gmail.com
+          target-branch: master
 
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - name: release KivyNumpy
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "numpy/numpy_dist.zip, numpy/numpy-site.zip, numpy/xcframework/*.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyNumpy
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
   #     - run: |
           
   #         git clone https://github.com/PythonSwiftLink/PythonCore
