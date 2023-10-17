@@ -10,6 +10,10 @@ products:
       - libssl
       - libcrypto
       - libffi
+  - library:
+    name: PythonLibrary
+    targets:
+      - PythonLibrary
 
 #dependencies:
 # - package:

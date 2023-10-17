@@ -231,7 +231,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-          
+
       - uses: actions/download-artifact@v3
         with:
           name: release-output
@@ -239,7 +239,8 @@ jobs:
       - name: create KivyPythonCore
         run: |
           #cp -rf package_templates/KivyPythonCore KivyPythonCore
-          mkdir -p KivyPythonCore/Sources/PythonLibrary
+          mkdir -p KivyPythonCore/Sources
+          cp -rf package_templates/PythonLibrary KivyPythonCore/Sources/
           cp -f python/Package.swift KivyPythonCore/
           cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
           mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
