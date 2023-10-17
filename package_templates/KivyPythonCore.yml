@@ -2,16 +2,14 @@ owner: PythonSwiftLink
 repository: KivyPythonCore
 swift_version: 5.8
 products:
-  - library:
-    name: PythonCore
+  - library: PythonCore
     targets:
       - PythonCore
       - libpython310
       - libssl
       - libcrypto
       - libffi
-  - library:
-    name: PythonLibrary
+  - library: PythonLibrary
     targets:
       - PythonLibrary
 
@@ -20,8 +18,7 @@ products:
 #   url: https://github.com/PythonSwiftLink/KivyPythonCore
 #   upToNextMajor: 310.0.0
 targets:
-- target:
-  name: PythonCore
+- target: PythonCore
   dependencies:
     - binary: ./output/python/xcframework
   linkedSettings:
@@ -30,8 +27,7 @@ targets:
     - library: ncurses
     - library: sqlite3
 
-- target:
-  name: PythonLibrary
+- target: PythonLibrary
   #dependencies:
   resources:
     - python_lib.zip
