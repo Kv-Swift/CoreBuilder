@@ -1,13 +1,43 @@
 owner: PythonSwiftLink
 repository: KivyCore
 swift_version: 5.8
+products:
+  - library:
+    name: KivyCore
+    targets:
+      - KivyCore
 dependencies:
-# - package:
-#   url: https://github.com/PythonSwiftLink/KivyPythonCore
-#   upToNextMajor: 310.0.0
+  - package:
+      url: https://github.com/PythonSwiftLink/KivyPythonCore
+      version:
+        upToNextMajor: 310.0.0
 targets:
 - target:
   name: KivyCore
   dependencies:
-  - ./output/kivy/xcframework
+  - product:
+      name: PythonCore
+      package: KivyPythonCore
+  - binary: output/kivy/xcframework
 
+  linkerSettings:
+    - framework: OpenGLES
+    - framework: Metal
+    - framework: AVFoundation
+    - framework: ImageIO
+    - framework: CoreHaptics
+    - framework: MobileCoreServices
+    - framework: MessageUI
+    - framework: WebKit
+    - framework: Accelerate
+    - framework: CoreGraphics
+    - framework: CoreVideo
+    - framework: CoreAudio
+    - framework: AudioToolbox
+    - framework: GameController
+    - framework: Photos
+    - framework: UIKit
+    - framework: QuartzCore
+    - framework: CoreMotion
+    - framework: CoreMedia
+      
