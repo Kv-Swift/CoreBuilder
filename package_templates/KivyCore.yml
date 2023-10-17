@@ -5,24 +5,21 @@ repository: KivyCore
 swift_version: 5.8
 
 products:
-  - library:
-    name: KivyCore
+  - library: KivyCore
     targets:
       - KivyCore
 
 dependencies:
-  - package:
-      url: https://github.com/PythonSwiftLink/KivyPythonCore
-      version:
-        upToNextMajor: 310.0.0
+  - package: KivyPythonCore
+    url: https://github.com/PythonSwiftLink/KivyPythonCore
+    version:
+      upToNextMajor: 310.0.0
 
 targets:
-- target:
-  name: KivyCore
+- target: KivyCore
   dependencies:
-  - product:
-      name: PythonCore
-      package: KivyPythonCore
+  - product: PythonCore
+    package: KivyPythonCore
   - binary: output/kivy/xcframework
 
   linkerSettings:

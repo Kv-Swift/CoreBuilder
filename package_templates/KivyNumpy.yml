@@ -5,25 +5,23 @@ repository: KivyNumpy
 swift_version: 5.8
 
 products:
-  - library:
-    name: KivyNumpy
+  - library: KivyNumpy
     targets:
       - KivyNumpy
 
 dependencies:
-  - package:
-      url: https://github.com/PythonSwiftLink/KivyPythonCore
-      version:
-        upToNextMajor: 310.0.0
+  - package: KivyPythonCore
+    url: https://github.com/PythonSwiftLink/KivyPythonCore
+    version:
+      upToNextMajor: 310.0.0
 
 targets:
-- target:
-  name: KivyNumpy
+- target: KivyNumpy
   dependencies:
-  - product:
-      name: PythonCore
+    - product: PythonCore
       package: KivyPythonCore
-  - binary: output/numpy/xcframework
+      
+    - binary: output/numpy/xcframework
 
   linkerSettings:
     - framework: Accelerate
