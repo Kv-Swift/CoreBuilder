@@ -203,7 +203,6 @@ jobs:
       - name: update Python package.swift
         run: |
           tools/SwiftPackageGen \
-            ./package_templates/KivyPythonCore/Package.swift \
             ./package_templates/KivyPythonCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/python/Package.swift
@@ -211,7 +210,6 @@ jobs:
       - name: update Kivy package.swift
         run: |
           tools/SwiftPackageGen \
-            ./package_templates/KivyCore/Package.swift \
             ./package_templates/KivyCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/kivy/Package.swift
