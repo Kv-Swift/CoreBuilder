@@ -237,8 +237,10 @@ jobs:
 
       - name: create KivyPythonCore
         run: |
-          cp -rf package_templates/KivyPythonCore KivyPythonCore
+          #cp -rf package_templates/KivyPythonCore KivyPythonCore
+          mkdir -p KivyPythonCore/Sources/PythonLibrary
           cp -f python/Package.swift KivyPythonCore/
+          cp -rf package_templates/PythonCore KivyPythonCore/Sources/PythonCore
           mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
 
       # commit new package to kivypythoncore/master

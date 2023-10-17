@@ -11,7 +11,7 @@ products:
       - libcrypto
       - libffi
 
-dependencies:
+#dependencies:
 # - package:
 #   url: https://github.com/PythonSwiftLink/KivyPythonCore
 #   upToNextMajor: 310.0.0
@@ -19,11 +19,18 @@ targets:
 - target:
   name: PythonCore
   dependencies:
-    - ./output/python/xcframework
+    - binary: ./output/python/xcframework
   linkedSettings:
     - library: bz2
     - library: z
     - library: ncurses
     - library: sqlite3
+
+- target:
+  name: PythonLibrary
+  #dependencies:
+  resources:
+    - python_lib.zip
+  
 
 

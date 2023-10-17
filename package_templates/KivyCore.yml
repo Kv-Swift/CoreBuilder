@@ -1,16 +1,21 @@
 owner: PythonSwiftLink
+
 repository: KivyCore
+
 swift_version: 5.8
+
 products:
   - library:
     name: KivyCore
     targets:
       - KivyCore
+
 dependencies:
   - package:
       url: https://github.com/PythonSwiftLink/KivyPythonCore
       version:
         upToNextMajor: 310.0.0
+
 targets:
 - target:
   name: KivyCore
