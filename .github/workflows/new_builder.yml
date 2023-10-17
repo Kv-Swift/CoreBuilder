@@ -238,7 +238,7 @@ jobs:
           #cp -rf package_templates/KivyPythonCore KivyPythonCore
           mkdir -p KivyPythonCore/Sources/PythonLibrary
           cp -f python/Package.swift KivyPythonCore/
-          cp -rf package_templates/PythonCore KivyPythonCore/Sources/PythonCore
+          cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
           mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
 
       # commit new package to kivypythoncore/master
