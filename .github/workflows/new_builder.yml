@@ -20,26 +20,26 @@ jobs:
         contents: write
   
     steps:
-      # - uses: maxim-lobanov/setup-xcode@v1
-      #   with:
-      #     xcode-version: '15.0'
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
         
       - uses: actions/checkout@v4
       
-      # - name: setup python
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.10' # install the python version needed
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # install the python version needed
       
       - name: chmod tools
         run: |
           chmod 755 tools/SwiftPackageGen
           chmod 755 tools/PSProject
       
-      # - name: install kivy-ios
-      #   run: |
-      #     python3 -m pip install --upgrade pip
-      #     pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
+      - name: install kivy-ios
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
         
       - name: build hostpython3
         run: toolchain build hostpython3
@@ -307,7 +307,7 @@ jobs:
           #mv -f numpy/xcframework KivyNumpy/Resources/
           mkdir -p KivyNumpy/Sources
           touch KivyNumpy/Sources/KivyNumpy.swift
-          cp -f numpy/Package.swift KivyCore/
+          cp -f numpy/Package.swift KivyNumpy/
 
       # commit new package to kivyswiftlink/master
       - name: commit KivyNumpy to master
