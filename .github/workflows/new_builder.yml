@@ -31,10 +31,15 @@ jobs:
         with:
           python-version: '3.10' # install the python version needed
       
-      - name: chmod tools
+      - name: brew installs
         run: |
-          chmod 755 tools/SwiftPackageGen
-          chmod 755 tools/PSProject
+          brew tap PythonSwiftLink/tools
+          brew install swiftpackagegen
+      
+      # - name: chmod tools
+      #   run: |
+      #     chmod 755 tools/SwiftPackageGen
+      #     chmod 755 tools/PSProject
       
       - name: install kivy-ios
         run: |
@@ -202,21 +207,21 @@ jobs:
 
       - name: update Python package.swift
         run: |
-          tools/SwiftPackageGen \
+          SwiftPackageGen \
             ./package_templates/KivyPythonCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/python/Package.swift
       
       - name: update Kivy package.swift
         run: |
-          tools/SwiftPackageGen \
+          SwiftPackageGen \
             ./package_templates/KivyCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/kivy/Package.swift
 
       - name: update Numpy package.swift
         run: |
-          tools/SwiftPackageGen \
+          SwiftPackageGen \
             ./package_templates/KivyNumpy.yml \
             ${{ github.event.inputs.tag }} \
             --output output/numpy/Package.swift            
