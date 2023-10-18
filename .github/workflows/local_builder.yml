@@ -1,6 +1,6 @@
 # This workflow will build a KivySwiftLink release
 
-name: release builder v2
+name: local builder
 
 
 on:
@@ -14,27 +14,26 @@ on:
 
 jobs:
   toolchainBuild:
-    runs-on: macOS-13
-    #runs-on: self-hosted
+    runs-on: self-hosted
     permissions:
         contents: write
   
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '15.0'
+    #   - uses: maxim-lobanov/setup-xcode@v1
+    #     with:
+    #       xcode-version: '15.0'
         
-      - uses: actions/checkout@v4
+    #   - uses: actions/checkout@v4
       
-      - name: setup python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10' # install the python version needed
+    #   - name: setup python
+    #     uses: actions/setup-python@v4
+    #     with:
+    #       python-version: '3.10' # install the python version needed
       
-      - name: brew installs
-        run: |
-          brew tap PythonSwiftLink/tools
-          brew install swiftpackagegen
+    #   - name: brew installs
+    #     run: |
+    #       brew tap PythonSwiftLink/tools
+    #       brew install swiftpackagegen
       
       # - name: chmod tools
       #   run: |
@@ -43,9 +42,12 @@ jobs:
       
       - name: install kivy-ios
         run: |
-          python3 -m pip install --upgrade pip
-          pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
-        
+          #python3 -m pip install --upgrade pip
+          #pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
+          rm -rf dist
+          rm -rf build
+          rm -rf output
+
       - name: build hostpython3
         run: toolchain build hostpython3
       - name: build python3
@@ -335,33 +337,4 @@ jobs:
           repo: KivyNumpy
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
-  #     - run: |
-          
-  #         git clone https://github.com/PythonSwiftLink/PythonCore
-  #         mkdir KivyCore
-  #         mkdir KivyCore/Sources
-
-  #         cp -rf PythonCore/Sources/PythonCore KivyCore/Sources/
-  #         cp -rf xcframework KivyCore/Sources/PythonCore/
-  #         cp -f Package.swift KivyCore/
-      
-  #     # commit new package to kivyswiftlink/master
-  #     - name: Push to master
-  #       uses: cpina/github-action-push-to-another-repository@main
-  #       env:
-  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
-  #       with:
-  #         source-directory: 'KivyCore'
-  #         destination-github-username: 'pythonswiftlink'
-  #         destination-repository-name: 'KivyCore'
-  #         user-email: pythonswiftlink@gmail.com
-  #         target-branch: master
-      
-  #     # create a new release from master and python_lib.zip / dist_lib.zip to the release
-  #     - uses: ncipollo/release-action@v1
-  #       with:
-  #         artifacts: "python_lib.zip, dist_lib.zip"
-  #         tag: ${{ github.event.inputs.tag }}
-  #         repo: KivyCore
-  #         token: ${{ secrets.Homebrew }}
-  #         allowUpdates: true
+  
