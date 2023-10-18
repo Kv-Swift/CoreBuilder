@@ -1,6 +1,6 @@
 # This workflow will build a KivySwiftLink release
 
-name: release builder v2
+name: local builder
 
 
 on:
