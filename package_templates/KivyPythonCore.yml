@@ -21,7 +21,7 @@ targets:
 - target: PythonCore
   dependencies:
     - binary: ./output/python/xcframework
-  linkedSettings:
+  linkerSettings:
     - library: bz2
     - library: z
     - library: ncurses
