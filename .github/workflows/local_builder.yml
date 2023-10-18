@@ -46,7 +46,8 @@ jobs:
           #pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
           rm -rf dist
           rm -rf build
-          
+          rm -rf output
+
       - name: build hostpython3
         run: toolchain build hostpython3
       - name: build python3
