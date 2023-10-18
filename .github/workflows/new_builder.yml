@@ -213,6 +213,13 @@ jobs:
             ./package_templates/KivyCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/kivy/Package.swift
+
+      - name: update Numpy package.swift
+        run: |
+          tools/SwiftPackageGen \
+            ./package_templates/KivyNumpy.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/numpy/Package.swift            
           
       # uploading "output" folder for the next task to use. (ubuntu machine)
       - uses: actions/upload-artifact@v3
