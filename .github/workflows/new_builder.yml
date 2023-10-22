@@ -64,7 +64,7 @@ jobs:
           DIST_HEADERS=dist/include/common/numpy/numpy
           mv -f $DIST_HEADERS/* output/numpy/headers/
 
-          PY_SITE=dist/root/python3/lib/python3.10/site-packages
+          PY_SITE=dist/root/python3/lib/python3.11/site-packages
           mv -f $PY_SITE/numpy output/numpy/numpy-site
           rm -rf $PY_SITE/*
           cd output/numpy
@@ -84,7 +84,7 @@ jobs:
           cp -rf dist/xcframework output/
           
           PY_HEADERS=dist/root/python3/include/python3.10
-          PY_XC=output/xcframework/libpython3.10.xcframework
+          PY_XC=output/xcframework/libpython3.11.xcframework
           cp -rf $PY_HEADERS $PY_XC/ios-arm64/
           cp -rf $PY_HEADERS $PY_XC/ios-x86_64-simulator/
           cp -f plists/python.plist $PY_XC/Info.plist
@@ -172,7 +172,7 @@ jobs:
       - name: move and zip xcframeworks
         run: |
           cd output/xcframework
-          mv -f libpython3.10.xcframework libpython310.xcframework
+          rm -rf libpython3.10.xcframework libpython310.xcframework
           for FILE in *; 
               do 
                   #filename="$FILE"
@@ -205,12 +205,12 @@ jobs:
           cd output
           mv -f xcframework kivy/
 
-      - name: update Python package.swift
-        run: |
-          SwiftPackageGen \
-            ./package_templates/KivyPythonCore.yml \
-            ${{ github.event.inputs.tag }} \
-            --output output/python/Package.swift
+      #- name: update Python package.swift
+      #  run: |
+      #   SwiftPackageGen \
+      #      ./package_templates/KivyPythonCore.yml \
+      #      ${{ github.event.inputs.tag }} \
+      #      --output output/python/Package.swift
       
       - name: update Kivy package.swift
         run: |
