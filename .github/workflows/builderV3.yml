@@ -1,0 +1,269 @@
+# This workflow will build a KivySwiftLink release
+
+name: release builder v3
+
+
+on:
+
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'input new release tag'
+        required: true
+        type: string
+
+jobs:
+  toolchainBuild:
+    runs-on: macOS-13
+    #runs-on: self-hosted
+    permissions:
+        contents: write
+  
+    steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
+        
+      - uses: actions/checkout@v4
+      
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' # install the python version needed
+      
+      - name: brew installs
+        run: |
+          brew tap PythonSwiftLink/tools
+          brew install swiftpackagegen
+      
+      # - name: chmod tools
+      #   run: |
+      #     chmod 755 tools/SwiftPackageGen
+      #     chmod 755 tools/PSProject
+      
+      - name: install kivy-ios
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
+        
+      - name: build hostpython3
+        run: toolchain build hostpython3
+      - name: build python3
+        run: toolchain build python3
+      - name: build numpy
+        run: toolchain build numpy
+
+      - name: move numpy build
+        run: |
+          mkdir -p output/numpy/headers
+          BUILD_HEADERS=build/numpy/iphoneos-arm64/numpy-1.24.4/build/src.macosx-13.6-x86_64-3.11/numpy/core/include/numpy/
+          cp -f $BUILD_HEADERS/__multiarray_api.h output/numpy/headers/
+          cp -f $BUILD_HEADERS/__ufunc_api.h output/numpy/headers/
+          cp -f $BUILD_HEADERS/_numpyconfig.h output/numpy/headers/
+          cp -f $BUILD_HEADERS/_umath_doc_generated.h output/numpy/headers/
+          DIST_HEADERS=dist/include/common/numpy/numpy
+          mv -f $DIST_HEADERS/* output/numpy/headers/
+
+          PY_SITE=dist/root/python3/lib/python3.11/site-packages
+          mv -f $PY_SITE/numpy output/numpy/numpy-site
+          rm -rf $PY_SITE/*
+          cd output/numpy
+          zip -r numpy-site.zip numpy-site
+          rm -rf numpy-site
+
+      - name: build kivy
+        run: toolchain build kivy
+      - name: build pillow
+        run: toolchain build pillow
+      
+
+      # pulling out necessary libraries and zipping them into "output" folder
+      - name: repack numpy.xcframework
+        run: |
+
+          cp -rf dist/xcframework output/
+          NUMPY_HEADERS=dist/include/common/numpy/numpy
+          NUMPY_XC=output/xcframework/libnumpy.xcframework
+          cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-arm64/
+          cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-x86_64-simulator/
+          cp -f plists/numpy.plist $NUMPY_XC/Info.plist
+
+      
+      - name: repack & zip python site-packages
+        run: |
+          PY_LIB=dist/root/python3/lib
+          mkdir output/python
+          mkdir output/kivy
+
+          mv $PY_LIB/python3.11/site-packages site-packages
+          zip -r site-packages.zip site-packages
+          mv -f site-packages.zip output/kivy/
+          
+
+      - name: repack & zip dist_libs
+        id: repack_dist
+        run: |
+          mv dist/lib output/dist_lib
+          cd output
+          IOS_LIBS=dist_lib/iphoneos
+          SIM_LIBS=dist_lib/iphonesimulator
+          
+          echo $IOS_LIBS
+          echo $SIM_LIBS
+
+          mkdir -p numpy/$IOS_LIBS
+          mv -f $IOS_LIBS/libnpymath.a numpy/$IOS_LIBS/
+          mv -f $IOS_LIBS/libnpyrandom.a numpy/$IOS_LIBS/
+          mv -f $IOS_LIBS/libnumpy.a numpy/$IOS_LIBS/
+          echo transfered numpy/$IOS_LIBS
+
+
+          mkdir -p numpy/$SIM_LIBS
+          mv -f $SIM_LIBS/libnpymath.a numpy/$SIM_LIBS/
+          mv -f $SIM_LIBS/libnpyrandom.a numpy/$SIM_LIBS/
+          mv -f $SIM_LIBS/libnumpy.a numpy/$SIM_LIBS/
+          echo transfered numpy/$SIM_LIBS
+
+          mkdir -p kivy/$IOS_LIBS
+          mv -f $IOS_LIBS kivy/$IOS_LIBS
+          echo transfered kivy/$IOS_LIBS
+
+          mkdir -p kivy/$SIM_LIBS
+          mv -f $SIM_LIBS kivy/$SIM_LIBS
+          echo transfered python/$SIM_LIBS
+      
+      - name: kivy_dist.zip
+        working-directory: kivy
+        run: |
+          zip -r kivy_dist.zip dist_lib
+          rm -rf dist_lib
+      
+      - name: numpy_dist.zip
+        working-directory: numpy
+        run: |
+          zip -r numpy_dist.zip dist_lib
+          rm -rf dist_lib
+          
+
+      - name: move and zip xcframeworks
+        working-directory: output/xcframework
+        run: |
+          rm -rf libpython3.11.xcframework
+          rm -rf libssl.xcframework
+          rm -rf libcrypto.xcframework
+          for FILE in *; 
+              do 
+                  #filename="$FILE"
+                  #echo $filename
+                  zip -r "${FILE%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+    
+      - name: pack numpy xcframeworks
+        working-directory: output
+        run: |
+          mkdir numpy/xcframework
+
+          mv -f xcframework/libnumpy.zip numpy/xcframework/
+          mv -f xcframework/libnpyrandom.zip numpy/xcframework/
+          mv -f xcframework/libnpymath.zip numpy/xcframework/
+
+      - name: pack xcframeworks as kivy
+        working-directory: output
+        run: |
+          mv -f xcframework kivy/
+      
+      - name: update Kivy package.swift
+        run: |
+          SwiftPackageGen \
+            ./package_templates/KivyCore.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/kivy/Package.swift
+
+      - name: update Numpy package.swift
+        run: |
+          SwiftPackageGen \
+            ./package_templates/KivyNumpy.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/numpy/Package.swift            
+          
+      # uploading "output" folder for the next task to use. (ubuntu machine)
+      - uses: actions/upload-artifact@v3
+        with:
+          name: release-output
+          path: ./output
+
+  ###############################################################################
+  ###############################################################################
+  ###############################################################################
+  #moving next part to an ubuntu machine
+  create_package:
+    name: Release Packages
+    runs-on: ubuntu-latest
+    needs: [toolchainBuild]
+
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: release-output
+
+      - name: create KivyCore
+        run: |
+          cp -rf package_templates/KivyCore KivyCore
+          cp -f kivy/Package.swift KivyCore/
+
+      # commit new package to kivyswiftlink/master
+      - name: commit KivyCore to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyCore'
+          destination-github-username: 'pythonswiftlink'
+          destination-repository-name: 'KivyCore'
+          user-email: pythonswiftlink@gmail.com
+          target-branch: master
+      
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - name: release KivyCore
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/xcframework/*.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyCore
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
+      
+      - name: create KivyNumpy
+        run: |
+          mkdir -p KivyNumpy/Sources
+          touch KivyNumpy/Sources/KivyNumpy.swift
+          cp -f numpy/Package.swift KivyNumpy/
+
+      # commit new package to kivyswiftlink/master
+      - name: commit KivyNumpy to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyNumpy'
+          destination-github-username: 'pythonswiftlink'
+          destination-repository-name: 'KivyNumpy'
+          user-email: pythonswiftlink@gmail.com
+          target-branch: master
+
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - name: release KivyNumpy
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "numpy/numpy_dist.zip, numpy/numpy-site.zip, numpy/xcframework/*.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyNumpy
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
+ 
