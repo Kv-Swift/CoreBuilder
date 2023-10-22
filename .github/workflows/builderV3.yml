@@ -139,14 +139,14 @@ jobs:
           rm -rf dist_lib
       
       - name: numpy_dist.zip
-        working-directory: numpy
+        working-directory: ./numpy
         run: |
           zip -r numpy_dist.zip dist_lib
           rm -rf dist_lib
           
 
       - name: move and zip xcframeworks
-        working-directory: output/xcframework
+        working-directory: ./output/xcframework
         run: |
           rm -rf libpython3.11.xcframework
           rm -rf libssl.xcframework
@@ -160,7 +160,7 @@ jobs:
               done
     
       - name: pack numpy xcframeworks
-        working-directory: output
+        working-directory: ./output
         run: |
           mkdir numpy/xcframework
 
@@ -169,7 +169,7 @@ jobs:
           mv -f xcframework/libnpymath.zip numpy/xcframework/
 
       - name: pack xcframeworks as kivy
-        working-directory: output
+        working-directory: ./output
         run: |
           mv -f xcframework kivy/
       
