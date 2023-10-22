@@ -92,8 +92,8 @@ jobs:
       - name: repack & zip python site-packages
         run: |
           PY_LIB=dist/root/python3/lib
-          mkdir output/python
-          mkdir output/kivy
+          mkdir -p output/python
+          mkdir -p output/kivy
 
           mv $PY_LIB/python3.11/site-packages site-packages
           zip -r site-packages.zip site-packages
@@ -133,13 +133,13 @@ jobs:
           echo transfered python/$SIM_LIBS
       
       - name: kivy_dist.zip
-        working-directory: kivy
+        working-directory: output/kivy
         run: |
           zip -r kivy_dist.zip dist_lib
           rm -rf dist_lib
       
       - name: numpy_dist.zip
-        working-directory: ./numpy
+        working-directory: ./output/numpy
         run: |
           zip -r numpy_dist.zip dist_lib
           rm -rf dist_lib
