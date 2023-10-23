@@ -13,7 +13,7 @@ dependencies:
   - package: KivyPythonCore
     url: https://github.com/PythonSwiftLink/KivyPythonCore
     version:
-      upToNextMajor: 310.0.0
+      upToNextMajor: 311.0.0
 
 targets:
 - target: KivyCore
