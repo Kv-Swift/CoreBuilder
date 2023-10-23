@@ -10,16 +10,16 @@ products:
       - KivyNumpy
 
 dependencies:
-  - package: KivyPythonCore
-    url: https://github.com/PythonSwiftLink/KivyPythonCore
+  - package: PythonCore
+    url: https://github.com/PythonSwiftLink/PythonCore
     version:
-      upToNextMajor: 310.0.0
+      upToNextMajor: 311.0.0
 
 targets:
 - target: KivyNumpy
   dependencies:
     - product: PythonCore
-      package: KivyPythonCore
+      package: PythonCore
       
     - binary: output/numpy/xcframework
 
