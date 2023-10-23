@@ -10,7 +10,7 @@ products:
       - KivyCore
 
 dependencies:
-  - package: KivyPythonCore
+  - package: PythonCore
     url: https://github.com/PythonSwiftLink/PythonCore
     version:
       upToNextMajor: 311.0.0
