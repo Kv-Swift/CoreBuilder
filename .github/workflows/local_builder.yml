@@ -182,15 +182,15 @@ jobs:
                   rm -rf $FILE
               done
             
-      # - name: pack python xcframeworks
-      #   run: |
-      #     cd output
-      #     mkdir python/xcframework
+      - name: pack python xcframeworks
+        run: |
+          cd output
+          mkdir python/xcframework
 
-      #     mv -f xcframework/libcrypto.zip python/xcframework/
-      #     mv -f xcframework/libffi.zip python/xcframework/
-      #     mv -f xcframework/libssl.zip python/xcframework/
-      #     mv -f xcframework/libpython310.zip python/xcframework/
+          mv -f xcframework/libcrypto.zip python/xcframework/
+          mv -f xcframework/libffi.zip python/xcframework/
+          mv -f xcframework/libssl.zip python/xcframework/
+          mv -f xcframework/libpython311.zip python/xcframework/
   
       - name: pack numpy xcframeworks
         run: |
@@ -206,12 +206,12 @@ jobs:
           cd output
           mv -f xcframework kivy/
 
-      # - name: update Python package.swift
-      #   run: |
-      #     SwiftPackageGen \
-      #       ./package_templates/KivyPythonCore.yml \
-      #       ${{ github.event.inputs.tag }} \
-      #       --output output/python/Package.swift
+      - name: update Python package.swift
+        run: |
+          SwiftPackageGen \
+            ./package_templates/KivyPythonCore.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/python/Package.swift
       
       - name: update Kivy package.swift
         run: |
@@ -249,36 +249,36 @@ jobs:
         with:
           name: release-output
 
-      # - name: create KivyPythonCore
-      #   run: |
-      #     #cp -rf package_templates/KivyPythonCore KivyPythonCore
-      #     mkdir -p KivyPythonCore/Sources
-      #     cp -rf package_templates/PythonLibrary KivyPythonCore/Sources/
-      #     cp -f python/Package.swift KivyPythonCore/
-      #     cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
-      #     mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
+      - name: create KivyPythonCore
+        run: |
+          #cp -rf package_templates/KivyPythonCore KivyPythonCore
+          mkdir -p KivyPythonCore/Sources
+          cp -rf package_templates/PythonLibrary KivyPythonCore/Sources/
+          cp -f python/Package.swift KivyPythonCore/
+          cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
+          mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
 
-      # # commit new package to kivypythoncore/master
-      # - name: commit KivyPythonCore to master
-      #   uses: cpina/github-action-push-to-another-repository@main
-      #   env:
-      #     API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
-      #   with:
-      #     source-directory: 'KivyPythonCore'
-      #     destination-github-username: 'pythonswiftlink'
-      #     destination-repository-name: 'KivyPythonCore'
-      #     user-email: pythonswiftlink@gmail.com
-      #     target-branch: master
+      # commit new package to kivypythoncore/master
+      - name: commit KivyPythonCore to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyPythonCore'
+          destination-github-username: 'pythonswiftlink'
+          destination-repository-name: 'KivyPythonCore'
+          user-email: pythonswiftlink@gmail.com
+          target-branch: master
       
-      # # create a new release from master
-      # - name: release KivyPythonCore
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     artifacts: "python/python_dist.zip, python/xcframework/*.zip"
-      #     tag: ${{ github.event.inputs.tag }}
-      #     repo: KivyPythonCore
-      #     token: ${{ secrets.Homebrew }}
-      #     allowUpdates: true
+      # create a new release from master
+      - name: release KivyPythonCore
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "python/python_dist.zip, python/xcframework/*.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyPythonCore
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
       
       - name: create KivyCore
         run: |
