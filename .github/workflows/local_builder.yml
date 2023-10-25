@@ -1,6 +1,6 @@
 # This workflow will build a KivySwiftLink release
 
-name: release builder v3
+name: local builder v3
 
 
 on:
@@ -212,106 +212,106 @@ jobs:
   ###############################################################################
   ###############################################################################
   #moving next part to an ubuntu machine
-  create_package:
-    name: Release Packages
-    runs-on: ubuntu-latest
-    needs: [toolchainBuild]
+  # create_package:
+  #   name: Release Packages
+  #   runs-on: ubuntu-latest
+  #   needs: [toolchainBuild]
 
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         submodules: recursive
 
-      - uses: actions/download-artifact@v3
-        with:
-          name: release-output
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: release-output
 
-      - name: create KivyPythonCore
-        run: |
-          #cp -rf package_templates/KivyPythonCore KivyPythonCore
-          mkdir -p KivyPythonCore/Sources
-          cp -rf package_templates/PythonLibrary KivyPythonCore/Sources/
-          cp -f python/Package.swift KivyPythonCore/
-          cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
-          mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
+  #     - name: create KivyPythonCore
+  #       run: |
+  #         #cp -rf package_templates/KivyPythonCore KivyPythonCore
+  #         mkdir -p KivyPythonCore/Sources
+  #         cp -rf package_templates/PythonLibrary KivyPythonCore/Sources/
+  #         cp -f python/Package.swift KivyPythonCore/
+  #         cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
+  #         mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
 
-      # commit new package to kivypythoncore/master
-      - name: commit KivyPythonCore to master
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
-        with:
-          source-directory: 'KivyPythonCore'
-          destination-github-username: 'pythonswiftlink'
-          destination-repository-name: 'KivyPythonCore'
-          user-email: pythonswiftlink@gmail.com
-          target-branch: master
+  #     # commit new package to kivypythoncore/master
+  #     - name: commit KivyPythonCore to master
+  #       uses: cpina/github-action-push-to-another-repository@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+  #       with:
+  #         source-directory: 'KivyPythonCore'
+  #         destination-github-username: 'pythonswiftlink'
+  #         destination-repository-name: 'KivyPythonCore'
+  #         user-email: pythonswiftlink@gmail.com
+  #         target-branch: master
 
-      - name: release KivyPythonCore
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "python/python_dist.zip, python/xcframework/*.zip"
-          tag: ${{ github.event.inputs.tag }}
-          repo: KivyPythonCore
-          token: ${{ secrets.Homebrew }}
-          allowUpdates: true
-          makeLatest: true
+  #     - name: release KivyPythonCore
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: "python/python_dist.zip, python/xcframework/*.zip"
+  #         tag: ${{ github.event.inputs.tag }}
+  #         repo: KivyPythonCore
+  #         token: ${{ secrets.Homebrew }}
+  #         allowUpdates: true
+  #         makeLatest: true
 
-      - name: create KivyCore
-        run: |
-          cp -rf package_templates/KivyCore KivyCore
-          cp -f kivy/Package.swift KivyCore/
+  #     - name: create KivyCore
+  #       run: |
+  #         cp -rf package_templates/KivyCore KivyCore
+  #         cp -f kivy/Package.swift KivyCore/
 
-      # commit new package to kivyswiftlink/master
-      - name: commit KivyCore to master
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
-        with:
-          source-directory: 'KivyCore'
-          destination-github-username: 'pythonswiftlink'
-          destination-repository-name: 'KivyCore'
-          user-email: pythonswiftlink@gmail.com
-          target-branch: master
+  #     # commit new package to kivyswiftlink/master
+  #     - name: commit KivyCore to master
+  #       uses: cpina/github-action-push-to-another-repository@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+  #       with:
+  #         source-directory: 'KivyCore'
+  #         destination-github-username: 'pythonswiftlink'
+  #         destination-repository-name: 'KivyCore'
+  #         user-email: pythonswiftlink@gmail.com
+  #         target-branch: master
       
-      # create a new release from master and python_lib.zip / dist_lib.zip to the release
-      - name: release KivyCore
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/xcframework/*.zip"
-          tag: ${{ github.event.inputs.tag }}
-          repo: KivyCore
-          token: ${{ secrets.Homebrew }}
-          allowUpdates: true
-          makeLatest: true
+  #     # create a new release from master and python_lib.zip / dist_lib.zip to the release
+  #     - name: release KivyCore
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/xcframework/*.zip"
+  #         tag: ${{ github.event.inputs.tag }}
+  #         repo: KivyCore
+  #         token: ${{ secrets.Homebrew }}
+  #         allowUpdates: true
+  #         makeLatest: true
       
-      - name: create KivyNumpy
-        run: |
-          mkdir -p KivyNumpy/Sources
-          touch KivyNumpy/Sources/KivyNumpy.swift
-          cp -f numpy/Package.swift KivyNumpy/
+  #     - name: create KivyNumpy
+  #       run: |
+  #         mkdir -p KivyNumpy/Sources
+  #         touch KivyNumpy/Sources/KivyNumpy.swift
+  #         cp -f numpy/Package.swift KivyNumpy/
 
-      # commit new package to kivyswiftlink/master
-      - name: commit KivyNumpy to master
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
-        with:
-          source-directory: 'KivyNumpy'
-          destination-github-username: 'pythonswiftlink'
-          destination-repository-name: 'KivyNumpy'
-          user-email: pythonswiftlink@gmail.com
-          target-branch: master
+  #     # commit new package to kivyswiftlink/master
+  #     - name: commit KivyNumpy to master
+  #       uses: cpina/github-action-push-to-another-repository@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+  #       with:
+  #         source-directory: 'KivyNumpy'
+  #         destination-github-username: 'pythonswiftlink'
+  #         destination-repository-name: 'KivyNumpy'
+  #         user-email: pythonswiftlink@gmail.com
+  #         target-branch: master
 
-      # create a new release from master and python_lib.zip / dist_lib.zip to the release
-      - name: release KivyNumpy
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "numpy/numpy_dist.zip, numpy/numpy-site.zip, numpy/xcframework/*.zip"
-          tag: ${{ github.event.inputs.tag }}
-          repo: KivyNumpy
-          token: ${{ secrets.Homebrew }}
-          allowUpdates: true
-          makeLatest: true
+  #     # create a new release from master and python_lib.zip / dist_lib.zip to the release
+  #     - name: release KivyNumpy
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: "numpy/numpy_dist.zip, numpy/numpy-site.zip, numpy/xcframework/*.zip"
+  #         tag: ${{ github.event.inputs.tag }}
+  #         repo: KivyNumpy
+  #         token: ${{ secrets.Homebrew }}
+  #         allowUpdates: true
+  #         makeLatest: true
  
