@@ -77,11 +77,18 @@ jobs:
         run: toolchain build pillow
       
 
-      # pulling out necessary libraries and zipping them into "output" folder
-      - name: repack numpy.xcframework
+      # taking out necessary libraries and zipping them into "output" folder
+      - name: repack python3.11 / numpy xcframework
         run: |
-
+          #mkdir output
           cp -rf dist/xcframework output/
+          
+          PY_HEADERS=dist/root/python3/include/python3.11
+          PY_XC=output/xcframework/libpython3.11.xcframework
+          cp -rf $PY_HEADERS $PY_XC/ios-arm64/
+          cp -rf $PY_HEADERS $PY_XC/ios-x86_64-simulator/
+          cp -f plists/python.plist $PY_XC/Info.plist
+
           NUMPY_HEADERS=dist/include/common/numpy/numpy
           NUMPY_XC=output/xcframework/libnumpy.xcframework
           cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-arm64/
@@ -148,16 +155,24 @@ jobs:
       - name: move and zip xcframeworks
         working-directory: ./output/xcframework
         run: |
-          rm -rf libpython3.11.xcframework
-          rm -rf libssl.xcframework
-          rm -rf libcrypto.xcframework
+          rm -rf libpython3.11.xcframework libpython311.xcframework
           for FILE in *; 
               do 
                   #filename="$FILE"
-                  #echo $filename
+                  echo $filename
                   zip -r "${FILE%.*}".zip $FILE
                   rm -rf $FILE
               done
+
+      - name: pack python xcframeworks
+        working-directory: ./output
+        run: |
+          mkdir python/xcframework
+
+          mv -f xcframework/libcrypto.zip python/xcframework/
+          mv -f xcframework/libffi.zip python/xcframework/
+          mv -f xcframework/libssl.zip python/xcframework/
+          mv -f xcframework/libpython311.zip python/xcframework/
     
       - name: pack numpy xcframeworks
         working-directory: ./output
@@ -211,6 +226,36 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: release-output
+
+      - name: create KivyPythonCore
+        run: |
+          #cp -rf package_templates/KivyPythonCore KivyPythonCore
+          mkdir -p KivyPythonCore/Sources
+          cp -rf package_templates/PythonLibrary KivyPythonCore/Sources/
+          cp -f python/Package.swift KivyPythonCore/
+          cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
+          mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
+
+      # commit new package to kivypythoncore/master
+      - name: commit KivyPythonCore to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyPythonCore'
+          destination-github-username: 'pythonswiftlink'
+          destination-repository-name: 'KivyPythonCore'
+          user-email: pythonswiftlink@gmail.com
+          target-branch: master
+
+      - name: release KivyPythonCore
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "python/python_dist.zip, python/xcframework/*.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyPythonCore
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
 
       - name: create KivyCore
         run: |
