@@ -256,6 +256,7 @@ jobs:
           repo: KivyPythonCore
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
+          makeLatest: true
 
       - name: create KivyCore
         run: |
@@ -283,6 +284,7 @@ jobs:
           repo: KivyCore
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
+          makeLatest: true
       
       - name: create KivyNumpy
         run: |
@@ -311,4 +313,5 @@ jobs:
           repo: KivyNumpy
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
+          makeLatest: true
  
