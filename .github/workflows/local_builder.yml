@@ -155,7 +155,7 @@ jobs:
       - name: move and zip xcframeworks
         working-directory: ./output/xcframework
         run: |
-          rm -rf libpython3.11.xcframework libpython311.xcframework
+          mv -f libpython3.11.xcframework libpython311.xcframework
           for FILE in *; 
               do 
                   #filename="$FILE"
