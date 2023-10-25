@@ -1,6 +1,5 @@
 {
     "github-actions.workflows.pinned.workflows": [
-        ".github/workflows/new_builder.yml",
         ".github/workflows/builderV3.yml"
     ]
 }
