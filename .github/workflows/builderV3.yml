@@ -188,6 +188,13 @@ jobs:
         run: |
           mv -f xcframework kivy/
       
+      - name: update Python package.swift
+        run: |
+          SwiftPackageGen \
+            ./package_templates/KivyPythonCore.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/python/Package.swift
+      
       - name: update Kivy package.swift
         run: |
           SwiftPackageGen \

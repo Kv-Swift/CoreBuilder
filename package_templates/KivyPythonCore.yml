@@ -5,7 +5,7 @@ products:
   - library: PythonCore
     targets:
       - PythonCore
-      - libpython310
+      - libpython311
       - libssl
       - libcrypto
       - libffi
