@@ -11,6 +11,11 @@ on:
         description: 'input new release tag'
         required: true
         type: string
+      lastest:
+        description: 'lastest release?'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   toolchainBuild:
