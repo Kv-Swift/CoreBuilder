@@ -10,7 +10,7 @@ products:
       - KivyCore
 
 dependencies:
-  - package: PythonCore
+  - package: KivyPythonCore
     url: https://github.com/PythonSwiftLink/KivyPythonCore
     version:
       upToNextMajor: 311.0.0
@@ -18,7 +18,7 @@ dependencies:
 targets:
 - target: KivyCore
   dependencies:
-  - product: PythonCore
+  - product: KivyPythonCore
     package: PythonCore
   - binary: output/kivy/xcframework
 
