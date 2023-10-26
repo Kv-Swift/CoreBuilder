@@ -18,8 +18,8 @@ dependencies:
 targets:
 - target: KivyCore
   dependencies:
-  - product: KivyPythonCore
-    package: PythonCore
+  - product: PythonCore
+    package: KivyPythonCore
   - binary: output/kivy/xcframework
 
   linkerSettings:
