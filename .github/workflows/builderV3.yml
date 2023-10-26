@@ -278,6 +278,10 @@ jobs:
         run: |
           cp -rf package_templates/KivyCore KivyCore
           cp -f kivy/Package.swift KivyCore/
+          
+
+      - name: Download a kivy-ios master as asset for release
+        run: curl https://github.com/kivy/kivy-ios/archive/refs/heads/master.zip -o kivy/kivy-ios.zip
 
       # commit new package to kivyswiftlink/master
       - name: commit KivyCore to master
@@ -295,7 +299,7 @@ jobs:
       - name: release KivyCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/xcframework/*.zip"
+          artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/kivy-ios.zip, kivy/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyCore
           token: ${{ secrets.Homebrew }}
