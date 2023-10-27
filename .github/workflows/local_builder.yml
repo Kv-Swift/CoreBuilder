@@ -216,7 +216,8 @@ jobs:
             --output output/numpy/Package.swift 
             
       - name: Download a kivy-ios master as asset for release
-        run: curl https://github.com/kivy/kivy-ios/archive/refs/heads/master.zip -o kivy/kivy-ios.zip
+        working-directory: 
+        run: curl https://github.com/kivy/kivy-ios/archive/refs/heads/master.zip -o output/kivy/kivy-ios.zip
           
       # uploading "output" folder for the next task to use. (ubuntu machine)
       - uses: actions/upload-artifact@v3
