@@ -23,6 +23,25 @@ jobs:
 
       - uses: actions/checkout@v4
       
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' # install the python version needed
+      
+      - name: brew installs
+        run: |
+          brew tap PythonSwiftLink/tools
+          brew install swiftpackagegen
+      
+      # - name: chmod tools
+      #   run: |
+      #     chmod 755 tools/SwiftPackageGen
+      #     chmod 755 tools/PSProject
+      
+      - name: install kivy-ios
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
 
       - name: build hostpython3
         run: toolchain build hostpython3
