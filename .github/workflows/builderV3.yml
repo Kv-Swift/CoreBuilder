@@ -306,7 +306,10 @@ jobs:
           
 
       - name: Download a kivy-ios master as asset for release
-        run: curl https://github.com/kivy/kivy-ios/archive/refs/heads/master.zip -o kivy/kivy-ios.zip
+        run: |
+          git clone https://github.com/kivy/kivy-ios.git
+          zip -r kivy-ios.zip kivy-ios
+          mv -f kivy-ios.zip kivy/
 
       # commit new package to kivyswiftlink/master
       - name: commit KivyCore to master
