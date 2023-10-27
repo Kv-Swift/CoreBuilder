@@ -166,7 +166,13 @@ jobs:
           mkdir -p kivy/$SIM_LIBS
           mv -f $SIM_LIBS kivy/$SIM_LIBS
           echo transfered python/$SIM_LIBS
-      
+
+      - name: python_dist.zip
+        working-directory: output/python
+        run: |
+          zip -r python_dist.zip dist_lib
+          rm -rf dist_lib
+
       - name: kivy_dist.zip
         working-directory: output/kivy
         run: |
@@ -187,7 +193,7 @@ jobs:
           for FILE in *; 
               do 
                   #filename="$FILE"
-                  echo $filename
+                  #echo $filename
                   zip -r "${FILE%.*}".zip $FILE
                   rm -rf $FILE
               done
