@@ -83,9 +83,10 @@ jobs:
           zip -r site-packages.zip site-packages
           mv -f site-packages.zip output/kivy/
 
-          mv $PY_LIB python_lib
-          zip -r python_lib.zip python_lib
-          mv -f python_lib.zip output/python/
+          mv $PY_LIB output/python/
+          #mv $PY_LIB python_lib
+          #zip -r python_lib.zip python_lib
+          #mv -f python_lib.zip output/python/
           
 
       - name: repack & zip dist_libs

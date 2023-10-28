@@ -110,10 +110,11 @@ jobs:
           mv $PY_LIB/python3.11/site-packages site-packages
           zip -r site-packages.zip site-packages
           mv -f site-packages.zip output/kivy/
-
-          mv $PY_LIB python_lib
-          zip -r python_lib.zip python_lib
-          mv -f python_lib.zip output/python/
+          
+          mv $PY_LIB output/python/
+          #mv $PY_LIB python_lib
+          #zip -r python_lib.zip python_lib
+          #mv -f python_lib.zip output/python/
           
 
       - name: repack & zip dist_libs
@@ -275,7 +276,9 @@ jobs:
           cp -rf package_templates/PythonLibrary KivyPythonCore/Sources/
           cp -f python/Package.swift KivyPythonCore/
           cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
-          mv -f python/python_lib.zip KivyPythonCore/Sources/PythonLibrary/
+
+          mv -f python/python_lib KivyPythonCore/Sources/PythonLibrary/
+
 
       # commit new package to kivypythoncore/master
       - name: commit KivyPythonCore to master

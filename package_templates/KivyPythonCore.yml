@@ -30,7 +30,7 @@ targets:
 - target: PythonLibrary
   #dependencies:
   resources:
-    - python_lib.zip
+    - python_lib
   
 
 
