@@ -277,7 +277,7 @@ jobs:
           cp -f python/Package.swift KivyPythonCore/
           cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
 
-          mv -f python/python_lib KivyPythonCore/Sources/PythonLibrary/
+          mv -f python/python_lib KivyPythonCore/Sources/PythonLibrary/lib
 
 
       # commit new package to kivypythoncore/master
