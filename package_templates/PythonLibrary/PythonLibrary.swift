@@ -1,4 +1,4 @@
 
 import Foundation
 
-public let pythonLibrary = Bundle.module.path(forResource: "python_lib", ofType: nil)
+public let home = Bundle.module
