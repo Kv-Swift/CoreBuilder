@@ -74,6 +74,7 @@ jobs:
             init = init.replace("url = \"https://github.com/kivy/kivy/archive/\{version\}.zip\"", "url = \"src\"")
             with open("kivy-ios/recipes/kivy/__init__.py", "w") as output_file:
               output_file.write(init)
+      
       - name: install modified kivy-ios
         run: |
           pip3 install -e kivy-ios
