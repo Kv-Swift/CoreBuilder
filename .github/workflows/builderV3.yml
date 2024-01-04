@@ -73,6 +73,7 @@ jobs:
           with open(init_path, "r") as input_file:
             init = input_file.read()
             init = init.replace("url = \"https://github.com/kivy/kivy/archive/\{version\}.zip\"", "url = \"src\"")
+            print(init)
             with open(init_path, "w") as output_file:
               output_file.write(init)
       
