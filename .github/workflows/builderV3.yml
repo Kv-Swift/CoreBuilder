@@ -49,8 +49,37 @@ jobs:
       - name: install kivy-ios
         run: |
           python3 -m pip install --upgrade pip
-          pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
-        
+          
+          #pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
+          git clone https://github.com/kivy/kivy-ios
+          
+          # new kivy recipe patches before building it.
+          
+          # curl -O https://github.com/kivy/kivy/archive/2.2.1.zip
+          # or
+          git clone --depth 1 -b 2.2.1 https://github.com/kivy/kivy
+          
+          ##### open cv fix #####
+          
+          # cp package_templates/camera_avfoundation_implem.m kivy/kivy/core/camera/camera_avfoundation_implem.m
+
+          ##### apply modified kivy to recipe as "src" #####
+          mv kivy kivy-ios/recipes/kivy/src
+
+      - name: modify kivy recipe
+        shell: python
+        run: |
+          with open("kivy-ios/recipes/kivy/__init__.py", "r") as input_file:
+            init = input_file.read()
+            init = init.replace("url = \"https://github.com/kivy/kivy/archive/\{version\}.zip\"", "url = \"src\"")
+            with open("kivy-ios/recipes/kivy/__init__.py", "w") as output_file:
+              output_file.write(init)
+      - name: install modified kivy-ios
+        run: |
+          pip3 install -e kivy-ios
+
+      #### build phase ####
+      
       - name: build hostpython3
         run: toolchain build hostpython3
       - name: build python3
