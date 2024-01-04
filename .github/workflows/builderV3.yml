@@ -62,9 +62,9 @@ jobs:
           ##### open cv fix #####
           
           cp package_templates/camera_avfoundation_implem.m kivy/kivy/core/camera/camera_avfoundation_implem.m
-
+          ls
           ##### apply modified kivy to recipe as "src" #####
-          mv -r kivy kivy-ios/kivy-ios/recipes/kivy/src
+          mv kivy kivy-ios/kivy-ios/recipes/kivy/src
 
       - name: modify kivy recipe
         shell: python
