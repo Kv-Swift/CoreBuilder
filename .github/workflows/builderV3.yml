@@ -61,7 +61,7 @@ jobs:
           
           ##### open cv fix #####
           
-          # cp package_templates/camera_avfoundation_implem.m kivy/kivy/core/camera/camera_avfoundation_implem.m
+          cp package_templates/camera_avfoundation_implem.m kivy/kivy/core/camera/camera_avfoundation_implem.m
 
           ##### apply modified kivy to recipe as "src" #####
           mv kivy kivy-ios/recipes/kivy/src
