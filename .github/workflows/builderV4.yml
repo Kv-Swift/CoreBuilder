@@ -90,17 +90,17 @@ jobs:
         run: toolchain build hostpython3
 
 
-      - name: build python3.10
-        if: contains(${{ matrix.version }}, 10)
-        run: toolchain build python3==3.10.13
-
-      - name: build python3.11
-        if: contains(${{ matrix.version }}, 11)
-        run: toolchain build python3==3.11.6
-      
-      - name: build python3.12
-        if: contains(${{ matrix.version }}, 12)
-        run: toolchain build python3==3.12.1
+      - name: build python3
+        run: 
+          if [[ ${{ matrix.version }} == 10 ]]; then
+            toolchain build python3==3.10.13
+          else if [[ ${{ matrix.version }} == 11 ]]; then
+            toolchain build python3==3.11.6
+          else if [[ ${{ matrix.version }} == 10 ]]; then
+            toolchain build python3==3.12.1
+          else
+          echo "There is no github tag reference, skipping"
+          fi
 
 
       - name: build numpy
