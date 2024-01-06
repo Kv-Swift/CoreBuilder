@@ -89,11 +89,14 @@ jobs:
       - name: build hostpython3
         run: |
           #toolchain build hostpython3
-          if [[ ${{ matrix.version }} == 10 ]]; then
+          if [ ${{ matrix.version }} == "10" ]
+          then
             toolchain build hostpython3==3.10.13
-          else if [[ ${{ matrix.version }} == 11 ]]; then
+          elif [ ${{ matrix.version }} == "11" ]
+          then
             toolchain build hostpython3==3.11.6
-          else if [[ ${{ matrix.version }} == 12 ]]; then
+          elif [ ${{ matrix.version }} == "12" ]
+          then
             toolchain build hostpython3==3.12.1
           else
             toolchain build hostpython3
