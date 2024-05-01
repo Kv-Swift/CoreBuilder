@@ -38,7 +38,7 @@ jobs:
       
       - name: brew installs
         run: |
-          brew tap kivyswiftlink/tools
+          brew tap PythonSwiftLink/tools
           brew install swiftpackagegen
       
       # - name: chmod tools
