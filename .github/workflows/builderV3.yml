@@ -38,7 +38,7 @@ jobs:
       
       - name: brew installs
         run: |
-          brew tap PythonSwiftLink/tools
+          brew tap kivyswiftlink/tools
           brew install swiftpackagegen
       
       # - name: chmod tools
@@ -301,35 +301,34 @@ jobs:
         with:
           name: release-output
 
-      - name: create KivyPythonCore
+      - name: create PythonCore
         run: |
-          #cp -rf package_templates/KivyPythonCore KivyPythonCore
-          mkdir -p KivyPythonCore/Sources
-          cp -rf package_templates/PythonLibrary KivyPythonCore/Sources/
-          cp -f python/Package.swift KivyPythonCore/
-          cp -rf package_templates/PythonCore/Sources/PythonCore KivyPythonCore/Sources/
+          mkdir -p PythonCore/Sources
+          cp -rf package_templates/PythonLibrary PythonCore/Sources/
+          cp -f python/Package.swift PythonCore/
+          cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
 
-          mv -f python/python_lib KivyPythonCore/Sources/PythonLibrary/lib
+          mv -f python/python_lib PythonCore/Sources/PythonLibrary/lib
 
 
       # commit new package to kivypythoncore/master
-      - name: commit KivyPythonCore to master
+      - name: commit Kivy PythonCore to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
         with:
-          source-directory: 'KivyPythonCore'
-          destination-github-username: 'pythonswiftlink'
-          destination-repository-name: 'KivyPythonCore'
-          user-email: pythonswiftlink@gmail.com
+          source-directory: 'PythonCore'
+          destination-github-username: 'kivyswiftlink'
+          destination-repository-name: 'PythonCore'
+          user-email: kivyswiftlink@gmail.com
           target-branch: master
 
-      - name: release KivyPythonCore
+      - name: releasePythonCore
         uses: ncipollo/release-action@v1
         with:
           artifacts: "python/python_dist.zip, python/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
-          repo: KivyPythonCore
+          repo: PythonCore
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
@@ -353,9 +352,9 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
         with:
           source-directory: 'KivyCore'
-          destination-github-username: 'pythonswiftlink'
+          destination-github-username: 'kivyswiftlink'
           destination-repository-name: 'KivyCore'
-          user-email: pythonswiftlink@gmail.com
+          user-email: kivyswiftlink@gmail.com
           target-branch: master
       
       # create a new release from master and python_lib.zip / dist_lib.zip to the release
@@ -382,9 +381,9 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
         with:
           source-directory: 'KivyNumpy'
-          destination-github-username: 'pythonswiftlink'
+          destination-github-username: 'kivyswiftlink'
           destination-repository-name: 'KivyNumpy'
-          user-email: pythonswiftlink@gmail.com
+          user-email: kivyswiftlink@gmail.com
           target-branch: master
 
       # create a new release from master and python_lib.zip / dist_lib.zip to the release
