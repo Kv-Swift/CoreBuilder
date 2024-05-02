@@ -257,21 +257,21 @@ jobs:
       
       - name: update Python package.swift
         run: |
-          SwiftPackageGen \
+          SwiftPackageGen generate \
             ./package_templates/KivyPythonCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/python/Package.swift
       
       - name: update Kivy package.swift
         run: |
-          SwiftPackageGen \
+          SwiftPackageGen generate \
             ./package_templates/KivyCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/kivy/Package.swift
 
       - name: update Numpy package.swift
         run: |
-          SwiftPackageGen \
+          SwiftPackageGen generate \
             ./package_templates/KivyNumpy.yml \
             ${{ github.event.inputs.tag }} \
             --output output/numpy/Package.swift            
