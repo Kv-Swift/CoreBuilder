@@ -1,5 +1,5 @@
-owner: PythonSwiftLink
-repository: KivyPythonCore
+owner: KivySwiftLink
+repository: PythonCore
 swift_version: 5.8
 products:
   - library: PythonCore
