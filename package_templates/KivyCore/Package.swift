@@ -14,13 +14,13 @@ let package = Package(
             ]),
     ],
     dependencies: [
-        .package(url: "https://github.com/PythonSwiftLink/KivyPythonCore", from: .init(310, 0, 0)),
+        .package(url: "https://github.com/KivySwiftLink/PythonCore", from: .init(310, 0, 0)),
     ],
     targets: [
         .target(
             name: "KivyCore",
             dependencies: [
-                .product(name: "PythonCore", package: "KivyPythonCore"),
+                .product(name: "PythonCore", package: "PythonCore"),
                 "libfreetype",
                 "libios",
                 "libjpeg",
