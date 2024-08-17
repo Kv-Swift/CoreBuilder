@@ -87,9 +87,10 @@ jobs:
         run: toolchain build hostpython3
       - name: build python3
         run: toolchain build python3
-      - name: build numpy
-        run: toolchain build numpy
-
+      #- name: build numpy
+      #  run: toolchain build numpy
+      - name: build numpy action
+        uses: kivyswiftlink/actions/build_numpy@master
       - name: move numpy build
         run: |
           mkdir -p output/numpy/headers
