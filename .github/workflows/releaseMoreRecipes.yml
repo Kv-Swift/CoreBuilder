@@ -47,40 +47,7 @@ jobs:
       #     chmod 755 tools/PSProject
       
       - name: install kivy-ios
-        run: |
-          python3 -m pip install --upgrade pip
-          
-          #pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
-          git clone https://github.com/kivy/kivy-ios
-          
-          # new kivy recipe patches before building it.
-          
-          # curl -O https://github.com/kivy/kivy/archive/2.2.1.zip
-          # or
-          git clone --depth 1 -b 2.2.1 https://github.com/kivy/kivy
-          
-          ##### open cv fix #####
-          
-          cp package_templates/camera_avfoundation_implem.m kivy/kivy/core/camera/camera_avfoundation_implem.m
-          ls kivy-ios/kivy_ios/recipes
-          ##### apply modified kivy to recipe as "src" #####
-          mv kivy kivy-ios/kivy_ios/recipes/kivy/src
-
-      - name: modify kivy recipe
-        shell: python
-        run: |
-          init_path = "kivy-ios/kivy_ios/recipes/kivy/__init__.py"
-          with open(init_path, "r") as input_file:
-            init = input_file.read()
-            init = init.replace("url = \"https://github.com/kivy/kivy/archive/{version}.zip\"", "url = \"src\"")
-            print(init)
-            with open(init_path, "w") as output_file:
-              output_file.write(init)
-      
-      - name: install modified kivy-ios
-        run: |
-          pip3 install -e kivy-ios
-
+        uses: kivyswiftlink/actions/install_kivy_ios@master
       #### build phase ####
       
       - name: build hostpython3
@@ -91,24 +58,7 @@ jobs:
       #  run: toolchain build numpy
       - name: build numpy action
         uses: kivyswiftlink/actions/build_numpy@master
-      - name: move numpy build
-        run: |
-          mkdir -p output/numpy/headers
-          BUILD_HEADERS=build/numpy/iphoneos-arm64/numpy-1.24.4/build/src.macosx-13.6-x86_64-3.11/numpy/core/include/numpy/
-          cp -f $BUILD_HEADERS/__multiarray_api.h output/numpy/headers/
-          cp -f $BUILD_HEADERS/__ufunc_api.h output/numpy/headers/
-          cp -f $BUILD_HEADERS/_numpyconfig.h output/numpy/headers/
-          cp -f $BUILD_HEADERS/_umath_doc_generated.h output/numpy/headers/
-          DIST_HEADERS=dist/include/common/numpy/numpy
-          mv -f $DIST_HEADERS/* output/numpy/headers/
-
-          PY_SITE=dist/root/python3/lib/python3.11/site-packages
-          mv -f $PY_SITE/numpy output/numpy/numpy-site
-          rm -rf $PY_SITE/*
-          cd output/numpy
-          zip -r numpy-site.zip numpy-site
-          rm -rf numpy-site
-
+      
       - name: build kivy
         run: toolchain build kivy
       - name: build pillow
