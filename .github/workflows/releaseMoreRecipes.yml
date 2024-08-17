@@ -56,7 +56,7 @@ jobs:
         run: toolchain build python3
       #- name: build numpy
       #  run: toolchain build numpy
-      - name: build numpy action
+      - name: create NumpyCore
         uses: kivyswiftlink/actions/build_numpy@master
       
       - name: build kivy
@@ -66,7 +66,7 @@ jobs:
       
 
       # taking out necessary libraries and zipping them into "output" folder
-      - name: repack python3.11 / numpy xcframework
+      - name: repack python3.11 
         run: |
           #mkdir output
           cp -rf dist/xcframework output/
@@ -76,13 +76,6 @@ jobs:
           cp -rf $PY_HEADERS $PY_XC/ios-arm64/
           cp -rf $PY_HEADERS $PY_XC/ios-x86_64-simulator/
           cp -f plists/python.plist $PY_XC/Info.plist
-
-          NUMPY_HEADERS=dist/include/common/numpy/numpy
-          NUMPY_XC=output/xcframework/libnumpy.xcframework
-          cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-arm64/
-          cp -rf $NUMPY_HEADERS $NUMPY_XC/ios-x86_64-simulator/
-          cp -f plists/numpy.plist $NUMPY_XC/Info.plist
-
       
       - name: repack & zip python site-packages
         run: |
@@ -111,46 +104,7 @@ jobs:
           echo $IOS_LIBS
           echo $SIM_LIBS
 
-          ###### numpy #######
-          mkdir -p numpy/$IOS_LIBS
-          mv -f $IOS_LIBS/libnpymath.a numpy/$IOS_LIBS/
-          mv -f $IOS_LIBS/libnpyrandom.a numpy/$IOS_LIBS/
-          mv -f $IOS_LIBS/libnumpy.a numpy/$IOS_LIBS/
-          echo transfered numpy/$IOS_LIBS
-
-
-          mkdir -p numpy/$SIM_LIBS
-          mv -f $SIM_LIBS/libnpymath.a numpy/$SIM_LIBS/
-          mv -f $SIM_LIBS/libnpyrandom.a numpy/$SIM_LIBS/
-          mv -f $SIM_LIBS/libnumpy.a numpy/$SIM_LIBS/
-          echo transfered numpy/$SIM_LIBS
-
-          ###### python ######
-
-          mkdir -p python/$IOS_LIBS
-          mv -f $IOS_LIBS/libcrypto.a python/$IOS_LIBS/
-          mv -f $IOS_LIBS/libssl.a python/$IOS_LIBS/
-          mv -f $IOS_LIBS/libffi.a python/$IOS_LIBS/
-          mv -f $IOS_LIBS/libpython3.11.a python/$IOS_LIBS/
-          echo transfered python/$IOS_LIBS
-
-          mkdir -p python/$SIM_LIBS
-          mv -f $SIM_LIBS/libcrypto.a python/$SIM_LIBS/
-          mv -f $SIM_LIBS/libssl.a python/$SIM_LIBS/
-          mv -f $SIM_LIBS/libffi.a python/$SIM_LIBS/
-          mv -f $SIM_LIBS/libpython3.11.a python/$SIM_LIBS/
-          echo transfered python/$SIM_LIBS
-
-
-          ###### kivy #######
-          mkdir -p kivy/$IOS_LIBS
-          mv -f $IOS_LIBS kivy/$IOS_LIBS
-          echo transfered kivy/$IOS_LIBS
-
-          mkdir -p kivy/$SIM_LIBS
-          mv -f $SIM_LIBS kivy/$SIM_LIBS
-          echo transfered python/$SIM_LIBS
-
+          
       - name: python_dist.zip
         working-directory: output/python
         run: |
@@ -163,12 +117,6 @@ jobs:
           zip -r kivy_dist.zip dist_lib
           rm -rf dist_lib
       
-      - name: numpy_dist.zip
-        working-directory: ./output/numpy
-        run: |
-          zip -r numpy_dist.zip dist_lib
-          rm -rf dist_lib
-          
 
       - name: move and zip xcframeworks
         working-directory: ./output/xcframework
@@ -190,16 +138,7 @@ jobs:
           mv -f xcframework/libcrypto.zip python/xcframework/
           mv -f xcframework/libffi.zip python/xcframework/
           mv -f xcframework/libssl.zip python/xcframework/
-          mv -f xcframework/libpython311.zip python/xcframework/
-    
-      - name: pack numpy xcframeworks
-        working-directory: ./output
-        run: |
-          mkdir numpy/xcframework
-
-          mv -f xcframework/libnumpy.zip numpy/xcframework/
-          mv -f xcframework/libnpyrandom.zip numpy/xcframework/
-          mv -f xcframework/libnpymath.zip numpy/xcframework/
+          mv -f xcframework/libpython311.zip python/
 
       - name: pack xcframeworks as kivy
         working-directory: ./output
@@ -220,13 +159,7 @@ jobs:
             ${{ github.event.inputs.tag }} \
             --output output/kivy/Package.swift
 
-      - name: update Numpy package.swift
-        run: |
-          SwiftPackageGen generate \
-            ./package_templates/KivyNumpy.yml \
-            ${{ github.event.inputs.tag }} \
-            --output output/numpy/Package.swift            
-          
+      
       # uploading "output" folder for the next task to use. (ubuntu machine)
       - uses: actions/upload-artifact@v3
         with:
