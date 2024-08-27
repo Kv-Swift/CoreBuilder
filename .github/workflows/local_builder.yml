@@ -219,18 +219,7 @@ jobs:
                   zip -r "${FILE%.*}".zip $FILE
                   rm -rf $FILE
               done
-
-      - name: materialyoucolor zip xcframeworks
-        working-directory: ./output/materialyoucolor/xcframework
-        run: |
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-
+      
       - name: ffmpeg zip xcframeworks
         working-directory: ./output/ffmpeg/xcframework
         run: |
