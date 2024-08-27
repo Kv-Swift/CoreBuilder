@@ -98,7 +98,9 @@ public struct Repack: AsyncParsableCommand {
         Pillow(),
         MatPlotLib(),
         KiwiSolver(),
-        materialyoucolor()
+        materialyoucolor(),
+		FFMpeg(),
+		ffpyplayer()
     ]
     
     public init() {
@@ -190,4 +192,21 @@ public struct Repack: AsyncParsableCommand {
         init() {
         }
     }
+	
+	public class FFMpeg: RepackProtocol {
+		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "ffmpeg"})!
+		
+		init() {
+		}
+	}
+	
+	public class ffpyplayer: RepackProtocol {
+		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "ffpyplayer"})!
+		
+		init() {
+		}
+	}
+	
+	
+	
 }

@@ -5,21 +5,21 @@ repository: KivyExtra
 swift_version: 5.9
 
 products:
-  - library: KivyNumpy
+  - library: KiwiSolver
     targets:
-      - KivyNumpy
-  - library: KivyNumpy
+      - KiwiSolver
+  - library: FFMpeg
     targets:
-      - KivyNumpy
-  - library: KivyNumpy
+      - FFMpeg
+  - library: MatPlotLib
     targets:
-      - KivyNumpy
-  - library: KivyNumpy
+      - MatPlotLib
+  - library: MaterialYouColor
     targets:
-      - KivyNumpy
-  - library: KivyNumpy
+      - MaterialYouColor
+  - library: Pillow
     targets:
-      - KivyNumpy
+      - Pillow
 
 dependencies:
   - package: PythonCore
@@ -28,14 +28,39 @@ dependencies:
       upToNextMajor: 311.0.0
 
 targets:
-- target: KivyNumpy
-  dependencies:
-    - product: PythonCore
-      package: PythonCore
-      
-    - binary: output/numpy/xcframework
+  - target: KiwiSolver
+    dependencies:
+      - product: PythonCore
+        package: PythonCore
+        
+      - binary: output/kiwisolver/xcframework
 
-  linkerSettings:
-    - framework: Accelerate
+    linkerSettings: []
 
-      
+  - target: FFMpeg
+    dependencies:
+      - product: PythonCore
+        package: PythonCore
+        
+      - binary: output/ffmpeg/xcframework
+
+    linkerSettings:
+  - target: MatPlotLib
+    dependencies:
+      - product: PythonCore
+        package: PythonCore
+      - product: KiwiSolver
+        package: KiwiSolver
+        
+      - binary: output/matplotlib/xcframework
+
+    linkerSettings: []
+
+  - target: Pillow
+    dependencies:
+      - product: PythonCore
+        package: PythonCore
+        
+      - binary: output/pillow/xcframework
+
+    linkerSettings: []

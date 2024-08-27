@@ -129,7 +129,8 @@ jobs:
         run: |
             toolchain build ffpyplayer
             swift run --package-path KivyBuilder KivyBuilder toolchain ffpyplayer
-
+      
+      
 
       - name: KivyBuilder repack
         run: swift run --package-path KivyBuilder KivyBuilder repack
@@ -151,7 +152,6 @@ jobs:
         run: |
           zip -r numpy_dist.zip dist
           rm -rf dist
-          
 
       - name: python zip xcframeworks
         working-directory: ./output/python3/xcframework
@@ -186,3 +186,72 @@ jobs:
                   zip -r "${FILE%.*}".zip $FILE
                   rm -rf $FILE
               done
+
+      - name: kiwisolver zip xcframeworks
+        working-directory: ./output/kiwisolver/xcframework
+        run: |
+          for FILE in *; 
+              do 
+                  #filename="$FILE"
+                  #echo $filename
+                  zip -r "${FILE%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+      
+      - name: pillow zip xcframeworks
+        working-directory: ./output/pillow/xcframework
+        run: |
+          for FILE in *; 
+              do 
+                  #filename="$FILE"
+                  #echo $filename
+                  zip -r "${FILE%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+      
+      - name: matplotlib zip xcframeworks
+        working-directory: ./output/matplotlib/xcframework
+        run: |
+          for FILE in *; 
+              do 
+                  #filename="$FILE"
+                  #echo $filename
+                  zip -r "${FILE%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+
+      - name: materialyoucolor zip xcframeworks
+        working-directory: ./output/materialyoucolor/xcframework
+        run: |
+          for FILE in *; 
+              do 
+                  #filename="$FILE"
+                  #echo $filename
+                  zip -r "${FILE%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+
+      - name: ffmpeg zip xcframeworks
+        working-directory: ./output/ffmpeg/xcframework
+        run: |
+          for FILE in *; 
+              do 
+                  #filename="$FILE"
+                  #echo $filename
+                  zip -r "${FILE%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+
+      - name: ffpyplayer zip xcframeworks
+        working-directory: ./output/matplotlib/xcframework
+        run: |
+          for FILE in *; 
+              do 
+                  #filename="$FILE"
+                  #echo $filename
+                  zip -r "${FILE%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+      
+
+
