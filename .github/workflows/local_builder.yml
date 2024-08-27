@@ -153,6 +153,42 @@ jobs:
           zip -r numpy_dist.zip dist
           rm -rf dist
 
+      - name: pillow_dist.zip
+        working-directory: ./output/pillow
+        run: |
+          zip -r pillow_dist.zip dist
+          rm -rf dist
+
+      - name: kiwisolver_dist.zip
+        working-directory: ./output/kiwisolver
+        run: |
+          zip -r kiwisolver_dist.zip dist
+          rm -rf dist
+
+      - name: matplotlib_dist.zip
+        working-directory: ./output/matplotlib
+        run: |
+          zip -r matplotlib_dist.zip dist
+          rm -rf dist
+
+      - name: materialyoucolor_dist.zip
+        working-directory: ./output/materialyoucolor
+        run: |
+          zip -r materialyoucolor_dist.zip dist
+          rm -rf dist
+
+      - name: ffmpeg_dist.zip
+        working-directory: ./output/ffmpeg
+        run: |
+          zip -r ffmpeg_dist.zip dist
+          rm -rf dist
+
+      - name: ffpyplayer_dist.zip
+        working-directory: ./output/ffpyplayer
+        run: |
+          zip -r ffpyplayer_dist.zip dist
+          rm -rf dist
+
       - name: python zip xcframeworks
         working-directory: ./output/python3/xcframework
         run: |
