@@ -23,14 +23,14 @@ extension String {
 extension Path {
     func copyTo(_ destination: Path, indent: Int = 0) throws {
         let _indent = String.init(repeating: "\t", count: indent)
-        //print("\(_indent)<copyTo>\n\t\(_indent)from: \(self)\n\t\(_indent)to: \(destination)")
+        print("\(_indent)<copyTo>\n\t\(_indent)from: \(self)\n\t\(_indent)to: \(destination)")
         try copy(destination + lastComponent)
     }
     func copyContent(_ destination: Path) throws {
-        //print("<copyContent>\n\tfrom: \(self)\n\tto: \(destination)")
+        print("<copyContent>\n\tfrom: \(self)\n\tto: \(destination)")
         if !destination.exists {
             try destination.mkpath()
-            //print("\t<creating>: \(destination)")
+            print("\t<creating>: \(destination)")
         }
         try children().forEach { item in
             try item.copyTo(destination, indent: 1)
