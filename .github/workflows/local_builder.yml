@@ -109,7 +109,7 @@ jobs:
 
 
       ## zip xcframeworks
-      - name: zip dists content
+      - name: zip all xcframeworks
         uses: kivyswiftlink/actions/zip_all_xcframeworks@master
 
       - name: update Python package.swift
@@ -143,3 +143,15 @@ jobs:
             --output output/kivyextra/Package.swift  
 
 
+  ###############################################################################
+  ###############################################################################
+  ###############################################################################
+  #moving next part to an ubuntu machine
+  create_package:
+    name: Release Packages
+    runs-on: ubuntu-latest
+    needs: [toolchainBuild]
+
+    steps:
+      - name: zip dists content
+        uses: kivyswiftlink/actions/release_packages@master
