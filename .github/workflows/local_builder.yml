@@ -232,7 +232,7 @@ jobs:
               done
 
       - name: ffpyplayer zip xcframeworks
-        working-directory: ./output/matplotlib/xcframework
+        working-directory: ./output/ffpyplayer/xcframework
         run: |
           for FILE in *; 
               do 
