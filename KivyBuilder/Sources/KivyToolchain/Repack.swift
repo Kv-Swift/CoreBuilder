@@ -125,7 +125,7 @@ public struct Repack: AsyncParsableCommand {
             try py_headers.copy(xc_ios + "python3.11")
             try py_headers.copy(xc_sim + "python3.11")
             
-            try (xc_path + "Info.plist").write(python_plist, encoding: .utf8)
+            try (output + "Info.plist").write(python_plist, encoding: .utf8)
         }
     }
     
@@ -157,7 +157,7 @@ public struct Repack: AsyncParsableCommand {
             try numpy_headers.copyContent(numpy_xc + "ios-arm64/numpy")
             try numpy_headers.copyContent(numpy_xc + "ios-x86_64-simulator/numpy")
             
-            try (numpy_xc + "Info.plist").write(numpy_plist, encoding: .utf8)
+            try (output + "Info.plist").write(numpy_plist, encoding: .utf8)
         }
     }
     
