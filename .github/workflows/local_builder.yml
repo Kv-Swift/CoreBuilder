@@ -47,39 +47,7 @@ jobs:
       #     chmod 755 tools/PSProject
       
       - name: install kivy-ios
-        run: |
-          python3 -m pip install --upgrade pip
-          
-          #pip3 install https://github.com/kivy/kivy-ios/archive/master.zip
-          git clone https://github.com/kivy/kivy-ios
-          
-          # new kivy recipe patches before building it.
-          
-          # curl -O https://github.com/kivy/kivy/archive/2.2.1.zip
-          # or
-          git clone --depth 1 -b 2.2.1 https://github.com/kivy/kivy
-          
-          ##### open cv fix #####
-          
-          cp package_templates/camera_avfoundation_implem.m kivy/kivy/core/camera/camera_avfoundation_implem.m
-          ls kivy-ios/kivy_ios/recipes
-          ##### apply modified kivy to recipe as "src" #####
-          mv kivy kivy-ios/kivy_ios/recipes/kivy/src
-
-      - name: modify kivy recipe
-        shell: python
-        run: |
-          init_path = "kivy-ios/kivy_ios/recipes/kivy/__init__.py"
-          with open(init_path, "r") as input_file:
-            init = input_file.read()
-            init = init.replace("url = \"https://github.com/kivy/kivy/archive/{version}.zip\"", "url = \"src\"")
-            print(init)
-            with open(init_path, "w") as output_file:
-              output_file.write(init)
-      
-      - name: install modified kivy-ios
-        run: |
-          pip3 install -e kivy-ios
+        uses: kivyswiftlink/actions/install_kivy_ios@master
 
       #### build phase ####
       
@@ -135,149 +103,15 @@ jobs:
       - name: KivyBuilder repack
         run: swift run --package-path KivyBuilder KivyBuilder repack
       
-      - name: python_dist.zip
-        working-directory: output/python3
-        run: |
-          zip -r python_dist.zip dist
-          rm -rf dist
-
-      - name: kivy_dist.zip
-        working-directory: output/kivy
-        run: |
-          zip -r kivy_dist.zip dist
-          rm -rf dist
       
-      - name: numpy_dist.zip
-        working-directory: ./output/numpy
-        run: |
-          zip -r numpy_dist.zip dist
-          rm -rf dist
+      - name: zip dists content
+        uses: kivyswiftlink/actions/zip_dist_folder@master
 
-      - name: pillow_dist.zip
-        working-directory: ./output/pillow
-        run: |
-          zip -r pillow_dist.zip dist
-          rm -rf dist
 
-      - name: kiwisolver_dist.zip
-        working-directory: ./output/kiwisolver
-        run: |
-          zip -r kiwisolver_dist.zip dist
-          rm -rf dist
+      ## zip xcframeworks
+      - name: zip dists content
+        uses: kivyswiftlink/actions/zip_all_xcframeworks@master
 
-      - name: matplotlib_dist.zip
-        working-directory: ./output/matplotlib
-        run: |
-          zip -r matplotlib_dist.zip dist
-          rm -rf dist
-
-      - name: materialyoucolor_dist.zip
-        working-directory: ./output/materialyoucolor
-        run: |
-          zip -r materialyoucolor_dist.zip dist
-          rm -rf dist
-
-      - name: ffmpeg_dist.zip
-        working-directory: ./output/ffmpeg
-        run: |
-          zip -r ffmpeg_dist.zip dist
-          rm -rf dist
-
-      - name: ffpyplayer_dist.zip
-        working-directory: ./output/ffpyplayer
-        run: |
-          zip -r ffpyplayer_dist.zip dist
-          rm -rf dist
-
-      - name: python zip xcframeworks
-        working-directory: ./output/python3/xcframework
-        run: |
-          mv -f libpython3.11.xcframework libpython311.xcframework
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-
-      - name: kivy zip xcframeworks
-        working-directory: ./output/kivy/xcframework
-        run: |
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-
-      - name: numpy zip xcframeworks
-        working-directory: ./output/numpy/xcframework
-        run: |
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-
-      - name: kiwisolver zip xcframeworks
-        working-directory: ./output/kiwisolver/xcframework
-        run: |
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-      
-      - name: pillow zip xcframeworks
-        working-directory: ./output/pillow/xcframework
-        run: |
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-      
-      - name: matplotlib zip xcframeworks
-        working-directory: ./output/matplotlib/xcframework
-        run: |
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-      
-      - name: ffmpeg zip xcframeworks
-        working-directory: ./output/ffmpeg/xcframework
-        run: |
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-
-      - name: ffpyplayer zip xcframeworks
-        working-directory: ./output/ffpyplayer/xcframework
-        run: |
-          for FILE in *; 
-              do 
-                  #filename="$FILE"
-                  #echo $filename
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
-              done
-      
       - name: update Python package.swift
         run: |
           SwiftPackageGen generate \
