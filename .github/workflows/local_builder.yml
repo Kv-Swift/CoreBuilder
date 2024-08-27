@@ -105,6 +105,9 @@ jobs:
             toolchain build kivy
             swift run --package-path KivyBuilder KivyBuilder toolchain pillow
 
+      - name: KivyBuilder repack
+        run: swift run --package-path KivyBuilder KivyBuilder repack
+      
       - name: python_dist.zip
         working-directory: output/python
         run: |
