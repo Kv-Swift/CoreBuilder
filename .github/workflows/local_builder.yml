@@ -90,11 +90,6 @@ jobs:
           toolchain build python3
           swift run --package-path KivyBuilder KivyBuilder toolchain python3
 
-      - name: build numpy
-        run: |
-          toolchain build numpy
-          swift run --package-path KivyBuilder KivyBuilder toolchain numpy
-
       - name: build kivy
         run: |
             toolchain build kivy
@@ -102,8 +97,39 @@ jobs:
 
       - name: build pillow
         run: |
-            toolchain build kivy
+            toolchain build pillow
             swift run --package-path KivyBuilder KivyBuilder toolchain pillow
+      
+      - name: build numpy
+        run: |
+          toolchain build numpy
+          swift run --package-path KivyBuilder KivyBuilder toolchain numpy
+
+      - name: build kiwisolver
+        run: |
+            toolchain build kiwisolver
+            swift run --package-path KivyBuilder KivyBuilder toolchain kiwisolver
+
+      - name: build materialyoucolor
+        run: |
+            toolchain build materialyoucolor
+            swift run --package-path KivyBuilder KivyBuilder toolchain materialyoucolor
+
+      - name: build matplotlib
+        run: |
+            toolchain build matplotlib
+            swift run --package-path KivyBuilder KivyBuilder toolchain matplotlib
+
+      - name: build ffmpeg
+        run: |
+            toolchain build ffmpeg
+            swift run --package-path KivyBuilder KivyBuilder toolchain ffmpeg
+
+      - name: build ffpyplayer
+        run: |
+            toolchain build ffpyplayer
+            swift run --package-path KivyBuilder KivyBuilder toolchain ffpyplayer
+
 
       - name: KivyBuilder repack
         run: swift run --package-path KivyBuilder KivyBuilder repack
