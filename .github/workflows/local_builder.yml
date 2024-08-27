@@ -135,7 +135,7 @@ jobs:
         run: swift run --package-path KivyBuilder KivyBuilder repack
       
       - name: python_dist.zip
-        working-directory: output/python
+        working-directory: output/python3
         run: |
           zip -r python_dist.zip dist
           rm -rf dist
