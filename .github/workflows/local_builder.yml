@@ -278,5 +278,34 @@ jobs:
                   rm -rf $FILE
               done
       
+      - name: update Python package.swift
+        run: |
+          SwiftPackageGen generate \
+            ./package_templates/KivyPythonCore.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/python3/Package.swift
+      
+      - name: update Kivy package.swift
+        run: |
+          SwiftPackageGen generate \
+            ./package_templates/KivyCore.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/kivy/Package.swiftls
+            
+
+      - name: update Numpy package.swift
+        run: |
+          SwiftPackageGen generate \
+            ./package_templates/KivyNumpy.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/numpy/Package.swift  
+
+      - name: update KivyExtraPackage package.swift
+        run: |
+          mkdir -pv output/kivyextra
+          SwiftPackageGen generate \
+            ./package_templates/kivyextra.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/kivyextra/Package.swift  
 
 
