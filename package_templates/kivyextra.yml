@@ -1,10 +1,22 @@
 owner: KivySwiftLink
 
-repository: KivyNumpy
+repository: KivyExtra
 
-swift_version: 5.8
+swift_version: 5.9
 
 products:
+  - library: KivyNumpy
+    targets:
+      - KivyNumpy
+  - library: KivyNumpy
+    targets:
+      - KivyNumpy
+  - library: KivyNumpy
+    targets:
+      - KivyNumpy
+  - library: KivyNumpy
+    targets:
+      - KivyNumpy
   - library: KivyNumpy
     targets:
       - KivyNumpy

@@ -113,7 +113,7 @@ public struct Repack: AsyncParsableCommand {
     
     public class Python: RepackProtocol {
         public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "python3"})!
-        
+		var output: Path { .output + "python" }
         init() {
         }
         
