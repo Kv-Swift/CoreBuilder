@@ -164,8 +164,12 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: release-output
+      
+      - name: list files
+        shell: bash
+        run: ls
 
-      - name: zip dists content
+      - name: release packages
         uses: kivyswiftlink/actions/release_packages@master
         with:
           token: ${{ github.event.inputs.lastest }}
