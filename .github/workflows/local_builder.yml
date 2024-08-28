@@ -163,3 +163,7 @@ jobs:
 
       - name: zip dists content
         uses: kivyswiftlink/actions/release_packages@master
+        with:
+          token: ${{ github.event.inputs.lastest }}
+          tag: ${{ github.event.inputs.tag }}
+          lastest: ${{ github.event.inputs.lastest }}
