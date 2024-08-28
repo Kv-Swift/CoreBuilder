@@ -11,6 +11,9 @@ products:
   - library: FFMpeg
     targets:
       - FFMpeg
+  - library: FFPyplayer
+    targets:
+      - FFPyplayer
   - library: MatPlotLib
     targets:
       - MatPlotLib
@@ -45,6 +48,26 @@ targets:
       - binary: output/ffmpeg/xcframework
 
     linkerSettings:
+      - framework: VideoToolbox
+
+  - target: FFPyplayer
+    dependencies:
+      - product: PythonCore
+        package: PythonCore
+      - product: FFMpeg
+        package: FFMpeg
+        
+      - binary: output/ffpyplayer/xcframework
+
+    linkerSettings:
+      - framework: CoreVideo
+      - framework: CoreMedia
+      - framework: CoreImage
+      - framework: AVFoundation
+      - framework: UIKit
+      - framework: CoreMotion
+
+
   - target: MatPlotLib
     dependencies:
       - product: PythonCore
