@@ -140,8 +140,12 @@ jobs:
           SwiftPackageGen generate \
             ./package_templates/kivyextra.yml \
             ${{ github.event.inputs.tag }} \
-            --output output/kivyextra/Package.swift  
-
+            --output output/kivyextra/Package.swift
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: release-output
+          path: ./output
 
   ###############################################################################
   ###############################################################################
