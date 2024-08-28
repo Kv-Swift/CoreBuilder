@@ -281,9 +281,14 @@ jobs:
       - name: create KivyExtra
         shell: bash
         run: |
-          mkdir -p KivyNumpy/Sources
-          touch KivyNumpy/Sources/KivyNumpy.swift
-          cp -f numpy/Package.swift KivyNumpy/
+          mkdir -p KivyExtra/Sources
+          touch KivyExtra/Sources/KiwiSolver.swift
+          touch KivyExtra/Sources/FFMpeg.swift
+          touch KivyExtra/Sources/FFPyplayer.swift
+          touch KivyExtra/Sources/MatPlotLib.swift
+          touch KivyExtra/Sources/MaterialYouColor.swift
+          touch KivyExtra/Sources/Pillow.swift
+          cp -f kivyextra/Package.swift KivyExtra/
 
       # commit new package to kivyswiftlink/master
       - name: commit KivyExtra to master
