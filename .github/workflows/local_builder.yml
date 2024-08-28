@@ -124,7 +124,7 @@ jobs:
           SwiftPackageGen generate \
             ./package_templates/KivyCore.yml \
             ${{ github.event.inputs.tag }} \
-            --output output/kivy/Package.swiftls
+            --output output/kivy/Package.swift
             
 
       - name: update Numpy package.swift
