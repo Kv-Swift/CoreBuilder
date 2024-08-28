@@ -169,9 +169,164 @@ jobs:
         shell: bash
         run: ls
 
-      - name: release packages
-        uses: kivyswiftlink/actions/release_packages@master
+      # - name: release packages
+      #   uses: kivyswiftlink/actions/release_packages@master
+      #   with:
+      #     token: ${{ github.event.inputs.lastest }}
+      #     tag: ${{ github.event.inputs.tag }}
+      #     lastest: ${{ github.event.inputs.lastest }}
+
+
+      - name: create PythonCore
+        shell: bash
+        run: |
+          mkdir -p PythonCore/Sources
+          cp -rf package_templates/PythonLibrary PythonCore/Sources/
+          cp -f python3/Package.swift PythonCore/
+          cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
+
+          #mv -f python/python_lib PythonCore/Sources/PythonLibrary/lib
+
+
+      # commit new package to kivypythoncore/master
+      - name: commit Kivy PythonCore to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
         with:
-          token: ${{ github.event.inputs.lastest }}
+          source-directory: 'PythonCore'
+          destination-github-username: 'kivyswiftlink'
+          destination-repository-name: 'PythonCore'
+          user-email: kivyswiftlink@gmail.com
+          target-branch: master
+
+      - name: releasePythonCore
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "python/python_dist.zip, python/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
-          lastest: ${{ github.event.inputs.lastest }}
+          repo: PythonCore
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
+          makeLatest: ${{ github.event.inputs.lastest }}
+
+      - name: create KivyCore
+        shell: bash
+        run: |
+          cp -rf package_templates/KivyCore KivyCore
+          cp -f kivy/Package.swift KivyCore/
+          
+
+      - name: Download a kivy-ios master as asset for release
+        shell: bash
+        run: |
+          git clone https://github.com/kivy/kivy-ios.git
+          zip -r kivy-ios.zip kivy-ios
+          mv -f kivy-ios.zip kivy/
+
+      # commit new package to kivyswiftlink/master
+      - name: commit KivyCore to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyCore'
+          destination-github-username: 'kivyswiftlink'
+          destination-repository-name: 'KivyCore'
+          user-email: kivyswiftlink@gmail.com
+          target-branch: master
+      
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - name: release KivyCore
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/kivy-ios.zip, kivy/xcframework/*.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyCore
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
+          makeLatest: ${{ github.event.inputs.lastest }}
+      
+      - name: create KivyNumpy
+        shell: bash
+        run: |
+          mkdir -p KivyNumpy/Sources
+          touch KivyNumpy/Sources/KivyNumpy.swift
+          cp -f numpy/Package.swift KivyNumpy/
+
+      # commit new package to kivyswiftlink/master
+      - name: commit KivyNumpy to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyNumpy'
+          destination-github-username: 'kivyswiftlink'
+          destination-repository-name: 'KivyNumpy'
+          user-email: kivyswiftlink@gmail.com
+          target-branch: master
+
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - name: release KivyNumpy
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "numpy/numpy_dist.zip, numpy/numpy-site.zip, numpy/xcframework/*.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyNumpy
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
+          makeLatest: ${{ github.event.inputs.lastest }}
+
+
+      - name: create KivyExtra
+        shell: bash
+        run: |
+          mkdir -p KivyNumpy/Sources
+          touch KivyNumpy/Sources/KivyNumpy.swift
+          cp -f numpy/Package.swift KivyNumpy/
+
+      # commit new package to kivyswiftlink/master
+      - name: commit KivyExtra to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+        with:
+          source-directory: 'KivyExtra'
+          destination-github-username: 'kivyswiftlink'
+          destination-repository-name: 'KivyExtra'
+          user-email: kivyswiftlink@gmail.com
+          target-branch: master
+
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - name: release KivyExtra
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "
+            pillow/pillow_dist.zip,
+            kiwisolver/kiwisolver_dist.zip,
+            materialyoucolor/materialyoucolor_dist.zip,
+            matplotlib/matplotlib_dist.zip,
+            ffmpeg/ffmpeg_dist.zip,
+            ffpyplayer/ffpyplayer_dist.zip,
+
+            pillow/pillow-site.zip,
+            kiwisolver/kiwisolver-site.zip,
+            materialyoucolor/materialyoucolor-site.zip,
+            matplotlib/matplotlib-site.zip,
+            ffmpeg/ffmpeg-site.zip,
+            ffpyplayer/ffpyplayer-site.zip,
+
+            pillow/xcframework/*.zip,
+            kiwisolver/xcframework/*.zip,
+            materialyoucolor/xcframework/*.zip,
+            matplotlib/xcframework/*.zip,
+            ffmpeg/xcframework/*.zip,
+            ffpyplayer/xcframework/*.zip
+            "
+
+
+          tag: ${{ github.event.inputs.tag }}
+          repo: KivyExtra
+          token: ${{ secrets.Homebrew }}
+          allowUpdates: true
+          makeLatest: ${{ github.event.inputs.lastest }}
