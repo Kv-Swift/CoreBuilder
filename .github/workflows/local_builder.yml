@@ -161,7 +161,7 @@ jobs:
         with:
           submodules: recursive
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: release-output
       
@@ -314,12 +314,12 @@ jobs:
             ffmpeg/ffmpeg_dist.zip,
             ffpyplayer/ffpyplayer_dist.zip,
 
-            pillow/pillow-site.zip,
-            kiwisolver/kiwisolver-site.zip,
-            materialyoucolor/materialyoucolor-site.zip,
-            matplotlib/matplotlib-site.zip,
-            ffmpeg/ffmpeg-site.zip,
-            ffpyplayer/ffpyplayer-site.zip,
+            pillow/pillow_site.zip,
+            kiwisolver/kiwisolver_site.zip,
+            materialyoucolor/materialyoucolor_site.zip,
+            matplotlib/matplotlib_site.zip,
+            ffmpeg/ffmpeg_site.zip,
+            ffpyplayer/ffpyplayer_site.zip,
 
             pillow/xcframework/*.zip,
             kiwisolver/xcframework/*.zip,
