@@ -142,7 +142,7 @@ jobs:
             ${{ github.event.inputs.tag }} \
             --output output/kivyextra/Package.swift
       
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: release-output
           path: ./output
