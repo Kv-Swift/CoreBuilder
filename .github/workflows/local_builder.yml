@@ -270,7 +270,7 @@ jobs:
       - name: release KivyNumpy
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "numpy/numpy_dist.zip, numpy/numpy-site.zip, numpy/xcframework/*.zip"
+          artifacts: "numpy/numpy_dist.zip, numpy/numpy_site.zip, numpy/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyNumpy
           token: ${{ secrets.Homebrew }}
