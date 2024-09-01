@@ -128,6 +128,8 @@ public struct Repack: AsyncParsableCommand {
             try py_headers.copy(xc_sim + "python3.11")
             
             try (output + "Info.plist").write(python_plist, encoding: .utf8)
+			
+			try (Path.dist + "root/python3/lib/python311.zip").copyTo(output)
         }
     }
     
