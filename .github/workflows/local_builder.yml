@@ -203,7 +203,7 @@ jobs:
       - name: releasePythonCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "python/python_dist.zip, python/xcframework/*.zip"
+          artifacts: "python3/python_dist.zip, python3/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: PythonCore
           token: ${{ secrets.Homebrew }}
