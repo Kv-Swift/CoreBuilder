@@ -185,7 +185,7 @@ jobs:
           cp -f python3/Package.swift PythonCore/
           cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
 
-          #mv -f python/python_lib PythonCore/Sources/PythonLibrary/lib
+          mv -f python/python311.zip PythonCore/Sources/PythonLibrary/lib.zip
 
 
       # commit new package to kivypythoncore/master
@@ -203,7 +203,10 @@ jobs:
       - name: releasePythonCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "python3/python_dist.zip, python3/xcframework/*.zip"
+          artifacts: "
+            python3/python_dist.zip, 
+            python3/xcframework/*.zip
+            "
           tag: ${{ github.event.inputs.tag }}
           repo: PythonCore
           token: ${{ secrets.Homebrew }}
