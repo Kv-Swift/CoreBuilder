@@ -9,8 +9,9 @@ on:
     inputs:
       tag:
         description: 'input new release tag'
-        required: true
+        required: false
         type: string
+        default: "311.0.0"
       lastest:
         description: 'lastest release?'
         required: false
