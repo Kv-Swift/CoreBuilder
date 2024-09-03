@@ -13,6 +13,8 @@ products:
     targets:
       - PythonLibrary
 
+
+
 #dependencies:
 # - package:
 #   url: https://github.com/PythonSwiftLink/KivyPythonCore
@@ -31,6 +33,4 @@ targets:
   #dependencies:
   resources:
     - lib.zip
-  
-
 
