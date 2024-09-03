@@ -181,8 +181,8 @@ jobs:
       - name: create PythonCore
         shell: bash
         run: |
-          #mkdir -p PythonCore/Sources
-          cp -rf package_templates/PythonCore PythonCore
+          mkdir -p PythonCore
+          cp -rf package_templates/PythonCore/Sources PythonCore/
           cp -rf package_templates/PythonLibrary PythonCore/Sources/
           cp -f python3/Package.swift PythonCore/
           #cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
