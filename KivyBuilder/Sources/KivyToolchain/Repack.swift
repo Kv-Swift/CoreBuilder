@@ -120,7 +120,9 @@ public struct Repack: AsyncParsableCommand {
         }
         
         public func post_process() throws {
-            let py_headers = Path.dist + "root/python3/include/python3.11"
+            let py_headers = output + "py_headers"
+			try (Path.dist + "root/python3/include/python3.11").copyContent(py_headers)
+			try (Path.current + "package_templates/module.modulemap").copyTo(py_headers)
             let py_xc = xc_path + "libpython3.11.xcframework"
             let xc_ios = py_xc + "ios-arm64"
             let xc_sim = py_xc + "ios-x86_64-simulator"
