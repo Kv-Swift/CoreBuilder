@@ -181,7 +181,7 @@ jobs:
       - name: create PythonCore
         shell: bash
         run: |
-          git clone https://github.com/kivyswiftlink/PythonCore.git _PythonCore
+          git clone https://github.com/pythonswiftlink/PythonCore.git _PythonCore
           mkdir -p PythonCore
 
           cp -rf _PythonCore/Sources PythonCore/
