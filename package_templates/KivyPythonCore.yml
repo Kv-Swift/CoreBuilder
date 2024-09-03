@@ -15,22 +15,23 @@ products:
 
 
 
-#dependencies:
-# - package:
-#   url: https://github.com/PythonSwiftLink/KivyPythonCore
-#   upToNextMajor: 310.0.0
+# dependencies:
+#   - package:
+#     url: https://github.com/SwiftLink/KivyPythonCore
+#     upToNextMajor: 310.0.0
 targets:
-- target: PythonCore
-  dependencies:
-    - binary: ./output/python3/xcframework
-  linkerSettings:
-    - library: bz2
-    - library: z
-    - library: ncurses
-    - library: sqlite3
+  - target: PythonCore
+    dependencies:
+      - binary: ./output/python3/xcframework
 
-- target: PythonLibrary
-  #dependencies:
-  resources:
-    - lib.zip
+    linkerSettings:
+      - library: bz2
+      - library: z
+      - library: ncurses
+      - library: sqlite3
+
+  - target: PythonLibrary
+    #dependencies:
+    resources:
+      - lib.zip
 

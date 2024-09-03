@@ -182,9 +182,9 @@ jobs:
         shell: bash
         run: |
           git clone https://github.com/pythonswiftlink/PythonCore.git _PythonCore
-          mkdir -p PythonCore
+          mkdir -p PythonCore/Sources
 
-          cp -rf _PythonCore/Sources PythonCore/
+          cp -rf _PythonCore/Sources/PythonCore PythonCore/Sources/
           cp -rf package_templates/PythonLibrary PythonCore/Sources/
           cp -f python3/Package.swift PythonCore/
           #cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
