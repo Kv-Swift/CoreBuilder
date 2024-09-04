@@ -1,6 +1,6 @@
 owner: KivySwiftLink
 repository: PythonCore
-swift_version: 5.8
+swift_version: 5.9
 products:
   - library: PythonCore
     targets:
