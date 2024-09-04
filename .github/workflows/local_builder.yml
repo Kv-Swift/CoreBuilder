@@ -185,6 +185,7 @@ jobs:
           mkdir -p PythonCore/Sources
 
           cp -rf _PythonCore/Sources/PythonCore PythonCore/Sources/
+          cp -rf _PythonCore/Sources/PythonExtra PythonCore/Sources/
           cp -rf package_templates/PythonLibrary PythonCore/Sources/
           cp -f python3/Package.swift PythonCore/
           #cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
