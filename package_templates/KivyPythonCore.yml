@@ -29,6 +29,10 @@ targets:
       - library: z
       - library: ncurses
       - library: sqlite3
+  
+  - target: PythonExtra
+    dependencies:
+      - product: Python
 
   - target: PythonLibrary
     #dependencies:
