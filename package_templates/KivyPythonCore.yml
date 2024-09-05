@@ -32,7 +32,7 @@ targets:
   
   - target: PythonExtra
     dependencies:
-      - product: Python
+      - target: Python
 
   - target: PythonLibrary
     #dependencies:
