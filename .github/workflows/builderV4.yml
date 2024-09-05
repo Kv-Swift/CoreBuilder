@@ -1,6 +1,6 @@
 # This workflow will build a KivySwiftLink release
 
-name: build version 4
+name: local_builder_tester
 
 
 on:
@@ -9,8 +9,9 @@ on:
     inputs:
       tag:
         description: 'input new release tag'
-        required: true
+        required: false
         type: string
+        default: "311.0.0"
       lastest:
         description: 'lastest release?'
         required: false
@@ -41,10 +42,10 @@ jobs:
           brew tap PythonSwiftLink/tools
           brew install swiftpackagegen
       
-      - name: chmod tools
-        run: |
-          chmod 755 tools/SwiftPackageGen
-          chmod 755 tools/PSProject
+      # - name: chmod tools
+      #   run: |
+      #     chmod 755 tools/SwiftPackageGen
+      #     chmod 755 tools/PSProject
       
       - name: install kivy-ios
         uses: kivyswiftlink/actions/install_kivy_ios@master
@@ -180,10 +181,14 @@ jobs:
       - name: create PythonCore
         shell: bash
         run: |
+          git clone https://github.com/pythonswiftlink/PythonCore.git _PythonCore
           mkdir -p PythonCore/Sources
+
+          cp -rf _PythonCore/Sources/PythonCore PythonCore/Sources/
+          cp -rf _PythonCore/Sources/PythonExtra PythonCore/Sources/
           cp -rf package_templates/PythonLibrary PythonCore/Sources/
           cp -f python3/Package.swift PythonCore/
-          cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
+          #cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
 
           mv -f python3/python311.zip PythonCore/Sources/PythonLibrary/lib.zip
 
