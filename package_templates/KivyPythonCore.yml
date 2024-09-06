@@ -23,6 +23,7 @@ targets:
   - target: PythonCore
     dependencies:
       - binary: ./output/python3/xcframework
+      - target: PythonExtra
 
     linkerSettings:
       - library: bz2
