@@ -225,7 +225,7 @@ jobs:
           token: ${{ secrets.Homebrew }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
-
+      
       - name: create KivyCore
         shell: bash
         run: |
@@ -251,7 +251,14 @@ jobs:
           destination-repository-name: 'KivyCore'
           user-email: kivyswiftlink@gmail.com
           target-branch: master
-      
+      - name: check sha256 hashes
+        working-directory: ./kivy/xcframework
+        run: |
+          for FILE in *; 
+              do 
+                shasum -a 256 $FILE
+              done
+          
       # create a new release from master and python_lib.zip / dist_lib.zip to the release
       - name: release KivyCore
         uses: ncipollo/release-action@v1
