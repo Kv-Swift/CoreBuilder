@@ -132,8 +132,7 @@ jobs:
         run: |
           for FILE in *; 
               do 
-                  zip -r "${FILE%.*}".zip $FILE
-                  rm -rf $FILE
+                shasum -a 256 $FILE
               done
           
 
