@@ -190,7 +190,7 @@ jobs:
           cp -f python3/Package.swift PythonCore/
           #cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
 
-          mv -f python3/python311.zip PythonCore/Sources/PythonLibrary/lib.zip
+          mv -f python3/lib PythonCore/Sources/PythonLibrary/
 
 
       # commit new package to kivypythoncore/master

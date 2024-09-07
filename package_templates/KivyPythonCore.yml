@@ -38,5 +38,5 @@ targets:
   - target: PythonLibrary
     #dependencies:
     resources:
-      - lib.zip
+      - lib
 

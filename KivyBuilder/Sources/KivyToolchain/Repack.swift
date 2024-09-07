@@ -131,7 +131,7 @@ public struct Repack: AsyncParsableCommand {
             
             try (py_xc + "Info.plist").write(python_plist, encoding: .utf8)
 			
-			try (Path.dist + "root/python3/lib/python311.zip").copyTo(output)
+			try (Path.dist + "root/python3/lib").copyTo(output)
         }
     }
     
