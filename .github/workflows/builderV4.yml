@@ -126,7 +126,16 @@ jobs:
             ./package_templates/KivyCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/kivy/Package.swift
-            
+      
+      - name: check sha256 hashes
+        working-directory: ./output/kivy/xcframework
+        run: |
+          for FILE in *; 
+              do 
+                  zip -r "${FILE%.*}".zip $FILE
+                  rm -rf $FILE
+              done
+          
 
       - name: update Numpy package.swift
         run: |
