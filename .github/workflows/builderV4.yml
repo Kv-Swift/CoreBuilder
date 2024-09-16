@@ -258,7 +258,7 @@ jobs:
       - name: create KivyNumpy
         shell: bash
         run: |
-          mkdir -p KivyNumpy/Sources
+          mkdir -p KivyNumpy/Sources/KivyNumpy
           touch KivyNumpy/Sources/KivyNumpy.swift
           cp -f numpy/Package.swift KivyNumpy/
 
@@ -290,13 +290,20 @@ jobs:
         shell: bash
         run: |
           mkdir -p KivyExtra/Sources
+          mkdir -p KivyExtra/Sources/KiwiSolver
           touch KivyExtra/Sources/KiwiSolver.swift
+          mkdir -p KivyExtra/Sources/FFMpeg
           touch KivyExtra/Sources/FFMpeg.swift
+          mkdir -p KivyExtra/Sources/FFPyplayer
           touch KivyExtra/Sources/FFPyplayer.swift
+          mkdir -p KivyExtra/Sources/MatPlotLib
           touch KivyExtra/Sources/MatPlotLib.swift
+          mkdir -p KivyExtra/Sources/MaterialYouColor
           touch KivyExtra/Sources/MaterialYouColor.swift
+          mkdir -p KivyExtra/Sources/Pillow
           touch KivyExtra/Sources/Pillow.swift
           cp -f kivyextra/Package.swift KivyExtra/
+          
 
       # commit new package to kivyswiftlink/master
       - name: commit KivyExtra to master
