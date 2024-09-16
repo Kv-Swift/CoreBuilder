@@ -290,18 +290,25 @@ jobs:
         shell: bash
         run: |
           mkdir -p KivyExtra/Sources
+
           mkdir -p KivyExtra/Sources/KiwiSolver
-          touch KivyExtra/Sources/KiwiSolver.swift
+          touch KivyExtra/Sources/KiwiSolver/KiwiSolver.swift
+
           mkdir -p KivyExtra/Sources/FFMpeg
-          touch KivyExtra/Sources/FFMpeg.swift
+          touch KivyExtra/Sources/FFMpeg/FFMpeg.swift
+
           mkdir -p KivyExtra/Sources/FFPyplayer
-          touch KivyExtra/Sources/FFPyplayer.swift
+          touch KivyExtra/Sources/FFPyplayer/FFPyplayer.swift
+
           mkdir -p KivyExtra/Sources/MatPlotLib
-          touch KivyExtra/Sources/MatPlotLib.swift
+          touch KivyExtra/Sources/MatPlotLib/MatPlotLib.swift
+
           mkdir -p KivyExtra/Sources/MaterialYouColor
-          touch KivyExtra/Sources/MaterialYouColor.swift
+          touch KivyExtra/Sources/MaterialYouColor/MaterialYouColor.swift
+
           mkdir -p KivyExtra/Sources/Pillow
-          touch KivyExtra/Sources/Pillow.swift
+          touch KivyExtra/Sources/Pillow/Pillow.swift
+
           cp -f kivyextra/Package.swift KivyExtra/
           
 
