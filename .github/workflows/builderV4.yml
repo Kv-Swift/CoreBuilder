@@ -303,9 +303,6 @@ jobs:
           mkdir -p KivyExtra/Sources/MatPlotLib
           touch KivyExtra/Sources/MatPlotLib/MatPlotLib.swift
 
-          mkdir -p KivyExtra/Sources/MaterialYouColor
-          touch KivyExtra/Sources/MaterialYouColor/MaterialYouColor.swift
-
           mkdir -p KivyExtra/Sources/Pillow
           touch KivyExtra/Sources/Pillow/Pillow.swift
 

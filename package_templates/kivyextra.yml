@@ -17,9 +17,9 @@ products:
   - library: MatPlotLib
     targets:
       - MatPlotLib
-  - library: MaterialYouColor
-    targets:
-      - MaterialYouColor
+  # - library: MaterialYouColor
+  #   targets:
+  #     - MaterialYouColor
   - library: Pillow
     targets:
       - Pillow
@@ -54,8 +54,7 @@ targets:
     dependencies:
       - product: PythonCore
         package: PythonCore
-      - product: FFMpeg
-        package: FFMpeg
+      - target: FFMpeg
         
       - binary: output/ffpyplayer/xcframework
 
@@ -72,9 +71,7 @@ targets:
     dependencies:
       - product: PythonCore
         package: PythonCore
-      - product: KiwiSolver
-        package: KiwiSolver
-        
+      - target: KiwiSolver
       - binary: output/matplotlib/xcframework
 
     linkerSettings: []
