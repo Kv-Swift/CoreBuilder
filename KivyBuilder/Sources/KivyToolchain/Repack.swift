@@ -13,6 +13,7 @@ import ArgumentParser
 public protocol RepackProtocol {
     var recipe: Recipe { get }
     
+	func copy_lib_a() throws
     func post_process() throws
 }
 
@@ -93,6 +94,10 @@ public struct Repack: AsyncParsableCommand {
     
     static let recipes: [any RepackProtocol] = [
         Python(),
+		libpng(),
+		libjpeg(),
+		FreeType(),
+		SDL2(),
         Kivy(),
         Numpy(),
         Pillow(),
@@ -134,6 +139,39 @@ public struct Repack: AsyncParsableCommand {
 			try (Path.dist + "root/python3/lib").copyTo(output)
         }
     }
+	
+	public class libpng: RepackProtocol {
+		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "libpng"})!
+		
+		init() {
+		}
+		
+		public func copy_lib_a() throws {}
+	}
+	
+	public class libjpeg: RepackProtocol {
+		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "libjpeg"})!
+		
+		init() {
+		}
+		public func copy_lib_a() throws {}
+	}
+	
+	public class FreeType: RepackProtocol {
+		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "freetype"})!
+		
+		init() {
+		}
+		public func copy_lib_a() throws {}
+	}
+	
+	public class SDL2: RepackProtocol {
+		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "sdl2"})!
+		
+		init() {
+		}
+		public func copy_lib_a() throws {}
+	}
     
     public class Kivy: RepackProtocol {
         public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "kivy"})!
