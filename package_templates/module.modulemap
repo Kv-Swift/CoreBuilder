@@ -1,4 +1,4 @@
-module Python {
+module Python [extern_c] {
 	umbrella header "Python.h"
 	export *
 	link "Python"

@@ -1,0 +1,386 @@
+# This workflow will build a KivySwiftLink release
+
+name: builder v4.0
+
+
+on:
+
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'input new release tag'
+        required: false
+        type: string
+        default: "311.0.0"
+      lastest:
+        description: 'lastest release?'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  toolchainBuild:
+    runs-on: macOS-13
+    #runs-on: self-hosted
+    permissions:
+        contents: write
+  
+    steps:
+    #   - uses: maxim-lobanov/setup-xcode@v1
+    #     with:
+    #       xcode-version: '15.0'
+        
+      - uses: actions/checkout@v4
+      
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' # install the python version needed
+      
+      - name: brew installs
+        run: |
+          brew tap PythonSwiftLink/tools
+          brew install swiftpackagegen
+      
+      # - name: chmod tools
+      #   run: |
+      #     chmod 755 tools/SwiftPackageGen
+      #     chmod 755 tools/PSProject
+      
+      - name: install kivy-ios
+        uses: kivyswiftlink/actions/install_kivy_ios@master
+
+      #### build phase ####
+      
+      - name: build hostpython3
+        run: toolchain build hostpython3
+    
+      - name: build libpng
+        run: |
+          toolchain build libpng
+          swift run --package-path KivyBuilder KivyBuilder toolchain libpng
+
+      - name: build libjpeg
+        run: |
+          toolchain build libjpeg
+          swift run --package-path KivyBuilder KivyBuilder toolchain libjpeg
+
+      # SDL2
+      - name: build sdl2 components
+        run: |
+          toolchain build sdl2 sdl2_image sdl2_mixer sdl2_ttf
+          swift run --package-path KivyBuilder KivyBuilder toolchain sdl2
+      
+      - name: build freetype
+        run: |
+          toolchain build freetype
+          swift run --package-path KivyBuilder KivyBuilder toolchain freetype
+    
+      - name: build python3
+        run: |
+          toolchain build python3
+          swift run --package-path KivyBuilder KivyBuilder toolchain python3
+
+      - name: build kivy
+        run: |
+            toolchain build kivy
+            swift run --package-path KivyBuilder KivyBuilder toolchain kivy
+
+      - name: build pillow
+        run: |
+            toolchain build pillow
+            swift run --package-path KivyBuilder KivyBuilder toolchain pillow
+      
+      - name: build numpy
+        run: |
+          toolchain build numpy
+          swift run --package-path KivyBuilder KivyBuilder toolchain numpy
+
+      - name: build kiwisolver
+        run: |
+            toolchain build kiwisolver
+            swift run --package-path KivyBuilder KivyBuilder toolchain kiwisolver
+
+      - name: build materialyoucolor
+        run: |
+            toolchain build materialyoucolor
+            swift run --package-path KivyBuilder KivyBuilder toolchain materialyoucolor
+
+      - name: build matplotlib
+        run: |
+            toolchain build matplotlib
+            swift run --package-path KivyBuilder KivyBuilder toolchain matplotlib
+
+      - name: build ffmpeg
+        run: |
+            toolchain build ffmpeg
+            swift run --package-path KivyBuilder KivyBuilder toolchain ffmpeg
+
+      - name: build ffpyplayer
+        run: |
+            toolchain build ffpyplayer
+            swift run --package-path KivyBuilder KivyBuilder toolchain ffpyplayer
+      
+      
+
+      - name: KivyBuilder repack
+        run: swift run --package-path KivyBuilder KivyBuilder repack
+      
+      
+      - name: zip dists content
+        uses: kivyswiftlink/actions/zip_dist_folder@master
+
+
+      ## zip xcframeworks
+      - name: zip all xcframeworks
+        uses: kivyswiftlink/actions/zip_all_xcframeworks@master
+
+      - name: update Python package.swift
+        run: |
+          SwiftPackageGen generate \
+            ./package_templates/KivyPythonCore.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/python3/Package.swift
+      
+      - name: update Kivy package.swift
+        run: |
+          SwiftPackageGen generate \
+            ./package_templates/KivyCore.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/kivy/Package.swift
+            
+
+      - name: update Numpy package.swift
+        run: |
+          SwiftPackageGen generate \
+            ./package_templates/KivyNumpy.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/numpy/Package.swift  
+
+      - name: update KivyExtraPackage package.swift
+        run: |
+          mkdir -pv output/kivyextra
+          SwiftPackageGen generate \
+            ./package_templates/kivyextra.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/kivyextra/Package.swift
+
+      - name: update KivyExtraPackage package.swift
+        run: |
+          mkdir -pv output/sdl2core
+          SwiftPackageGen generate \
+            ./package_templates/sdl2core.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/sdl2core/Package.swift
+      
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: release-output
+  #         path: ./output
+
+  # ###############################################################################
+  # ###############################################################################
+  # ###############################################################################
+  # #moving next part to an ubuntu machine
+  # create_package:
+  #   name: Release Packages
+  #   runs-on: ubuntu-latest
+  #   needs: [toolchainBuild]
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         submodules: recursive
+
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: release-output
+      
+  #     - name: list files
+  #       shell: bash
+  #       run: ls
+
+  #     # - name: release packages
+  #     #   uses: kivyswiftlink/actions/release_packages@master
+  #     #   with:
+  #     #     token: ${{ github.event.inputs.lastest }}
+  #     #     tag: ${{ github.event.inputs.tag }}
+  #     #     lastest: ${{ github.event.inputs.lastest }}
+
+
+  #     - name: create PythonCore
+  #       shell: bash
+  #       run: |
+  #         git clone https://github.com/pythonswiftlink/PythonCore.git _PythonCore
+  #         mkdir -p PythonCore/Sources
+
+  #         cp -rf _PythonCore/Sources/PythonCore PythonCore/Sources/
+  #         cp -rf _PythonCore/Sources/PythonExtra PythonCore/Sources/
+  #         cp -rf package_templates/PythonLibrary PythonCore/Sources/
+  #         cp -f python3/Package.swift PythonCore/
+  #         #cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
+
+  #         mv -f python3/lib PythonCore/Sources/PythonLibrary/
+
+
+  #     # commit new package to kivypythoncore/master
+  #     - name: commit Kivy PythonCore to master
+  #       uses: cpina/github-action-push-to-another-repository@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+  #       with:
+  #         source-directory: 'PythonCore'
+  #         destination-github-username: 'kivyswiftlink'
+  #         destination-repository-name: 'PythonCore'
+  #         user-email: kivyswiftlink@gmail.com
+  #         target-branch: master
+
+  #     - name: releasePythonCore
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: "
+  #           python3/python_dist.zip, 
+  #           python3/xcframework/*.zip
+  #           "
+  #         tag: ${{ github.event.inputs.tag }}
+  #         repo: PythonCore
+  #         token: ${{ secrets.Homebrew }}
+  #         allowUpdates: true
+  #         makeLatest: ${{ github.event.inputs.lastest }}
+
+  #     - name: create KivyCore
+  #       shell: bash
+  #       run: |
+  #         cp -rf package_templates/KivyCore KivyCore
+  #         cp -f kivy/Package.swift KivyCore/
+          
+
+  #     - name: Download a kivy-ios master as asset for release
+  #       shell: bash
+  #       run: |
+  #         git clone https://github.com/kivy/kivy-ios.git
+  #         zip -r kivy-ios.zip kivy-ios
+  #         mv -f kivy-ios.zip kivy/
+
+  #     # commit new package to kivyswiftlink/master
+  #     - name: commit KivyCore to master
+  #       uses: cpina/github-action-push-to-another-repository@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+  #       with:
+  #         source-directory: 'KivyCore'
+  #         destination-github-username: 'kivyswiftlink'
+  #         destination-repository-name: 'KivyCore'
+  #         user-email: kivyswiftlink@gmail.com
+  #         target-branch: master
+      
+  #     # create a new release from master and python_lib.zip / dist_lib.zip to the release
+  #     - name: release KivyCore
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/kivy-ios.zip, kivy/xcframework/*.zip"
+  #         tag: ${{ github.event.inputs.tag }}
+  #         repo: KivyCore
+  #         token: ${{ secrets.Homebrew }}
+  #         allowUpdates: true
+  #         makeLatest: ${{ github.event.inputs.lastest }}
+      
+  #     - name: create KivyNumpy
+  #       shell: bash
+  #       run: |
+  #         mkdir -p KivyNumpy/Sources/KivyNumpy
+  #         touch KivyNumpy/Sources/KivyNumpy.swift
+  #         cp -f numpy/Package.swift KivyNumpy/
+
+  #     # commit new package to kivyswiftlink/master
+  #     - name: commit KivyNumpy to master
+  #       uses: cpina/github-action-push-to-another-repository@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+  #       with:
+  #         source-directory: 'KivyNumpy'
+  #         destination-github-username: 'kivyswiftlink'
+  #         destination-repository-name: 'KivyNumpy'
+  #         user-email: kivyswiftlink@gmail.com
+  #         target-branch: master
+
+  #     # create a new release from master and python_lib.zip / dist_lib.zip to the release
+  #     - name: release KivyNumpy
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: "numpy/numpy_dist.zip, numpy/numpy_site.zip, numpy/xcframework/*.zip"
+  #         tag: ${{ github.event.inputs.tag }}
+  #         repo: KivyNumpy
+  #         token: ${{ secrets.Homebrew }}
+  #         allowUpdates: true
+  #         makeLatest: ${{ github.event.inputs.lastest }}
+
+
+  #     - name: create KivyExtra
+  #       shell: bash
+  #       run: |
+  #         mkdir -p KivyExtra/Sources
+
+  #         mkdir -p KivyExtra/Sources/KiwiSolver
+  #         touch KivyExtra/Sources/KiwiSolver/KiwiSolver.swift
+
+  #         mkdir -p KivyExtra/Sources/FFMpeg
+  #         touch KivyExtra/Sources/FFMpeg/FFMpeg.swift
+
+  #         mkdir -p KivyExtra/Sources/FFPyplayer
+  #         touch KivyExtra/Sources/FFPyplayer/FFPyplayer.swift
+
+  #         mkdir -p KivyExtra/Sources/MatPlotLib
+  #         touch KivyExtra/Sources/MatPlotLib/MatPlotLib.swift
+
+  #         mkdir -p KivyExtra/Sources/Pillow
+  #         touch KivyExtra/Sources/Pillow/Pillow.swift
+
+  #         cp -f kivyextra/Package.swift KivyExtra/
+          
+
+  #     # commit new package to kivyswiftlink/master
+  #     - name: commit KivyExtra to master
+  #       uses: cpina/github-action-push-to-another-repository@main
+  #       env:
+  #         API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+  #       with:
+  #         source-directory: 'KivyExtra'
+  #         destination-github-username: 'kivyswiftlink'
+  #         destination-repository-name: 'KivyExtra'
+  #         user-email: kivyswiftlink@gmail.com
+  #         target-branch: master
+
+  #     # create a new release from master and python_lib.zip / dist_lib.zip to the release
+  #     - name: release KivyExtra
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         artifacts: "
+  #           pillow/pillow_dist.zip,
+  #           kiwisolver/kiwisolver_dist.zip,
+  #           materialyoucolor/materialyoucolor_dist.zip,
+  #           matplotlib/matplotlib_dist.zip,
+  #           ffmpeg/ffmpeg_dist.zip,
+  #           ffpyplayer/ffpyplayer_dist.zip,
+
+  #           pillow/pillow_site.zip,
+  #           kiwisolver/kiwisolver_site.zip,
+  #           materialyoucolor/materialyoucolor_site.zip,
+  #           matplotlib/matplotlib_site.zip,
+  #           ffmpeg/ffmpeg_site.zip,
+  #           ffpyplayer/ffpyplayer_site.zip,
+
+  #           pillow/xcframework/*.zip,
+  #           kiwisolver/xcframework/*.zip,
+  #           materialyoucolor/xcframework/*.zip,
+  #           matplotlib/xcframework/*.zip,
+  #           ffmpeg/xcframework/*.zip,
+  #           ffpyplayer/xcframework/*.zip
+  #           "
+
+
+  #         tag: ${{ github.event.inputs.tag }}
+  #         repo: KivyExtra
+  #         token: ${{ secrets.Homebrew }}
+  #         allowUpdates: true
+  #         makeLatest: ${{ github.event.inputs.lastest }}
