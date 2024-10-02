@@ -54,6 +54,12 @@ jobs:
       
       - name: build hostpython3
         run: toolchain build hostpython3
+
+      - name: build python3
+        run: |
+          toolchain build python3
+          swift run --package-path KivyBuilder KivyBuilder toolchain python3
+
     
       - name: build libpng
         run: |
@@ -76,11 +82,7 @@ jobs:
           toolchain build freetype
           swift run --package-path KivyBuilder KivyBuilder toolchain freetype
     
-      - name: build python3
-        run: |
-          toolchain build python3
-          swift run --package-path KivyBuilder KivyBuilder toolchain python3
-
+      
       - name: build kivy
         run: |
             toolchain build kivy
