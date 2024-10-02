@@ -1,6 +1,6 @@
 # This workflow will build a KivySwiftLink release
 
-name: builder v4.0
+name: Build Components
 
 
 on:
