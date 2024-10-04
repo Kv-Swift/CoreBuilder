@@ -1,0 +1,17 @@
+owner: KivySwiftLink
+repository: libpng
+swift_version: 5.9
+products:
+  - library: libpng
+    targets:
+      - libpng
+
+
+# dependencies:
+#   - package:
+#     url: https://github.com/SwiftLink/KivyPythonCore
+#     upToNextMajor: 310.0.0
+targets:
+  - target: _libpng
+    dependencies:
+      - binary: ./output/libpng/xcframework

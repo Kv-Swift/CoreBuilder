@@ -14,32 +14,24 @@ dependencies:
     url: https://github.com/KivySwiftLink/PythonCore
     version:
       upToNextMajor: 311.0.0
+  - package: SDL2Core
+    url: https://github.com/KivySwiftLink/SDL2Core
+    version:
+      upToNextMajor: 311.0.0
 
 targets:
 - target: KivyCore
   dependencies:
   - product: PythonCore
     package: PythonCore
+  - product: SDL2Core
+    package: SDL2Core
   - binary: output/kivy/xcframework
 
   linkerSettings:
     - framework: OpenGLES
-    - framework: Metal
-    - framework: AVFoundation
-    - framework: ImageIO
-    - framework: CoreHaptics
-    - framework: MobileCoreServices
-    - framework: MessageUI
-    - framework: WebKit
     - framework: Accelerate
-    - framework: CoreGraphics
-    - framework: CoreVideo
-    - framework: CoreAudio
-    - framework: AudioToolbox
-    - framework: GameController
-    - framework: Photos
-    - framework: UIKit
-    - framework: QuartzCore
-    - framework: CoreMotion
     - framework: CoreMedia
+    - framework: CoreVideo
+    
       

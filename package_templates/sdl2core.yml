@@ -10,16 +10,16 @@ products:
       - SDL2Core
 
 dependencies:
-  - package: PythonCore
-    url: https://github.com/KivySwiftLink/PythonCore
+  - package: libpng
+    url: https://github.com/KivySwiftLink/libpng
     version:
       upToNextMajor: 311.0.0
 
 targets:
-- target: KivyCore
+- target: SDL2Core
   dependencies:
-  - product: PythonCore
-    package: PythonCore
+  - product: libpng
+    package: libpng
   - binary: output/kivy/xcframework
 
   linkerSettings:

@@ -14,6 +14,7 @@ public protocol RepackProtocol {
     var recipe: Recipe { get }
     
 	func copy_lib_a() throws
+	func copy_site_packages() throws
     func post_process() throws
 }
 
@@ -154,6 +155,7 @@ public struct Repack: AsyncParsableCommand {
 		
 		init() {
 		}
+		
 		public func copy_lib_a() throws {}
 	}
 	
