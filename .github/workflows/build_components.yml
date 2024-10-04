@@ -150,6 +150,17 @@ jobs:
             ./package_templates/KivyCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/kivy/Package.swift
+      
+      - name: update sdl2 package.swift
+        run: |
+          SwiftPackageGen generate \
+            ./package_templates/sdl2core.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/sdl2/Package.swift
+          SwiftPackageGen generate \
+            ./package_templates/libpng.yml \
+            ${{ github.event.inputs.tag }} \
+            --output output/libpng/Package.swift
             
 
       - name: update Numpy package.swift
