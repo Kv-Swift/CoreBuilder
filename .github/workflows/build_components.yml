@@ -180,11 +180,11 @@ jobs:
 
       - name: update KivyExtraPackage package.swift
         run: |
-          mkdir -pv output/sdl2core
+          mkdir -pv output/sdl2
           SwiftPackageGen generate \
             ./package_templates/sdl2core.yml \
             ${{ github.event.inputs.tag }} \
-            --output output/sdl2core/Package.swift
+            --output output/sdl2/Package.swift
       
   #     - uses: actions/upload-artifact@v4
   #       with:
