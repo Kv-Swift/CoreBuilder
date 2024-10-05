@@ -158,10 +158,10 @@ jobs:
             ${{ github.event.inputs.tag }} \
             --output output/sdl2/Package.swift
       
-      - name: update libong package.swift
+      - name: update libpng package.swift
         run: |
           SwiftPackageGen generate \
-            ./package_templates/libong.yml \
+            ./package_templates/libpng.yml \
             ${{ github.event.inputs.tag }} \
             --output output/libpng/Package.swift
         
