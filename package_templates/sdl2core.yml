@@ -20,7 +20,7 @@ targets:
   dependencies:
   - product: libpng
     package: libpng
-  - binary: output/kivy/xcframework
+  - binary: output/sdl2/xcframework
 
   linkerSettings:
     # sdl2
