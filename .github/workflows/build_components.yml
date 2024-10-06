@@ -72,15 +72,11 @@ jobs:
           swift run --package-path KivyBuilder KivyBuilder toolchain python3
 
     
-      - name: build libpng
+      - name: build imagecore
         run: |
-          toolchain build libpng
-          swift run --package-path KivyBuilder KivyBuilder toolchain libpng
+          toolchain build libpng libjpeg
+          swift run --package-path KivyBuilder KivyBuilder toolchain imagecore
 
-      - name: build libjpeg
-        run: |
-          toolchain build libjpeg
-          swift run --package-path KivyBuilder KivyBuilder toolchain libjpeg
 
       # SDL2
       - name: build sdl2 components
