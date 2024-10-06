@@ -25,6 +25,7 @@ jobs:
           lastest: true
     release_components:
         uses: ./.github/workflows/release_components.yml
+        needs: [build_components]
         with:
           tag: ${{ github.event.inputs.tag }}
           lastest: true
