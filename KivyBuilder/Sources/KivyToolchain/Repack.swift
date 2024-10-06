@@ -141,7 +141,7 @@ public struct Repack: AsyncParsableCommand {
     }
 	
 	public class ImageCore: RepackProtocol {
-		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "ImageCore"})!
+		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "imagecore"})!
 		
 		init() {
 		}
