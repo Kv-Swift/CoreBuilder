@@ -13,7 +13,9 @@ on:
         required: false
         type: boolean
         default: false
-
+    secrets:
+      token:
+        required: true
 
 
 jobs:
@@ -53,7 +55,7 @@ jobs:
       - name: commit libpng to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+          API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'ImageCore'
           destination-github-username: 'kivyswiftlink'
@@ -68,7 +70,7 @@ jobs:
           artifacts: "imagecore/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: ImageCore
-          token: ${{ secrets.Homebrew }}
+          token: ${{ secrets.token }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
       ################################################################
@@ -84,7 +86,7 @@ jobs:
       - name: commit libpng to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+          API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'ImageCore'
           destination-github-username: 'kivyswiftlink'
@@ -99,7 +101,7 @@ jobs:
           artifacts: "imagecore/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: ImageCore
-          token: ${{ secrets.Homebrew }}
+          token: ${{ secrets.token }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
       ################################################################
@@ -140,7 +142,7 @@ jobs:
       - name: commit Kivy PythonCore to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
-            API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+            API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
             source-directory: 'PythonCore'
             destination-github-username: 'kivyswiftlink'
@@ -157,7 +159,7 @@ jobs:
             "
           tag: ${{ github.event.inputs.tag }}
           repo: PythonCore
-          token: ${{ secrets.Homebrew }}
+          token: ${{ secrets.token }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
       ############# KivyCore ###############
@@ -179,7 +181,7 @@ jobs:
       - name: commit KivyCore to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+          API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'KivyCore'
           destination-github-username: 'kivyswiftlink'
@@ -194,7 +196,7 @@ jobs:
           artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/kivy-ios.zip, kivy/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyCore
-          token: ${{ secrets.Homebrew }}
+          token: ${{ secrets.token }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
       
@@ -211,7 +213,7 @@ jobs:
       - name: commit KivyNumpy to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+          API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'KivyNumpy'
           destination-github-username: 'kivyswiftlink'
@@ -226,7 +228,7 @@ jobs:
           artifacts: "numpy/numpy_dist.zip, numpy/numpy_site.zip, numpy/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyNumpy
-          token: ${{ secrets.Homebrew }}
+          token: ${{ secrets.token }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
 
@@ -258,7 +260,7 @@ jobs:
       - name: commit KivyExtra to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
-          API_TOKEN_GITHUB: ${{ secrets.Homebrew }}
+          API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'KivyExtra'
           destination-github-username: 'kivyswiftlink'
@@ -295,7 +297,7 @@ jobs:
             "
           tag: ${{ github.event.inputs.tag }}
           repo: KivyExtra
-          token: ${{ secrets.Homebrew }}
+          token: ${{ secrets.token }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
 

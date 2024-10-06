@@ -29,4 +29,6 @@ jobs:
         with:
           tag: ${{ github.event.inputs.tag }}
           lastest: true
+        secrets:
+            token: ${{ secrets.Homebrew }}
     
