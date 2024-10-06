@@ -22,10 +22,10 @@ jobs:
         uses: ./.github/workflows/build_components.yml
         with:
           tag: ${{ github.event.inputs.tag }}
-          lastest: ${{ github.event.inputs.lastest }}
+          lastest: true
     release_components:
         uses: ./.github/workflows/release_components.yml
         with:
           tag: ${{ github.event.inputs.tag }}
-          lastest: ${{ github.event.inputs.lastest }}
+          lastest: true
     
