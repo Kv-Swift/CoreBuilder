@@ -95,8 +95,7 @@ public struct Repack: AsyncParsableCommand {
     
     static let recipes: [any RepackProtocol] = [
         Python(),
-		libpng(),
-		libjpeg(),
+		ImageCore(),
 		FreeType(),
 		SDL2(),
         Kivy(),
@@ -141,23 +140,17 @@ public struct Repack: AsyncParsableCommand {
         }
     }
 	
-	public class libpng: RepackProtocol {
-		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "libpng"})!
+	public class ImageCore: RepackProtocol {
+		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "ImageCore"})!
 		
 		init() {
 		}
 		
 		public func copy_lib_a() throws {}
+		public func copy_site_packages() throws {}
 	}
 	
-	public class libjpeg: RepackProtocol {
-		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "libjpeg"})!
-		
-		init() {
-		}
-		
-		public func copy_lib_a() throws {}
-	}
+	
 	
 	public class FreeType: RepackProtocol {
 		public let recipe: Recipe = Realm.default.objects(Recipe.self).first(where: {$0.name == "freetype"})!
@@ -165,6 +158,7 @@ public struct Repack: AsyncParsableCommand {
 		init() {
 		}
 		public func copy_lib_a() throws {}
+		public func copy_site_packages() throws {}
 	}
 	
 	public class SDL2: RepackProtocol {
@@ -173,6 +167,7 @@ public struct Repack: AsyncParsableCommand {
 		init() {
 		}
 		public func copy_lib_a() throws {}
+		public func copy_site_packages() throws {}
 	}
     
     public class Kivy: RepackProtocol {
