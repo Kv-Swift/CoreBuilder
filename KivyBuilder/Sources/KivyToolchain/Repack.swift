@@ -63,26 +63,26 @@ public extension RepackProtocol {
     func copy_xcframeworks() throws {
         try xc_path.mkpath()
         try recipe.frameworks.lazy.map(\.path.asPath).forEach { fw in
-            try fw.copy(xc_path + fw.lastComponent)
+            try! fw.copy(xc_path + fw.lastComponent)
         }
     }
     
     func copy_site_packages() throws {
         try! site_path.mkpath()
         try recipe.site_files.lazy.map(\.path.asPath).forEach { path in
-            try path.copy(site_path + path.lastComponent)
+            try! path.copy(site_path + path.lastComponent)
         }
     }
     
     func copy_lib_a() throws {
         try! dist_iphoneos.mkpath()
         try recipe.iphoneos_files.lazy.map(\.path.asPath).forEach { path in
-            try path.copy(dist_iphoneos + path.lastComponent)
+            try! path.copy(dist_iphoneos + path.lastComponent)
         }
         
         try! dist_simulator.mkpath()
         try recipe.simulator_files.lazy.map(\.path.asPath).forEach { path in
-            try path.copy(dist_simulator + path.lastComponent )
+            try! path.copy(dist_simulator + path.lastComponent )
         }
     }
     
