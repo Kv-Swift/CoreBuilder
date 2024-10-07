@@ -131,7 +131,8 @@ public struct Repack: AsyncParsableCommand {
 			try! (Path.current + "package_templates/module.modulemap").copyTo(py_headers)
             let py_xc = xc_path + "libpython3.11.xcframework"
             let xc_ios = py_xc + "ios-arm64"
-            let xc_sim = py_xc + "ios-x86_64-simulator"
+            //let xc_sim = py_xc + "ios-x86_64-simulator"
+			let xc_sim = py_xc + "ios-arm64_x86_64-simulator"
 			//let xc_sim_arm = py_xc + "ios-arm64-simulator"
             try py_headers.copy(xc_ios + "python3.11")
             try py_headers.copy(xc_sim + "python3.11")
@@ -199,8 +200,8 @@ public struct Repack: AsyncParsableCommand {
             try build_numpy_headers.copyContent(numpy_headers)
             let numpy_xc = xc_path + "libnumpy.xcframework"
             try numpy_headers.copyContent(numpy_xc + "ios-arm64/numpy")
-            try numpy_headers.copyContent(numpy_xc + "ios-x86_64-simulator/numpy")
-			try numpy_headers.copyContent(numpy_xc + "ios-arm64-simulator/numpy")
+            try numpy_headers.copyContent(numpy_xc + "ios-arm64_x86_64-simulator/numpy")
+			//try numpy_headers.copyContent(numpy_xc + "ios-arm64-simulator/numpy")
             
             try (output + "Info.plist").write(numpy_plist, encoding: .utf8)
         }
