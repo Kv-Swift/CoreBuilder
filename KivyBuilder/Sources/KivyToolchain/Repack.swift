@@ -132,10 +132,10 @@ public struct Repack: AsyncParsableCommand {
             let py_xc = xc_path + "libpython3.11.xcframework"
             let xc_ios = py_xc + "ios-arm64"
             let xc_sim = py_xc + "ios-x86_64-simulator"
-			let xc_sim_arm = py_xc + "ios-arm64-simulator"
+			//let xc_sim_arm = py_xc + "ios-arm64-simulator"
             try py_headers.copy(xc_ios + "python3.11")
             try py_headers.copy(xc_sim + "python3.11")
-			try py_headers.copy(xc_sim_arm + "python3.11")
+			//try py_headers.copy(xc_sim_arm + "python3.11")
             
             try (py_xc + "Info.plist").write(python_plist, encoding: .utf8)
 			
