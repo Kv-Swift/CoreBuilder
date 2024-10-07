@@ -165,12 +165,12 @@ jobs:
             ${{ github.event.inputs.tag }} \
             --output output/sdl2/Package.swift
       
-      - name: update libpng package.swift
+      - name: update imagecore package.swift
         run: |
           SwiftPackageGen generate \
-            ./package_templates/libpng.yml \
+            ./package_templates/ImageCore.yml \
             ${{ github.event.inputs.tag }} \
-            --output output/libpng/Package.swift
+            --output output/imagecore/Package.swift
         
       - name: update libjpeg package.swift
         run: |

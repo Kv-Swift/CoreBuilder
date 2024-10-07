@@ -1,10 +1,13 @@
 owner: KivySwiftLink
-repository: libpng
+repository: ImageCore
 swift_version: 5.9
 products:
   - library: libpng
     targets:
       - libpng
+  - library: libjpeg
+    targets:
+      - libjpeg
 
 
 # dependencies:
@@ -14,4 +17,4 @@ products:
 targets:
   - target: libpng
     dependencies:
-      - binary: ./output/libpng/xcframework
+      - binary: ./output/imagecore/xcframework
