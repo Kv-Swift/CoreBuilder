@@ -171,14 +171,7 @@ jobs:
             ./package_templates/ImageCore.yml \
             ${{ github.event.inputs.tag }} \
             --output output/imagecore/Package.swift
-        
-      - name: update libjpeg package.swift
-        run: |
-          SwiftPackageGen generate \
-            ./package_templates/libjpeg.yml \
-            ${{ github.event.inputs.tag }} \
-            --output output/libjpeg/Package.swift
-
+      
       - name: update Numpy package.swift
         run: |
           SwiftPackageGen generate \

@@ -15,6 +15,6 @@ products:
 #     url: https://github.com/SwiftLink/KivyPythonCore
 #     upToNextMajor: 310.0.0
 targets:
-  - target: libpng
+  - target: imagecore
     dependencies:
       - binary: ./output/imagecore/xcframework
