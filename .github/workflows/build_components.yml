@@ -146,38 +146,53 @@ jobs:
 
       - name: update Python package.swift
         run: |
-          SwiftPackageGen generate \
-            ./package_templates/KivyPythonCore.yml \
+          SwiftPackageGen update \
+            ./package_templates/PythonCore.swift \
+            output/python3/xcframework \
             ${{ github.event.inputs.tag }} \
+            KivySwiftLink \
+            PythonCore \
             --output output/python3/Package.swift
       
       - name: update Kivy package.swift
         run: |
-          SwiftPackageGen generate \
-            ./package_templates/KivyCore.yml \
+          SwiftPackageGen update \
+            ./package_templates/KivyCore/Package.swift \
+            output/kivy/xcframework \
             ${{ github.event.inputs.tag }} \
+            KivySwiftLink \
+            KivyCore \
             --output output/kivy/Package.swift
       
       - name: update sdl2 package.swift
         run: |
-          SwiftPackageGen generate \
-            ./package_templates/sdl2core.yml \
+          SwiftPackageGen update \
+            ./package_templates/SDL2Core.swift \
+            output/sdl2/xcframework \
             ${{ github.event.inputs.tag }} \
+            KivySwiftLink \
+            SDL2Core \
             --output output/sdl2/Package.swift
       
       - name: update imagecore package.swift
         run: |
-          SwiftPackageGen generate \
-            ./package_templates/ImageCore.yml \
+          SwiftPackageGen update \
+            ./package_templates/ImageCore.swift \
+            output/imagecore/xcframework \
             ${{ github.event.inputs.tag }} \
+            KivySwiftLink \
+            ImageCore \
             --output output/imagecore/Package.swift
       
       - name: update Numpy package.swift
         run: |
-          SwiftPackageGen generate \
-            ./package_templates/KivyNumpy.yml \
+          SwiftPackageGen update \
+            ./package_templates/KivyNumly.swift \
+            output/numpy/xcframework \
             ${{ github.event.inputs.tag }} \
-            --output output/numpy/Package.swift  
+            KivySwiftLink \
+            KivyNumpy \
+            --output output/numpy/Package.swift
 
       - name: update KivyExtraPackage package.swift
         run: |
@@ -187,18 +202,11 @@ jobs:
             ${{ github.event.inputs.tag }} \
             --output output/kivyextra/Package.swift
 
-      - name: update KivyExtraPackage package.swift
-        run: |
-          mkdir -pv output/sdl2
-          SwiftPackageGen generate \
-            ./package_templates/sdl2core.yml \
-            ${{ github.event.inputs.tag }} \
-            --output output/sdl2/Package.swift
       
-  #     - uses: actions/upload-artifact@v4
-  #       with:
-  #         name: release-output
-  #         path: ./output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-output
+          path: ./output
 
   # ###############################################################################
   # ###############################################################################
