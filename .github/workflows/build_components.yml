@@ -187,7 +187,7 @@ jobs:
       - name: update Numpy package.swift
         run: |
           SwiftPackageGen update \
-            ./package_templates/KivyNumly.swift \
+            ./package_templates/KivyNumpy.swift \
             output/numpy/xcframework \
             ${{ github.event.inputs.tag }} \
             KivySwiftLink \
