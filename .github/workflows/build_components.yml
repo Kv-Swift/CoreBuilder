@@ -194,12 +194,26 @@ jobs:
             KivyNumpy \
             --output output/numpy/Package.swift
 
+      # - name: update KivyExtraPackage package.swift
+      #   run: |
+      #     mkdir -pv output/kivyextra
+      #     SwiftPackageGen update \
+      #       ./package_templates/KivyNumpy.swift \
+      #       output/kivyextra/xcframework \
+      #       ${{ github.event.inputs.tag }} \
+      #       KivySwiftLink \
+      #       KivyExtra \
+      #       --output output/kivyextra/Package.swift
       - name: update KivyExtraPackage package.swift
         run: |
           mkdir -pv output/kivyextra
-          SwiftPackageGen generate \
+          SwiftPackageGen update \
             ./package_templates/kivyextra.yml \
+            output/kivyextra/xcframework \
             ${{ github.event.inputs.tag }} \
+            KivySwiftLink \
+            KivyExtra \
+            --spec ./package_templates/kivyextra_spec.yml \
             --output output/kivyextra/Package.swift
 
       

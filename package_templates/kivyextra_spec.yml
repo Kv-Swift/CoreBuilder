@@ -1,0 +1,17 @@
+binaryTargets:
+  - name: FFMpeg
+    path: ./output/ffmpeg/xcframework
+    type: dir
+  - name: FFPyplayer
+    path: ./output/ffpyplayer/xcframework
+    type: dir
+  - name: Pillow
+    path: ./output/pillow/xcframework
+    type: dir
+  - name: KiwiSolver
+    path: ./output/kiwisolver/xcframework
+    type: dir
+  - name: MatPlotLib
+    path: ./output/matplotlib/xcframework
+    type: dir
+  
