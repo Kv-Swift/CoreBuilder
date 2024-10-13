@@ -15,13 +15,13 @@ let package = Package(
     	),
     ],
     dependencies: [
-    	//.package(url: "https://github.com/KivySwiftLink/libpng", .upToNextMajor(from: "311.0.0"))
-        .package(path: "../imagecore")
+    	.package(url: "https://github.com/KivySwiftLink/ImageCore", .upToNextMajor(from: "0.0.10"))
+        //.package(path: "../imagecore")
     ], targets: [
     	.target(
         	name: "SDL2Core",
         	dependencies: [
-        		.product(name: "libpng", package: "imagecore"),
+        		.product(name: "libpng", package: "ImageCore"),
         		"libSDL2_mixer",
         		"libSDL2_ttf",
         		"libSDL2_image",

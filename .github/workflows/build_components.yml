@@ -147,7 +147,7 @@ jobs:
       - name: update Python package.swift
         run: |
           SwiftPackageGen update \
-            ./package_templates/PythonCore.swift \
+            ./package_templates/cores/PythonCore.swift \
             output/python3/xcframework \
             ${{ github.event.inputs.tag }} \
             KivySwiftLink \
@@ -157,7 +157,7 @@ jobs:
       - name: update Kivy package.swift
         run: |
           SwiftPackageGen update \
-            ./package_templates/KivyCore/Package.swift \
+            ./package_templates/cores/KivyCore/Package.swift \
             output/kivy/xcframework \
             ${{ github.event.inputs.tag }} \
             KivySwiftLink \
@@ -167,7 +167,7 @@ jobs:
       - name: update sdl2 package.swift
         run: |
           SwiftPackageGen update \
-            ./package_templates/SDL2Core.swift \
+            ./package_templates/cores/SDL2Core.swift \
             output/sdl2/xcframework \
             ${{ github.event.inputs.tag }} \
             KivySwiftLink \
@@ -177,7 +177,7 @@ jobs:
       - name: update imagecore package.swift
         run: |
           SwiftPackageGen update \
-            ./package_templates/ImageCore.swift \
+            ./package_templates/cores/ImageCore.swift \
             output/imagecore/xcframework \
             ${{ github.event.inputs.tag }} \
             KivySwiftLink \
@@ -187,7 +187,7 @@ jobs:
       - name: update Numpy package.swift
         run: |
           SwiftPackageGen update \
-            ./package_templates/KivyNumpy.swift \
+            ./package_templates/cores/KivyNumpy.swift \
             output/numpy/xcframework \
             ${{ github.event.inputs.tag }} \
             KivySwiftLink \
@@ -208,12 +208,12 @@ jobs:
         run: |
           mkdir -pv output/kivyextra
           SwiftPackageGen update \
-            ./package_templates/kivyextra.yml \
+            ./package_templates/yamls/kivyextra.yml \
             output/kivyextra/xcframework \
             ${{ github.event.inputs.tag }} \
             KivySwiftLink \
             KivyExtra \
-            --spec ./package_templates/kivyextra_spec.yml \
+            --spec ./package_templates/cores/kivyextra_spec.yml \
             --output output/kivyextra/Package.swift
 
       

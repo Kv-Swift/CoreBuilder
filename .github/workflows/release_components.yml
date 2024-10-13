@@ -44,6 +44,57 @@ jobs:
       #     tag: ${{ github.event.inputs.tag }}
       #     lastest: ${{ github.event.inputs.lastest }}
       
+
+
+      ################################################################################################
+      #                             releases
+      ################################################################################################
+      - name: create PythonCore
+        shell: bash
+        run: |
+            git clone https://github.com/pythonswiftlink/PythonCore.git _PythonCore
+            mkdir -p PythonCore/Sources
+
+            cp -rf _PythonCore/Sources/PythonCore PythonCore/Sources/
+            cp -rf _PythonCore/Sources/PythonExtra PythonCore/Sources/
+            cp -rf package_templates/cores/PythonLibrary PythonCore/Sources/
+            cp -f python3/Package.swift PythonCore/
+            #cp -rf package_templates/cores/PythonCore/Sources/PythonCore PythonCore/Sources/
+
+            mv -f python3/lib PythonCore/Sources/PythonLibrary/
+
+
+      # commit new package to kivypythoncore/master
+      - name: commit Kivy PythonCore to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+            API_TOKEN_GITHUB: ${{ secrets.token }}
+        with:
+            source-directory: 'PythonCore'
+            destination-github-username: 'kivyswiftlink'
+            destination-repository-name: 'PythonCore'
+            user-email: kivyswiftlink@gmail.com
+            target-branch: master
+
+      - name: releasePythonCore
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "
+            python3/python_dist.zip,
+            python3/xcframework/*.zip
+            "
+          tag: ${{ github.event.inputs.tag }}
+          repo: PythonCore
+          token: ${{ secrets.token }}
+          allowUpdates: true
+          makeLatest: ${{ github.event.inputs.lastest }}
+
+
+
+
+
+
+
       ############# ImageCore ###############
       - name: create ImageCore
         shell: bash
@@ -74,13 +125,20 @@ jobs:
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
       ################################################################
+      
+
+
+      
+
+
+
 
       ############# freetype ###############
-      - name: create freetype
+      - name: create FreeType
         shell: bash
         run: |
-          mkdir Freetype
-          cp imagecore/Package.swift Freetype/
+          mkdir FreeType
+          cp imagecore/Package.swift FreeType/
 
       # commit new package to kivyswiftlink/master
       - name: commit libpng to master
@@ -88,19 +146,19 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
-          source-directory: 'ImageCore'
+          source-directory: 'FreeType'
           destination-github-username: 'kivyswiftlink'
-          destination-repository-name: 'ImageCore'
+          destination-repository-name: 'FreeType'
           user-email: kivyswiftlink@gmail.com
           target-branch: master
       
       # create a new release from master and python_lib.zip / dist_lib.zip to the release
-      - name: release ImageCore
+      - name: release freetype
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "imagecore/xcframework/*.zip"
+          artifacts: "freetype/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
-          repo: ImageCore
+          repo: FreeType
           token: ${{ secrets.token }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
@@ -114,59 +172,55 @@ jobs:
 
 
 
-
-
-
-
-
-
-
-
-
-      - name: create PythonCore
+      ############# SDL2Core ###############
+      - name: create SDL2Core
         shell: bash
         run: |
-            git clone https://github.com/pythonswiftlink/PythonCore.git _PythonCore
-            mkdir -p PythonCore/Sources
+          cp -rf package_templates/SDL2Core SDL2Core
+          cp -f sdl2/Package.swift SDL2Core/
+          
 
-            cp -rf _PythonCore/Sources/PythonCore PythonCore/Sources/
-            cp -rf _PythonCore/Sources/PythonExtra PythonCore/Sources/
-            cp -rf package_templates/PythonLibrary PythonCore/Sources/
-            cp -f python3/Package.swift PythonCore/
-            #cp -rf package_templates/PythonCore/Sources/PythonCore PythonCore/Sources/
-
-            mv -f python3/lib PythonCore/Sources/PythonLibrary/
-
-
-      # commit new package to kivypythoncore/master
-      - name: commit Kivy PythonCore to master
+      # commit new package to kivyswiftlink/master
+      - name: commit SDL2Core to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
-            API_TOKEN_GITHUB: ${{ secrets.token }}
+          API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
-            source-directory: 'PythonCore'
-            destination-github-username: 'kivyswiftlink'
-            destination-repository-name: 'PythonCore'
-            user-email: kivyswiftlink@gmail.com
-            target-branch: master
-
-      - name: releasePythonCore
+          source-directory: 'SDL2Core'
+          destination-github-username: 'kivyswiftlink'
+          destination-repository-name: 'SDL2Core'
+          user-email: kivyswiftlink@gmail.com
+          target-branch: master
+      
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - name: release SDL2Core
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "
-            python3/python_dist.zip,
-            python3/xcframework/*.zip
-            "
+          artifacts: "sdl2/xcframework/*.zip"
           tag: ${{ github.event.inputs.tag }}
-          repo: PythonCore
+          repo: SDL2Core
           token: ${{ secrets.token }}
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
+      
+      ################################################################
+      
+
+
+
+
+
+
+
+
+
+
+
       ############# KivyCore ###############
       - name: create KivyCore
         shell: bash
         run: |
-          cp -rf package_templates/KivyCore KivyCore
+          cp -rf package_templates/cores/KivyCore KivyCore
           cp -f kivy/Package.swift KivyCore/
           
 
@@ -202,6 +256,17 @@ jobs:
       
       ################################################################
 
+
+
+
+
+
+
+
+
+
+
+      ############# KivyNumpy ###############
       - name: create KivyNumpy
         shell: bash
         run: |
@@ -232,7 +297,14 @@ jobs:
           allowUpdates: true
           makeLatest: ${{ github.event.inputs.lastest }}
 
+      ################################################################
 
+
+
+
+
+
+      ############# KivyExtra ###############
       - name: create KivyExtra
         shell: bash
         run: |
