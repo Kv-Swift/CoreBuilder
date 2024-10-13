@@ -15,7 +15,7 @@ let package = Package(
     	),
     ],
     dependencies: [
-    	.package(url: "https://github.com/KivySwiftLink/ImageCore", .upToNextMajor(from: "0.0.10"))
+    	.package(url: "https://github.com/KivySwiftLink/ImageCore", .upToNextMajor(from: "311.0.0"))
         //.package(path: "../imagecore")
     ], targets: [
     	.target(

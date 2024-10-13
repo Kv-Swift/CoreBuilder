@@ -15,6 +15,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/KivySwiftLink/PythonCore", from: .init(310, 0, 0)),
+        .package(url: "https://github.com/KivySwiftLink/ImageCore", from: .init(310, 0, 0)),
     ],
     targets: [
         .target(
@@ -26,8 +27,7 @@ let package = Package(
                 "libjpeg",
                 "libkivy",
                 "libpillow",
-                "libpng16",
-                "libpyobjus",
+                "libpng",
                 "libSDL2_image",
                 "libSDL2_mixer",
                 "libSDL2_ttf",
