@@ -176,7 +176,7 @@ jobs:
       - name: create SDL2Core
         shell: bash
         run: |
-          cp -rf package_templates/SDL2Core SDL2Core
+          cp -rf package_templates/cores/SDL2Core SDL2Core
           cp -f sdl2/Package.swift SDL2Core/
           
 
