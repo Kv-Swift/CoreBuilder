@@ -8,7 +8,15 @@ import PyDictionary
 
 import Foundation
 
-
+fileprivate extension PyPointer {
+	func callMethod(_ method: PyPointer) {
+		withGIL {
+			PyObject_CallMethodNoArgs(self, method)
+		}
+		
+		
+	}
+}
 
 public class IOSKeyboard: IOSKeyboard_PyProtocol {
 	
