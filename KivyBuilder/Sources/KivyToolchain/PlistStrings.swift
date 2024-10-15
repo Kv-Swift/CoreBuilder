@@ -21,11 +21,12 @@ let python_plist = """
             <key>BinaryPath</key>
             <string>libpython3.11.a</string>
             <key>LibraryIdentifier</key>
-            <string>ios-x86_64-simulator</string>
+            <string>ios-arm64_x86_64-simulator</string>
             <key>LibraryPath</key>
             <string>libpython3.11.a</string>
             <key>SupportedArchitectures</key>
             <array>
+				<string>arm64</string>
                 <string>x86_64</string>
             </array>
             <key>SupportedPlatform</key>
@@ -88,11 +89,12 @@ let numpy_plist = """
             <key>BinaryPath</key>
             <string>libnumpy.a</string>
             <key>LibraryIdentifier</key>
-            <string>ios-x86_64-simulator</string>
+            <string>ios-arm64_x86_64-simulator</string>
             <key>LibraryPath</key>
             <string>libnumpy.a</string>
             <key>SupportedArchitectures</key>
             <array>
+				<string>arm64</string>
                 <string>x86_64</string>
             </array>
             <key>SupportedPlatform</key>
