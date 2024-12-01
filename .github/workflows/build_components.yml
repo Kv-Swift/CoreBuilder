@@ -208,7 +208,7 @@ jobs:
         run: |
           mkdir -pv output/kivyextra
           SwiftPackageGen update \
-            ./package_templates/yamls/kivyextra.yml \
+            ./package_templates/cores/KivyExtra.swift \
             output/kivyextra/xcframework \
             ${{ github.event.inputs.tag }} \
             KivySwiftLink \
