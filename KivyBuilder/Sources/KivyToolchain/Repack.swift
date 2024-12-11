@@ -190,20 +190,20 @@ public struct Repack: AsyncParsableCommand {
         public func post_process() throws {
             let numpy_headers = output + "headers/numpy"
             try numpy_headers.mkpath()
-            let build_headers = Path.current + "build/numpy/iphoneos-arm64/numpy-1.24.4/build/src.macosx-13.6-x86_64-3.11/numpy/core/include/numpy/"
-            //build_headers.forEach({print($0)})
-            try (build_headers + "__multiarray_api.h").copyTo(numpy_headers)
-            try (build_headers + "__ufunc_api.h").copyTo(numpy_headers)
-            try (build_headers + "_numpyconfig.h").copyTo(numpy_headers)
-            try (build_headers + "_umath_doc_generated.h").copyTo(numpy_headers)
-            let build_numpy_headers = (Path.current + "dist/include/common/numpy/numpy")
-            try build_numpy_headers.copyContent(numpy_headers)
-            let numpy_xc = xc_path + "libnumpy.xcframework"
-            try numpy_headers.copyContent(numpy_xc + "ios-arm64/numpy")
-            try numpy_headers.copyContent(numpy_xc + "ios-arm64_x86_64-simulator/numpy")
-			//try numpy_headers.copyContent(numpy_xc + "ios-arm64-simulator/numpy")
-            
-            try (output + "Info.plist").write(numpy_plist, encoding: .utf8)
+//            let build_headers = Path.current + "build/numpy/iphoneos-arm64/numpy-1.24.4/build/src.macosx-13.6-x86_64-3.11/numpy/core/include/numpy/"
+//            //build_headers.forEach({print($0)})
+//            try (build_headers + "__multiarray_api.h").copyTo(numpy_headers)
+//            try (build_headers + "__ufunc_api.h").copyTo(numpy_headers)
+//            try (build_headers + "_numpyconfig.h").copyTo(numpy_headers)
+//            try (build_headers + "_umath_doc_generated.h").copyTo(numpy_headers)
+//            let build_numpy_headers = (Path.current + "dist/include/common/numpy/numpy")
+//            try build_numpy_headers.copyContent(numpy_headers)
+//            let numpy_xc = xc_path + "libnumpy.xcframework"
+//            try numpy_headers.copyContent(numpy_xc + "ios-arm64/numpy")
+//            try numpy_headers.copyContent(numpy_xc + "ios-arm64_x86_64-simulator/numpy")
+//			//try numpy_headers.copyContent(numpy_xc + "ios-arm64-simulator/numpy")
+//            
+//            try (output + "Info.plist").write(numpy_plist, encoding: .utf8)
         }
     }
     
