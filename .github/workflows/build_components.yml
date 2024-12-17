@@ -48,179 +48,32 @@ jobs:
         with:
           python-version: '3.11' # install the python version needed
       
-      - name: brew installs
-        run: |
-          brew tap PythonSwiftLink/tools
-          brew install swiftpackagegen
+      # - name: brew installs
+      #   run: |
+      #     brew tap PythonSwiftLink/tools
+      #     brew install swiftpackagegen
       
       # - name: chmod tools
       #   run: |
       #     chmod 755 tools/SwiftPackageGen
       #     chmod 755 tools/PSProject
       
-      - name: install kivy-ios
-        uses: kivyswiftlink/actions/install_kivy_ios@master
+      - name: pip installs
+        run: |
+          pip3.11 install https://github.com/kivyswiftlink/PSL_Toolchain/archive/refs/heads/master.zip 
+      # - name: install kivy-ios
+      #   uses: kivyswiftlink/actions/install_kivy_ios@master
 
       #### build phase ####
       
-      - name: build hostpython3
-        run: toolchain build hostpython3
-
-      - name: build python3
-        run: |
-          toolchain build python3
-          swift run --package-path KivyBuilder KivyBuilder toolchain python3
-
-    
-      - name: build imagecore
-        run: |
-          toolchain build libpng libjpeg
-          swift run --package-path KivyBuilder KivyBuilder toolchain imagecore
-
-
-      # SDL2
-      - name: build sdl2 components
-        run: |
-          toolchain build sdl2 sdl2_image sdl2_mixer sdl2_ttf
-          swift run --package-path KivyBuilder KivyBuilder toolchain sdl2
-      
-      - name: build freetype
-        run: |
-          toolchain build freetype
-          swift run --package-path KivyBuilder KivyBuilder toolchain freetype
-    
-      
-      - name: build kivy
-        run: |
-            toolchain build kivy
-            swift run --package-path KivyBuilder KivyBuilder toolchain kivy
-
-      - name: build pillow
-        run: |
-            toolchain build pillow
-            swift run --package-path KivyBuilder KivyBuilder toolchain pillow
-      
-      - name: build numpy
-        run: |
-          toolchain build numpy
-          swift run --package-path KivyBuilder KivyBuilder toolchain numpy
-
-      - name: build kiwisolver
-        run: |
-            toolchain build kiwisolver
-            swift run --package-path KivyBuilder KivyBuilder toolchain kiwisolver
-
-      - name: build materialyoucolor
-        run: |
-            toolchain build materialyoucolor
-            swift run --package-path KivyBuilder KivyBuilder toolchain materialyoucolor
-
-      - name: build matplotlib
-        run: |
-            toolchain build matplotlib
-            swift run --package-path KivyBuilder KivyBuilder toolchain matplotlib
-
-      - name: build ffmpeg
-        run: |
-            toolchain build ffmpeg
-            swift run --package-path KivyBuilder KivyBuilder toolchain ffmpeg
-
-      - name: build ffpyplayer
-        run: |
-            toolchain build ffpyplayer
-            swift run --package-path KivyBuilder KivyBuilder toolchain ffpyplayer
-      
-      
-
-      - name: KivyBuilder repack
-        run: swift run --package-path KivyBuilder KivyBuilder repack
-      
-      
-      - name: zip dists content
-        uses: kivyswiftlink/actions/zip_dist_folder@master
-
-
-      ## zip xcframeworks
-      - name: zip all xcframeworks
-        uses: kivyswiftlink/actions/zip_all_xcframeworks@master
-
-      - name: update Python package.swift
-        run: |
-          SwiftPackageGen update \
-            ./package_templates/cores/PythonCore.swift \
-            output/python3/xcframework \
-            ${{ github.event.inputs.tag }} \
-            KivySwiftLink \
-            PythonCore \
-            --output output/python3/Package.swift
-      
-      - name: update Kivy package.swift
-        run: |
-          SwiftPackageGen update \
-            ./package_templates/cores/KivyCore/Package.swift \
-            output/kivy/xcframework \
-            ${{ github.event.inputs.tag }} \
-            KivySwiftLink \
-            KivyCore \
-            --output output/kivy/Package.swift
-      
-      - name: update sdl2 package.swift
-        run: |
-          SwiftPackageGen update \
-            ./package_templates/cores/SDL2Core.swift \
-            output/sdl2/xcframework \
-            ${{ github.event.inputs.tag }} \
-            KivySwiftLink \
-            SDL2Core \
-            --output output/sdl2/Package.swift
-      
-      - name: update imagecore package.swift
-        run: |
-          SwiftPackageGen update \
-            ./package_templates/cores/ImageCore.swift \
-            output/imagecore/xcframework \
-            ${{ github.event.inputs.tag }} \
-            KivySwiftLink \
-            ImageCore \
-            --output output/imagecore/Package.swift
-      
-      - name: update Numpy package.swift
-        run: |
-          SwiftPackageGen update \
-            ./package_templates/cores/KivyNumpy.swift \
-            output/numpy/xcframework \
-            ${{ github.event.inputs.tag }} \
-            KivySwiftLink \
-            KivyNumpy \
-            --output output/numpy/Package.swift
-
-      # - name: update KivyExtraPackage package.swift
-      #   run: |
-      #     mkdir -pv output/kivyextra
-      #     SwiftPackageGen update \
-      #       ./package_templates/KivyNumpy.swift \
-      #       output/kivyextra/xcframework \
-      #       ${{ github.event.inputs.tag }} \
-      #       KivySwiftLink \
-      #       KivyExtra \
-      #       --output output/kivyextra/Package.swift
-      - name: update KivyExtraPackage package.swift
-        run: |
-          mkdir -pv output/kivyextra
-          SwiftPackageGen update \
-            ./package_templates/cores/KivyExtra.swift \
-            output/kivyextra/xcframework \
-            ${{ github.event.inputs.tag }} \
-            KivySwiftLink \
-            KivyExtra \
-            --spec ./package_templates/cores/kivyextra_spec.yml \
-            --output output/kivyextra/Package.swift
+      - name: build all
+        run: psl_toolchain swiftpackage all
 
       
       - uses: actions/upload-artifact@v4
         with:
           name: release-output
-          path: ./output
+          path: ./swiftpackages
 
   # ###############################################################################
   # ###############################################################################
