@@ -60,6 +60,8 @@ jobs:
       
       - name: pip installs
         run: |
+          pip3.11 install setuptools
+          pip3.11 install wheel
           pip3.11 install https://github.com/kivyswiftlink/PSL_Toolchain/archive/refs/heads/master.zip -v
       # - name: install kivy-ios
       #   uses: kivyswiftlink/actions/install_kivy_ios@master
