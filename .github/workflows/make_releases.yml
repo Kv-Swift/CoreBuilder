@@ -17,12 +17,12 @@ on:
         default: false
 
 
-# jobs:
-#     build_components:
-#         uses: ./.github/workflows/build_components.yml
-#         with:
-#           tag: ${{ github.event.inputs.tag }}
-#           lastest: true
+jobs:
+    build_components:
+        uses: ./.github/workflows/build_components.yml
+        with:
+          tag: ${{ github.event.inputs.tag }}
+          lastest: true
 #     release_components:
 #         uses: ./.github/workflows/release_components.yml
 #         needs: [build_components]
