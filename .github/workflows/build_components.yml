@@ -91,7 +91,7 @@ jobs:
       - name: build hostpython
         run: psl_toolchain build hostpython3
       
-      - name: build all
+      - name: swift_package all
         run: psl_toolchain swiftpackage all --version ${{ github.event.inputs.tag }}
 
       
