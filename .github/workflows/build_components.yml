@@ -64,7 +64,7 @@ jobs:
           pip3.11 install wheel
       
       - name: pip install psl_toolchakn
-          run: pip3.11 install https://github.com/kivyswiftlink/PSL_Toolchain/archive/refs/heads/master.zip -v
+        run: pip3.11 install https://github.com/kivyswiftlink/PSL_Toolchain/archive/refs/heads/master.zip -v
       # - name: install kivy-ios
       #   uses: kivyswiftlink/actions/install_kivy_ios@master
 
