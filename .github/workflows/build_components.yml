@@ -88,8 +88,11 @@ jobs:
       - name: build kivy
         run: psl_toolchain build kivy
 
-      - name: build hostpython
-        run: psl_toolchain build hostpython3
+      - name: build pillow
+        run: psl_toolchain build pillow
+
+      - name: build numpy
+        run: psl_toolchain build numpy
       
       - name: swift_package all
         run: psl_toolchain swiftpackage all --version ${{ github.event.inputs.tag }}
