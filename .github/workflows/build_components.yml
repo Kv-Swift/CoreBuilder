@@ -60,24 +60,45 @@ jobs:
       
       - name: pip installs
         run: |
-          #python3.11 -m venv venv
-          #. venv/bin/activate
           pip3.11 install setuptools
           pip3.11 install wheel
-          pip3.11 install https://github.com/kivyswiftlink/PSL_Toolchain/archive/refs/heads/master.zip -v
+      
+      - name: pip install psl_toolchakn
+          run: pip3.11 install https://github.com/kivyswiftlink/PSL_Toolchain/archive/refs/heads/master.zip -v
       # - name: install kivy-ios
       #   uses: kivyswiftlink/actions/install_kivy_ios@master
 
       #### build phase ####
+
+      - name: build hostpython
+        run: psl_toolchain build hostpython3
+      
+      - name: build freetype
+        run: psl_toolchain build freetype
+
+      - name: build libpng
+        run: psl_toolchain build libpng
+
+      - name: build libjpeg
+        run: psl_toolchain build libjpeg
+
+      - name: build python3
+        run: psl_toolchain build python3
+
+      - name: build kivy
+        run: psl_toolchain build kivy
+
+      - name: build hostpython
+        run: psl_toolchain build hostpython3
       
       - name: build all
-        run: psl_toolchain swiftpackage all
+        run: psl_toolchain swiftpackage all --version ${{ github.event.inputs.tag }}
 
       
       - uses: actions/upload-artifact@v4
         with:
           name: release-output
-          path: ./swiftpackages
+          path: ./swift_packages
 
   # ###############################################################################
   # ###############################################################################

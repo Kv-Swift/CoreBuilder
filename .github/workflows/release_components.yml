@@ -70,7 +70,7 @@ jobs:
         env:
             API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
-            source-directory: 'PythonCore'
+            source-directory: 'PythonCore/export/PythonCore'
             destination-github-username: 'kivyswiftlink'
             destination-repository-name: 'PythonCore'
             user-email: kivyswiftlink@gmail.com
@@ -80,8 +80,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "
-            python3/python_dist.zip,
-            python3/xcframework/*.zip
+            PythonCore/dist_files.zip,
+            PythonCore/xcframeworks/*.zip
             "
           tag: ${{ github.event.inputs.tag }}
           repo: PythonCore
@@ -96,19 +96,13 @@ jobs:
 
 
       ############# ImageCore ###############
-      - name: create ImageCore
-        shell: bash
-        run: |
-          mkdir ImageCore
-          cp imagecore/Package.swift ImageCore/
-
       # commit new package to kivyswiftlink/master
       - name: commit libpng to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
-          source-directory: 'ImageCore'
+          source-directory: 'ImageCore/export/ImageCore'
           destination-github-username: 'kivyswiftlink'
           destination-repository-name: 'ImageCore'
           user-email: kivyswiftlink@gmail.com
@@ -118,7 +112,7 @@ jobs:
       - name: release ImageCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "imagecore/xcframework/*.zip"
+          artifacts: "ImageCore/xcframeworks/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: ImageCore
           token: ${{ secrets.token }}
@@ -134,19 +128,13 @@ jobs:
 
 
       ############# freetype ###############
-      - name: create FreeType
-        shell: bash
-        run: |
-          mkdir FreeType
-          cp imagecore/Package.swift FreeType/
-
       # commit new package to kivyswiftlink/master
       - name: commit libpng to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
-          source-directory: 'FreeType'
+          source-directory: 'FreeType/export/FreeType'
           destination-github-username: 'kivyswiftlink'
           destination-repository-name: 'FreeType'
           user-email: kivyswiftlink@gmail.com
@@ -156,7 +144,7 @@ jobs:
       - name: release freetype
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "freetype/xcframework/*.zip"
+          artifacts: "FreeType/xcframeworks/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: FreeType
           token: ${{ secrets.token }}
@@ -187,7 +175,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
-          source-directory: 'SDL2Core'
+          source-directory: 'SDL2Core/export/SDL2Core'
           destination-github-username: 'kivyswiftlink'
           destination-repository-name: 'SDL2Core'
           user-email: kivyswiftlink@gmail.com
@@ -197,7 +185,7 @@ jobs:
       - name: release SDL2Core
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "sdl2/xcframework/*.zip"
+          artifacts: "SDL2Core/xcframeworks/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: SDL2Core
           token: ${{ secrets.token }}
@@ -230,7 +218,7 @@ jobs:
         run: |
           git clone https://github.com/kivy/kivy-ios.git
           zip -r kivy-ios.zip kivy-ios
-          mv -f kivy-ios.zip kivy/
+          mv -f kivy-ios.zip KivyCore/
 
       # commit new package to kivyswiftlink/master
       - name: commit KivyCore to master
@@ -238,7 +226,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
-          source-directory: 'KivyCore'
+          source-directory: 'KivyCore/export/KivyCore'
           destination-github-username: 'kivyswiftlink'
           destination-repository-name: 'KivyCore'
           user-email: kivyswiftlink@gmail.com
@@ -248,7 +236,7 @@ jobs:
       - name: release KivyCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "kivy/kivy_dist.zip, kivy/site-packages.zip, kivy/kivy-ios.zip, kivy/xcframework/*.zip"
+          artifacts: "KivyCore/dist_files.zip, kivy/site-packages.zip, KivyCore/kivy-ios.zip, KivyCore/xcframeworks/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyCore
           token: ${{ secrets.token }}
@@ -281,7 +269,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
-          source-directory: 'KivyNumpy'
+          source-directory: 'KivyNumpy/export/KivyNumpy'
           destination-github-username: 'kivyswiftlink'
           destination-repository-name: 'KivyNumpy'
           user-email: kivyswiftlink@gmail.com
@@ -291,7 +279,7 @@ jobs:
       - name: release KivyNumpy
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "numpy/numpy_dist.zip, numpy/numpy_site.zip, numpy/xcframework/*.zip"
+          artifacts: "KivyNumpy/dist_files.zip, KivyNumpy/site-packages.zip, KivyNumpy/xcframeworks/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyNumpy
           token: ${{ secrets.token }}
@@ -305,72 +293,72 @@ jobs:
 
 
 
-      ############# KivyExtra ###############
-      - name: create KivyExtra
-        shell: bash
-        run: |
-          mkdir -p KivyExtra/Sources
+      # ############# KivyExtra ###############
+      # - name: create KivyExtra
+      #   shell: bash
+      #   run: |
+      #     mkdir -p KivyExtra/Sources
 
-          mkdir -p KivyExtra/Sources/KiwiSolver
-          touch KivyExtra/Sources/KiwiSolver/KiwiSolver.swift
+      #     mkdir -p KivyExtra/Sources/KiwiSolver
+      #     touch KivyExtra/Sources/KiwiSolver/KiwiSolver.swift
 
-          mkdir -p KivyExtra/Sources/FFMpeg
-          touch KivyExtra/Sources/FFMpeg/FFMpeg.swift
+      #     mkdir -p KivyExtra/Sources/FFMpeg
+      #     touch KivyExtra/Sources/FFMpeg/FFMpeg.swift
 
-          mkdir -p KivyExtra/Sources/FFPyplayer
-          touch KivyExtra/Sources/FFPyplayer/FFPyplayer.swift
+      #     mkdir -p KivyExtra/Sources/FFPyplayer
+      #     touch KivyExtra/Sources/FFPyplayer/FFPyplayer.swift
 
-          mkdir -p KivyExtra/Sources/MatPlotLib
-          touch KivyExtra/Sources/MatPlotLib/MatPlotLib.swift
+      #     mkdir -p KivyExtra/Sources/MatPlotLib
+      #     touch KivyExtra/Sources/MatPlotLib/MatPlotLib.swift
 
-          mkdir -p KivyExtra/Sources/Pillow
-          touch KivyExtra/Sources/Pillow/Pillow.swift
+      #     mkdir -p KivyExtra/Sources/Pillow
+      #     touch KivyExtra/Sources/Pillow/Pillow.swift
 
-          cp -f kivyextra/Package.swift KivyExtra/
+      #     cp -f kivyextra/Package.swift KivyExtra/
           
 
-      # commit new package to kivyswiftlink/master
-      - name: commit KivyExtra to master
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.token }}
-        with:
-          source-directory: 'KivyExtra'
-          destination-github-username: 'kivyswiftlink'
-          destination-repository-name: 'KivyExtra'
-          user-email: kivyswiftlink@gmail.com
-          target-branch: master
+      # # commit new package to kivyswiftlink/master
+      # - name: commit KivyExtra to master
+      #   uses: cpina/github-action-push-to-another-repository@main
+      #   env:
+      #     API_TOKEN_GITHUB: ${{ secrets.token }}
+      #   with:
+      #     source-directory: 'KivyExtra'
+      #     destination-github-username: 'kivyswiftlink'
+      #     destination-repository-name: 'KivyExtra'
+      #     user-email: kivyswiftlink@gmail.com
+      #     target-branch: master
 
-      # create a new release from master and python_lib.zip / dist_lib.zip to the release
-      - name: release KivyExtra
-        uses: ncipollo/release-action@v1
-        with:
+      # # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      # - name: release KivyExtra
+      #   uses: ncipollo/release-action@v1
+      #   with:
             
-          artifacts: "
-            pillow/pillow_dist.zip,
-            kiwisolver/kiwisolver_dist.zip,
-            materialyoucolor/materialyoucolor_dist.zip,
-            matplotlib/matplotlib_dist.zip,
-            ffmpeg/ffmpeg_dist.zip,
-            ffpyplayer/ffpyplayer_dist.zip,
+      #     artifacts: "
+      #       pillow/pillow_dist.zip,
+      #       kiwisolver/kiwisolver_dist.zip,
+      #       materialyoucolor/materialyoucolor_dist.zip,
+      #       matplotlib/matplotlib_dist.zip,
+      #       ffmpeg/ffmpeg_dist.zip,
+      #       ffpyplayer/ffpyplayer_dist.zip,
 
-            pillow/pillow_site.zip,
-            kiwisolver/kiwisolver_site.zip,
-            materialyoucolor/materialyoucolor_site.zip,
-            matplotlib/matplotlib_site.zip,
-            ffmpeg/ffmpeg_site.zip,
-            ffpyplayer/ffpyplayer_site.zip,
+      #       pillow/pillow_site.zip,
+      #       kiwisolver/kiwisolver_site.zip,
+      #       materialyoucolor/materialyoucolor_site.zip,
+      #       matplotlib/matplotlib_site.zip,
+      #       ffmpeg/ffmpeg_site.zip,
+      #       ffpyplayer/ffpyplayer_site.zip,
 
-            pillow/xcframework/*.zip,
-            kiwisolver/xcframework/*.zip,
-            materialyoucolor/xcframework/*.zip,
-            matplotlib/xcframework/*.zip,
-            ffmpeg/xcframework/*.zip,
-            ffpyplayer/xcframework/*.zip
-            "
-          tag: ${{ github.event.inputs.tag }}
-          repo: KivyExtra
-          token: ${{ secrets.token }}
-          allowUpdates: true
-          makeLatest: ${{ github.event.inputs.lastest }}
+      #       pillow/xcframework/*.zip,
+      #       kiwisolver/xcframework/*.zip,
+      #       materialyoucolor/xcframework/*.zip,
+      #       matplotlib/xcframework/*.zip,
+      #       ffmpeg/xcframework/*.zip,
+      #       ffpyplayer/xcframework/*.zip
+      #       "
+      #     tag: ${{ github.event.inputs.tag }}
+      #     repo: KivyExtra
+      #     token: ${{ secrets.token }}
+      #     allowUpdates: true
+      #     makeLatest: ${{ github.event.inputs.lastest }}
 
