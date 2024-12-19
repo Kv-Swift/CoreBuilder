@@ -207,7 +207,7 @@ jobs:
       - name: release KivyCore
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "KivyCore/dist_files.zip, kivy/site-packages.zip, kivy-ios.zip, KivyCore/xcframeworks/*.zip"
+          artifacts: "KivyCore/dist_files.zip, KivyCore/site-packages.zip, kivy-ios.zip, KivyCore/xcframeworks/*.zip"
           tag: ${{ github.event.inputs.tag }}
           repo: KivyCore
           token: ${{ secrets.token }}
