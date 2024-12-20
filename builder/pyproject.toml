@@ -3,7 +3,7 @@ name = "builder"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11.6"
+requires-python = "==3.11.6"
 dependencies = [
     "swiftpackagewriter@git+https://github.com/PythonSwiftLink/SwiftPackageWriter@master",
     "psbuilder@git+https://github.com/PythonSwiftLink/PSBuilder@master"
