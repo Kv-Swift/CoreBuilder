@@ -90,3 +90,6 @@ fastlane/test_output
 iOSInjectionProject/
 *.DS_Store
 .vscode/launch.json
+/builder/.cache
+/builder/dist
+builder/uv.lock
