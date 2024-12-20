@@ -59,9 +59,9 @@ jobs:
       #   working-directory: builder
 
       - name: builder generate all
-        run: uv run --no-editable generate_all.py ${{ github.event.inputs.tag }}
+        run: uv run generate_all.py ${{ github.event.inputs.tag }}
         working-directory: builder
-        
+
       # - name: build hostpython
       #   run: uv run -v --directory psbuilder psbuilder build hostpython3
       
