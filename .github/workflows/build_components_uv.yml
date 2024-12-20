@@ -48,54 +48,42 @@ jobs:
         with:
           python-version: '3.11' # install the python version needed
       
-      # - name: brew installs
-      #   run: |
-      #     brew tap PythonSwiftLink/tools
-      #     brew install swiftpackagegen
+      - name: brew install uv
+        run: brew install uv
       
-      # - name: chmod tools
-      #   run: |
-      #     chmod 755 tools/SwiftPackageGen
-      #     chmod 755 tools/PSProject
+      - name: clone psbuilder
+        run: git clone https://github.com/PythonSwiftLink/PSBuilder
       
-      - name: pip installs
-        run: |
-          pip3.11 install setuptools
-          pip3.11 install wheel
-      
-      - name: pip install psl_toolchakn
-        run: pip3.11 install https://github.com/kivyswiftlink/PSL_Toolchain/archive/refs/heads/master.zip -v
-      # - name: install kivy-ios
-      #   uses: kivyswiftlink/actions/install_kivy_ios@master
-
-      #### build phase ####
+      - name: uv sync psbuilder
+        run: uv sync -v
+        working-directory: psbuilder
 
       - name: build hostpython
-        run: psl_toolchain build hostpython3
+        run: uv run -v --directory psbuilder build hostpython3
       
       - name: build freetype
-        run: psl_toolchain build freetype
+        run: uv run -v --directory psbuilder build freetype
 
       - name: build libpng
-        run: psl_toolchain build libpng
+        run: uv run -v --directory psbuilder build libpng
 
       - name: build libjpeg
-        run: psl_toolchain build libjpeg
+        run: uv run -v --directory psbuilder build libjpeg
 
       - name: build python3
-        run: psl_toolchain build python3
+        run: uv run -v --directory psbuilder build python3
 
       - name: build kivy
-        run: psl_toolchain build kivy
+        run: uv run -v --directory psbuilder build kivy
 
       - name: build pillow
-        run: psl_toolchain build pillow
+        run: uv run -v --directory psbuilder build pillow
 
       - name: build numpy
-        run: psl_toolchain build numpy
+        run: uv run -v --directory psbuilder build numpy
       
       - name: swift_package all
-        run: psl_toolchain swiftpackage all --version ${{ github.event.inputs.tag }}
+        run: uv run -v --directory psbuilder swiftpackage all --version ${{ github.event.inputs.tag }}
 
       
       - uses: actions/upload-artifact@v4
