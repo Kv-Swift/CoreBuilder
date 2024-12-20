@@ -54,9 +54,9 @@ jobs:
       # - name: clone psbuilder
       #   run: git clone https://github.com/PythonSwiftLink/PSBuilder
       
-      - name: uv sync builder
-        run: uv sync --no-editable -v
-        working-directory: builder
+      # - name: uv sync builder
+      #   run: uv sync --no-editable -v
+      #   working-directory: builder
 
       - name: builder generate all
         run: uv run --no-editable --directory builder generate_all.py ${{ github.event.inputs.tag }}
