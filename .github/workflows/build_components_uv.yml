@@ -91,7 +91,9 @@ jobs:
       
       - name: swift_package all
         run: uv run -v --directory psbuilder psbuilder swiftpackage all --version ${{ github.event.inputs.tag }}
-
+      
+      - name: show root files before uploads
+        run: ls
       
       - uses: actions/upload-artifact@v4
         with:
