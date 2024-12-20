@@ -58,6 +58,13 @@ jobs:
         run: uv sync -v
         working-directory: psbuilder
 
+      - name: fix uv SwiftPackageWriter issue
+        run: |
+          source .venv/bin/activate
+          pip install "swiftpackagewriter@git+https://github.com/PythonSwiftLink/SwiftPackageWriter@master"
+
+        working-directory: psbuilder
+
       - name: build hostpython
         run: uv run -v --directory psbuilder psbuilder build hostpython3
       
