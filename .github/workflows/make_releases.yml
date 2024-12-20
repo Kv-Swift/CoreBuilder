@@ -19,7 +19,7 @@ on:
 
 jobs:
     build_components:
-        uses: ./.github/workflows/build_components.yml
+        uses: ./.github/workflows/build_components_uv.yml
         with:
           tag: ${{ github.event.inputs.tag }}
           lastest: true

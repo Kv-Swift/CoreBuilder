@@ -1,0 +1,109 @@
+# This workflow will build a KivySwiftLink release
+
+name: Build Components with UV
+
+
+on:
+
+  # workflow_dispatch:
+  #   inputs:
+  #     tag:
+  #       description: 'input new release tag'
+  #       required: false
+  #       type: string
+  #       default: "311.0.0"
+  #     lastest:
+  #       description: 'lastest release?'
+  #       required: false
+  #       type: boolean
+  #       default: false
+
+  workflow_call:
+    inputs:
+      tag:
+        required: false
+        type: string
+        default: "311.0.0"
+      lastest:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  toolchainBuild:
+    runs-on: macOS-13
+    #runs-on: self-hosted
+    permissions:
+        contents: write
+  
+    steps:
+    #   - uses: maxim-lobanov/setup-xcode@v1
+    #     with:
+    #       xcode-version: '15.0'
+        
+      - uses: actions/checkout@v4
+      
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' # install the python version needed
+      
+      # - name: brew installs
+      #   run: |
+      #     brew tap PythonSwiftLink/tools
+      #     brew install swiftpackagegen
+      
+      # - name: chmod tools
+      #   run: |
+      #     chmod 755 tools/SwiftPackageGen
+      #     chmod 755 tools/PSProject
+      
+      - name: pip installs
+        run: |
+          pip3.11 install setuptools
+          pip3.11 install wheel
+      
+      - name: pip install psl_toolchakn
+        run: pip3.11 install https://github.com/kivyswiftlink/PSL_Toolchain/archive/refs/heads/master.zip -v
+      # - name: install kivy-ios
+      #   uses: kivyswiftlink/actions/install_kivy_ios@master
+
+      #### build phase ####
+
+      - name: build hostpython
+        run: psl_toolchain build hostpython3
+      
+      - name: build freetype
+        run: psl_toolchain build freetype
+
+      - name: build libpng
+        run: psl_toolchain build libpng
+
+      - name: build libjpeg
+        run: psl_toolchain build libjpeg
+
+      - name: build python3
+        run: psl_toolchain build python3
+
+      - name: build kivy
+        run: psl_toolchain build kivy
+
+      - name: build pillow
+        run: psl_toolchain build pillow
+
+      - name: build numpy
+        run: psl_toolchain build numpy
+      
+      - name: swift_package all
+        run: psl_toolchain swiftpackage all --version ${{ github.event.inputs.tag }}
+
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-output
+          path: ./swift_packages
+
+  # ###############################################################################
+  # ###############################################################################
+  # ###############################################################################
+  # #moving next part to an ubuntu machine
