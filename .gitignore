@@ -93,3 +93,4 @@ iOSInjectionProject/
 /builder/.cache
 /builder/dist
 builder/uv.lock
+/builder/swift_packages

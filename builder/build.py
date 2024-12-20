@@ -3,10 +3,9 @@ import sys
 
 
 if __name__ == "__main__":
-    ver = sys.argv.pop()
+    recipe = sys.argv.pop()
     sys.argv += [
-        "swiftpackage", "all",
-        "--version", ver
+        "build", recipe
     ]
     print(sys.argv)
     main()

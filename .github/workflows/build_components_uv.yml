@@ -54,48 +54,58 @@ jobs:
       # - name: clone psbuilder
       #   run: git clone https://github.com/PythonSwiftLink/PSBuilder
       
-      # - name: uv sync builder
-      #   run: uv sync --no-editable -v
-      #   working-directory: builder
-
-      - name: builder generate all
-        run: uv run generate_all.py ${{ github.event.inputs.tag }}
+      - name: uv sync builder
+        run: uv sync --no-editable -v
         working-directory: builder
 
-      # - name: build hostpython
-      #   run: uv run -v --directory psbuilder psbuilder build hostpython3
+      # - name: builder generate all
+      #   run: uv run generate_all.py ${{ github.event.inputs.tag }}
+      #   working-directory: builder
+
+      - name: build hostpython
+        run: uv run -v build.py hostpython3
+        working-directory: builder
+
+      - name: build freetype
+        run: uv run -v build.py freetype
+        working-directory: builder
+
+      - name: build libpng
+        run: uv run -v build.py libpng
+        working-directory: builder
+
+      - name: build libjpeg
+        run: uv run -v build.py libjpeg
+        working-directory: builder
+
+      - name: build python3
+        run: uv run -v build.py python3
+        working-directory: builder
+
+      - name: build kivy
+        run: uv run -v build.py kivy
+        working-directory: builder
+
+      - name: build pillow
+        run: uv run -v build.py pillow
+        working-directory: builder
+
+      - name: build numpy
+        run: uv run -v build.py numpy
+        working-directory: builder
       
-      # - name: build freetype
-      #   run: uv run -v --directory psbuilder psbuilder build freetype
-
-      # - name: build libpng
-      #   run: uv run -v --directory psbuilder psbuilder build libpng
-
-      # - name: build libjpeg
-      #   run: uv run -v --directory psbuilder psbuilder build libjpeg
-
-      # - name: build python3
-      #   run: uv run -v --directory psbuilder psbuilder build python3
-
-      # - name: build kivy
-      #   run: uv run -v --directory psbuilder psbuilder build kivy
-
-      # - name: build pillow
-      #   run: uv run -v --directory psbuilder psbuilder build pillow
-
-      # - name: build numpy
-      #   run: uv run -v --directory psbuilder psbuilder build numpy
-      
-      # - name: swift_package all
-      #   run: uv run -v --directory psbuilder psbuilder swiftpackage all --version ${{ github.event.inputs.tag }}
+      - name: swift_package all
+        run: uv run -v generate_all.py ${{ github.event.inputs.tag }}
+        working-directory: builder
       
       - name: show root files before uploads
         run: ls
-      
+        working-directory: builder
+
       - uses: actions/upload-artifact@v4
         with:
           name: release-output
-          path: ./swift_packages
+          path: builder/swift_packages
 
   # ###############################################################################
   # ###############################################################################
