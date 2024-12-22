@@ -218,7 +218,28 @@ jobs:
 
 
 
-
+      # commit new package to kivyswiftlink/master
+      - name: commit Pillow to master
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.token }}
+        with:
+          source-directory: 'Pillow/export/Pillow'
+          destination-github-username: 'kivyswiftlink'
+          destination-repository-name: 'Pillow'
+          user-email: kivyswiftlink@gmail.com
+          target-branch: master
+      
+      # create a new release from master and python_lib.zip / dist_lib.zip to the release
+      - name: release KivyCore
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "Pillow/dist_files.zip, Pillow/site-packages.zip, Pillow/xcframeworks/*.zip"
+          tag: ${{ github.event.inputs.tag }}
+          repo: Pillow
+          token: ${{ secrets.token }}
+          allowUpdates: true
+          makeLatest: ${{ github.event.inputs.lastest }}
 
 
 
