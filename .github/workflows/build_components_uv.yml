@@ -31,7 +31,7 @@ on:
 
 jobs:
   toolchainBuild:
-    runs-on: macOS-13
+    runs-on: macOS-14
     #runs-on: self-hosted
     permissions:
         contents: write
