@@ -38,7 +38,7 @@ jobs:
         run: ls
 
       # - name: release packages
-      #   uses: kivyswiftlink/actions/release_packages@master
+      #   uses: kv-swift/actions/release_packages@master
       #   with:
       #     token: ${{ github.event.inputs.lastest }}
       #     tag: ${{ github.event.inputs.tag }}
@@ -57,7 +57,7 @@ jobs:
             API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
             source-directory: 'PythonCore/export/PythonCore'
-            destination-github-username: 'kivyswiftlink'
+            destination-github-username: 'kv-swift'
             destination-repository-name: 'PythonCore'
             user-email: kivyswiftlink@gmail.com
             target-branch: master
@@ -82,14 +82,14 @@ jobs:
 
 
       ############# ImageCore ###############
-      # commit new package to kivyswiftlink/master
+      # commit new package to kv-swift/master
       - name: commit libpng to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'ImageCore/export/ImageCore'
-          destination-github-username: 'kivyswiftlink'
+          destination-github-username: 'kv-swift'
           destination-repository-name: 'ImageCore'
           user-email: kivyswiftlink@gmail.com
           target-branch: master
@@ -114,14 +114,14 @@ jobs:
 
 
       ############# freetype ###############
-      # commit new package to kivyswiftlink/master
+      # commit new package to kv-swift/master
       - name: commit libpng to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'FreeType/export/FreeType'
-          destination-github-username: 'kivyswiftlink'
+          destination-github-username: 'kv-swift'
           destination-repository-name: 'FreeType'
           user-email: kivyswiftlink@gmail.com
           target-branch: master
@@ -147,14 +147,14 @@ jobs:
 
 
       ############# SDL2Core ###############
-      # commit new package to kivyswiftlink/master
+      # commit new package to kv-swift/master
       - name: commit SDL2Core to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'SDL2Core/export/SDL2Core'
-          destination-github-username: 'kivyswiftlink'
+          destination-github-username: 'kv-swift'
           destination-repository-name: 'SDL2Core'
           user-email: kivyswiftlink@gmail.com
           target-branch: master
@@ -191,14 +191,14 @@ jobs:
           zip -r kivy-ios.zip kivy-ios
           
 
-      # commit new package to kivyswiftlink/master
+      # commit new package to kv-swift/master
       - name: commit KivyCore to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'KivyCore/export/KivyCore'
-          destination-github-username: 'kivyswiftlink'
+          destination-github-username: 'kv-swift'
           destination-repository-name: 'KivyCore'
           user-email: kivyswiftlink@gmail.com
           target-branch: master
@@ -218,14 +218,14 @@ jobs:
 
 
 
-      # commit new package to kivyswiftlink/master
+      # commit new package to kv-swift/master
       - name: commit Pillow to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'Pillow/export/Pillow'
-          destination-github-username: 'kivyswiftlink'
+          destination-github-username: 'kv-swift'
           destination-repository-name: 'Pillow'
           user-email: kivyswiftlink@gmail.com
           target-branch: master
@@ -248,14 +248,14 @@ jobs:
 
 
       ############# KivyNumpy ###############
-      # commit new package to kivyswiftlink/master
+      # commit new package to kv-swift/master
       - name: commit KivyNumpy to master
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.token }}
         with:
           source-directory: 'KivyNumpy/export/KivyNumpy'
-          destination-github-username: 'kivyswiftlink'
+          destination-github-username: 'kv-swift'
           destination-repository-name: 'KivyNumpy'
           user-email: kivyswiftlink@gmail.com
           target-branch: master
@@ -302,14 +302,14 @@ jobs:
       #     cp -f kivyextra/Package.swift KivyExtra/
           
 
-      # # commit new package to kivyswiftlink/master
+      # # commit new package to kv-swift/master
       # - name: commit KivyExtra to master
       #   uses: cpina/github-action-push-to-another-repository@main
       #   env:
       #     API_TOKEN_GITHUB: ${{ secrets.token }}
       #   with:
       #     source-directory: 'KivyExtra'
-      #     destination-github-username: 'kivyswiftlink'
+      #     destination-github-username: 'kv-swift'
       #     destination-repository-name: 'KivyExtra'
       #     user-email: kivyswiftlink@gmail.com
       #     target-branch: master
