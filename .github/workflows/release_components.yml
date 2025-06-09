@@ -67,7 +67,8 @@ jobs:
         with:
           artifacts: "
             PythonCore/dist_files.zip,
-            PythonCore/xcframeworks/*.zip
+            PythonCore/xcframeworks/*.zip,
+            PythonCore/export/macos-python-stdlib.zip
             "
           tag: ${{ github.event.inputs.tag }}
           repo: PythonCore
